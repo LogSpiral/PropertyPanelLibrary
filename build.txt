@@ -1,0 +1,4 @@
+displayName = 属性面板
+author = 错数面板
+version = 0.1
+modReferences = SilkyUIFramework
