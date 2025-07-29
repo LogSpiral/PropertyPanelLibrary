@@ -16,7 +16,7 @@ public class FitHeightDecorator : IPropertyPanelDecorator
         panel.OptionList.FitHeight = true;
         panel.OptionList.Mask.FitHeight = true;
         panel.OptionList.Container.FitHeight = true;
-        panel.OptionList.ScrollBar.Remove();
+        // panel.OptionList.ScrollBar.Remove();
     }
 
     void IPropertyPanelDecorator.UnloadDecorate(PropertyPanel panel)
@@ -25,6 +25,6 @@ public class FitHeightDecorator : IPropertyPanelDecorator
         panel.OptionList.FitHeight = false;
         panel.OptionList.Mask.FitHeight = false;
         panel.OptionList.Container.FitHeight = false;
-        panel.OptionList.ScrollBar.Join(panel.OptionList);
+        // panel.OptionList.ScrollBar.Join(panel.OptionList);
     }
 }

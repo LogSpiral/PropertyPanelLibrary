@@ -1,4 +1,5 @@
-﻿namespace PropertyPanelLibrary.PropertyPanelComponents;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
+namespace PropertyPanelLibrary.PropertyPanelComponents;
 
 public partial class PropertyPanel
 {

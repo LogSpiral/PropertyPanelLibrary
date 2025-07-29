@@ -1,7 +1,7 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using System;
 
-namespace PropertyPanelLibrary.PropertyPanelComponents.Core;
+namespace PropertyPanelLibrary.PropertyPanelComponents.Attributes;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Property | AttributeTargets.Field)]
 public class CustomOptionElementAttribute : Attribute

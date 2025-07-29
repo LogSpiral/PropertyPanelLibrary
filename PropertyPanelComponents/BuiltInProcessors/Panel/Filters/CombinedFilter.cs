@@ -9,6 +9,7 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.F
 /// </summary>
 public class CombinedFilter(params IEnumerable<IPropertyOptionFilter> filters) : IPropertyOptionFilter
 {
+    // TODO 增加或模式筛选和异或模式筛选
     bool IPropertyOptionFilter.CheckPassFilter(PropertyOption option)
     {
         foreach (var filter in filters)

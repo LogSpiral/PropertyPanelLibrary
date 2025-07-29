@@ -45,7 +45,7 @@ public partial class PropertyOption : UIElementGroup
     public void SetValue(object value, bool broadCast = true)
     {
         Writer?.WriteValue(this, value, broadCast);
-        Main.NewText(value);
+        Main.NewText(value == null ? "null" : value.ToString());
     }
 
     protected override void UpdateStatus(GameTime gameTime)

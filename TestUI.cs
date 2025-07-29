@@ -24,6 +24,8 @@ namespace PropertyPanelLibrary;
 
 public class PropertyPanelShowcaseConfig
 {
+    #region Basic
+
     public bool SomeBool { get; set; } = true;
     public sbyte SomeSByte { get; set; } = -37;
     public byte SomeByte { get; set; } = 42;
@@ -42,6 +44,13 @@ public class PropertyPanelShowcaseConfig
 
     public BindingFlags SomeEnum { get; set; } = BindingFlags.Instance;
 
+
+    public ItemDefinition SomeItem { get; set; } = new();
+
+    public NPCDefinition SomeNPC { get; set; } = new(NPCID.SkeletronHead);
+    #endregion
+
+    #region Object
     public Vector2 SomeVector2 { get; set; } = new(223, 514);
     public Vector3 SomeVector3 { get; set; } = new(223, 214, 514);
     public Vector4 SomeVector4 { get; set; } = new(514, 514, 514, 514);
@@ -49,7 +58,9 @@ public class PropertyPanelShowcaseConfig
     public Color SomeColor { get; set; } = Color.Green;
     public Point SomePoint { get; set; } = new(111, 222);
     public Rectangle SomeRectangle { get; set; } = new(0, 1, 2, 3);
+    #endregion
 
+    #region Collection
     public bool[] SomeArray { get; set; } = [false, true, false];
     public List<int> SomeList { get; set; } = [5, 1, 4];
 
@@ -67,12 +78,13 @@ public class PropertyPanelShowcaseConfig
         "Yabusame",
         "Tsubakura"
         ];
+    #endregion
 
-    public ItemDefinition SomeItem { get; set; } = new();
-
-    public NPCDefinition SomeNPC { get; set; } = new(NPCID.SkeletronHead);
-
+    #region SubConfig
     public PropertyPanelShowcaseConfig subConfig { get; set; }
+
+    #endregion
+
 }
 
 [RegisterUI("Vanilla: Radial Hotbars", $"{nameof(PropertyPanelLibrary)}: {nameof(TestUI)}")]

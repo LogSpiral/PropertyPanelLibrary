@@ -50,6 +50,14 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
         return option;
     }
 
+    public ObjectMetaDataFiller SetAsSubOption(PropertyOption owner, object item, PropertyFieldWrapper variableInfo) 
+    {
+        Owner = owner;
+        Item = item;
+        VariableInfo = variableInfo;
+        return this;
+    }
+
     void IPropertyOptionFiller.FillingOptionList(List<PropertyOption> list)
     {
         if (configObject is IList objectList)

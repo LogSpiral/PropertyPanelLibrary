@@ -1,11 +1,8 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using SilkyUIFramework;
-using SilkyUIFramework.Extensions;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Attributes;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;

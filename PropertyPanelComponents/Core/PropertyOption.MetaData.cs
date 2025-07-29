@@ -81,8 +81,4 @@ public partial class PropertyOption
     /// <returns></returns>
     protected object GetValue() => MetaData.GetValue();
 
-    /// <summary>
-    /// 控件所属元素或多级列表最外层父对象
-    /// </summary>
-    public object Item => MetaData.Item;
 }
