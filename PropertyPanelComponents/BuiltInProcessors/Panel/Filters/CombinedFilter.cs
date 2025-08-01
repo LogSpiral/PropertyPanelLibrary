@@ -9,12 +9,32 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.F
 /// </summary>
 public class CombinedFilter(params IEnumerable<IPropertyOptionFilter> filters) : IPropertyOptionFilter
 {
-    // TODO 增加或模式筛选和异或模式筛选
+    public CombiningMode CombiningMode { get; set; } = CombiningMode.Xor;
     bool IPropertyOptionFilter.CheckPassFilter(PropertyOption option)
     {
-        foreach (var filter in filters)
-            if (!filter.CheckPassFilter(option))
+        switch (CombiningMode)
+        {
+            case CombiningMode.And:
+                foreach (var filter in filters)
+                    if (!filter.CheckPassFilter(option))
+                        return false;
+                return true;
+
+            case CombiningMode.Or:
+                foreach (var filter in filters)
+                    if (filter.CheckPassFilter(option))
+                        return true;
                 return false;
-        return true;
+
+            case CombiningMode.Xor:
+                int counter = 0;
+                foreach (var filter in filters)
+                    if (filter.CheckPassFilter(option))
+                        counter++;
+                return counter % 2 == 1;
+
+            default:
+                goto case CombiningMode.And;
+        }
     }
 }

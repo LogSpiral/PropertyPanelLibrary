@@ -10,4 +10,6 @@ public class DelegateWriter : IPropertyValueWriter
     public event WriteValueEvent OnWriteValue;
 
     void IPropertyValueWriter.WriteValue(PropertyOption option, object value, bool broadCast) => OnWriteValue?.Invoke(option, value, broadCast);
+
+    IPropertyValueWriter IPropertyValueWriter.Clone() => this;
 }

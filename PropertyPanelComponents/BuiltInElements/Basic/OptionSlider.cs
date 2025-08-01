@@ -113,7 +113,6 @@ public class OptionSlider : PropertyOption
                 pair = (0.0, 4294967295);
         }*/
         (Min, Max) = pair;
-
         var rangeAttribute = GetAttribute<RangeAttribute>();
         if (rangeAttribute != null)
         {

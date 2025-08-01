@@ -13,12 +13,13 @@ using SilkyUIFramework;
 using SilkyUIFramework.BasicElements;
 using SilkyUIFramework.Extensions;
 using System.Collections.Generic;
+using PropertyPanelLibrary.BasicElements;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents;
 
 public partial class PropertyPanel : UIElementGroup
 {
-    public SUIScrollView OptionList { get; init; }
+    public SUIScrollViewAutoHideBar OptionList { get; init; }
     private readonly List<PropertyOption> _totalOptions = [];
 
     /// <summary>
@@ -26,6 +27,9 @@ public partial class PropertyPanel : UIElementGroup
     /// </summary>
     private bool _pendingUpdate;
 
+    /// <summary>
+    /// 挂起装饰器修改，重新进行装饰过程
+    /// </summary>
     private bool _pendingDecorate;
 
     public PropertyPanel()
@@ -45,6 +49,13 @@ public partial class PropertyPanel : UIElementGroup
             _pendingUpdate = true;
             _totalOptions.Clear();
             value.FillingOptionList(_totalOptions);
+            foreach (var option in _totalOptions)
+            {
+                option.Writer = Writer.Clone();
+                option.InteractableHandler = InteractableHandler.Clone();
+                option.MouseHandler = MouseHandler.Clone();
+                option.Decorator = OptionDecorator.Clone();
+            }
         }
     }
 
@@ -73,7 +84,7 @@ public partial class PropertyPanel : UIElementGroup
         private get => field ??= NoneDecorator.Instance;
         set
         {
-            _pendingUpdate = true;
+            _pendingDecorate = true;
             field = value;
         }
     }
@@ -85,8 +96,9 @@ public partial class PropertyPanel : UIElementGroup
         private get => field ??= NoneMouseHandler.Instance;
         set
         {
-            _pendingUpdate = true;
-            field = value;
+            field = value ?? NoneMouseHandler.Instance;
+            foreach (var options in _totalOptions)
+                options.MouseHandler = value.Clone();
         }
     }
 
@@ -96,27 +108,33 @@ public partial class PropertyPanel : UIElementGroup
         set
         {
             _pendingUpdate = true;
-            field = value;
+            field = value ?? DefaultWriter.Instance;
+            foreach (var options in _totalOptions)
+                options.Writer = value.Clone();
         }
     }
 
-    public IPropertyOptionDecorator OptionDecorator 
+    public IPropertyOptionDecorator OptionDecorator
     {
         get => field ??= LabelOptionDecorator.NewLabelDecorator();
-        set 
+        set
         {
             _pendingUpdate = true;
-            field = value;
+            field = value ?? LabelOptionDecorator.NewLabelDecorator();
+            foreach (var options in _totalOptions)
+                options.Decorator = value.Clone();
         }
     }
 
     public IPropertyOptionInteractableHandler InteractableHandler
     {
         get => field ??= NoneInteractableHandler.Instance;
-        set 
+        set
         {
             _pendingUpdate = true;
-            field = value;
+            field = value ?? NoneInteractableHandler.Instance;
+            foreach (var options in _totalOptions)
+                options.InteractableHandler = value.Clone();
         }
     }
     #endregion
@@ -125,20 +143,32 @@ public partial class PropertyPanel : UIElementGroup
 
     protected override void UpdateStatus(GameTime gameTime)
     {
-        if (!_pendingUpdate) return;
-        _pendingUpdate = false;
-        OptionList.Container.RemoveAllChildren();
-        OptionList.Remove();
-        Decorator.PreFillPanel(this);
+        bool pendingDecorateCache = _pendingDecorate;
+        if (pendingDecorateCache) 
+        {
+            _pendingDecorate = false;
+            OptionList.Remove();
+            Decorator.PreFillPanel(this);
+        }
 
-        List<PropertyOption> resultList = [];
-        Filter.FliteringOptionList(_totalOptions, resultList);
-        Sorter.SortingOptionList(resultList);
-        foreach (var option in resultList)
-            OptionList.Container.AppendChild(option);
 
-        OptionList.Join(this);
-        Decorator.PostFillPanel(this);
+        if (_pendingUpdate)
+        {
+            _pendingUpdate = false;
+            OptionList.Container.RemoveAllChildren();
+            List<PropertyOption> resultList = [];
+            Filter.FliteringOptionList(_totalOptions, resultList);
+            Sorter.SortingOptionList(resultList);
+            foreach (var option in resultList)
+                OptionList.Container.AppendChild(option);
+        }
+
+        if (pendingDecorateCache)
+        {
+            OptionList.Join(this);
+            Decorator.PostFillPanel(this);
+        }
+
 
         base.UpdateStatus(gameTime);
     }

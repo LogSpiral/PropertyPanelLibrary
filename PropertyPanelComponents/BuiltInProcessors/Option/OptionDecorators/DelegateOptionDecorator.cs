@@ -18,4 +18,6 @@ public class DelegateOptionDecorator : IPropertyOptionDecorator
     void IPropertyOptionDecorator.PreFillOption(PropertyOption option) => OnPreFillOption?.Invoke(option);
 
     void IPropertyOptionDecorator.UnloadDecorate(PropertyOption option) => OnUnloadDecorate?.Invoke(option);
+
+    IPropertyOptionDecorator IPropertyOptionDecorator.Clone() => this;
 }

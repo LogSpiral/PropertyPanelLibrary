@@ -25,7 +25,7 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 public class OptionObject : PropertyOption
 {
     protected UIElementGroup ButtonContainer { get; set; }
-    private PropertyPanel PropertyPanel { get; set; }
+    protected PropertyPanel PropertyPanel { get; private set; }
     private SUITriangleIcon InitializeButton { get; set; }
     private SUITriangleToggle ExpandButton { get; set; }
     private SUICross DeleteButton { get; set; }
@@ -89,7 +89,7 @@ public class OptionObject : PropertyOption
     {
         DeleteButton = new SUICross(SUIColor.Warn * .5f, SUIColor.Warn);
         DeleteButton.SetSize(25, 25);
-        DeleteButton.Margin = new(4f,0,4,0);
+        DeleteButton.Margin = new(4f, 0, 4, 0);
         DeleteButton.BackgroundColor = Color.Black * .4f;
         DeleteButton.BorderRadius = new(4f);
         DeleteButton.LeftMouseClick += delegate
@@ -184,6 +184,7 @@ public class OptionObject : PropertyOption
             ExpandButton.Remove();
             DeleteButton.Remove();
 
+            var code = PropertyPanel.GetHashCode();
             if (data != null)
             {
 
@@ -191,7 +192,6 @@ public class OptionObject : PropertyOption
 
                 if (ShouldAppendDeleteButton())
                     DeleteButton.Join(ButtonContainer);
-
                 PropertyPanel.Filler = GetInternalPanelFiller(data);
 
             }

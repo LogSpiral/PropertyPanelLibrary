@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PropertyPanelLibrary.Graphics2D;
-using PropertyPanelLibrary.Graphics2D;
 using SilkyUIFramework;
+using SilkyUIFramework.BasicElements;
 using System;
 using Terraria;
 
@@ -132,7 +132,7 @@ public class SUISlideBox : UIElementGroup
         var borderColor = SliderRound;
         if (SDFGraphics.MouseInRound(roundCenter, (int)roundRadius))
             borderColor = SliderRoundHover;
-
+        
         // 绘制
         SDFGraphics.HasBorderRound(roundLeftTop, default, roundDiameter, innerColor, 2f, borderColor, SDFGraphics.GetMatrix(true));
         base.Draw(gameTime, spriteBatch);

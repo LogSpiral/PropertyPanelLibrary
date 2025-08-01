@@ -12,4 +12,6 @@ public class NoneInteractableHandler : IPropertyOptionInteractableHandler
         reason = string.Empty;
         return true;
     }
+
+    IPropertyOptionInteractableHandler IPropertyOptionInteractableHandler.Clone() => Instance;
 }

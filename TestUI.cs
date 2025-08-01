@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
 using SilkyUIFramework;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.Attributes;
@@ -14,6 +15,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -21,7 +23,6 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 namespace PropertyPanelLibrary;
-
 public class PropertyPanelShowcaseConfig
 {
     #region Basic
@@ -52,12 +53,19 @@ public class PropertyPanelShowcaseConfig
 
     #region Object
     public Vector2 SomeVector2 { get; set; } = new(223, 514);
+
     public Vector3 SomeVector3 { get; set; } = new(223, 214, 514);
     public Vector4 SomeVector4 { get; set; } = new(514, 514, 514, 514);
+    public Anchor SomeAnchor { get; set; } = new(4, 0.1f, 0);
+
+    public Dimension SomeDimension { get; set; } = new(4, 0.1f);
+    public Margin SomeMargin { get; set; } = new(4, 0.1f, 0, 1f);
 
     public Color SomeColor { get; set; } = Color.Green;
     public Point SomePoint { get; set; } = new(111, 222);
     public Rectangle SomeRectangle { get; set; } = new(0, 1, 2, 3);
+
+    public UIView SomeUIView { get; set; } = new();
     #endregion
 
     #region Collection
@@ -179,15 +187,47 @@ public class TestUI : BasicBody
 
 #if false
         Instance.FitHeight = true;
-        var panel = PropertyPanel.FromObject(new { SomeInt = 1, SomeBool = false, SomeString = "2333" });
+        object[] array = [1, "2", BindingFlags.Static, false, new NPCDefinition(NPCID.MoonLordCore),new int[] {1,2,3 }];
+        var panel = PropertyPanel.FromObject(array);
+        //var panel = PropertyPanel.FromObject(new { SomeInt = 1, SomeBool = false, SomeString = "2333",袜真的是你啊 = "哇哇哇", SomeFlag = BindingFlags.Static,SomeTile = new TileDefinition(TileID.RainbowBrick) });
         panel.Join(Instance);
         panel.Decorator = FitHeightDecorator.Instance;
 #else
         Instance.FitHeight = false;
-        PropertyPanel.FromObject(new PropertyPanelShowcaseConfig()).Join(Instance);
+
+        //panel.Filler = NoneFiller.Instance;
+        //panel.Filler = new DesignatedMemberFiller(
+        //    ( 
+        //    Main.LocalPlayer, 
+        //    [
+        //        nameof(Player.statLife),
+        //        nameof(Player.statLifeMax2), 
+        //        nameof(Player.statMana), 
+        //        nameof(Player.stoned)
+        //    ]));
+
+        var panel = new PropertyPanel();
+        panel.SetSize(0, 0, 1, 1);
+        var obj = new PropertyPanelShowcaseConfig() { SomeUIView = new() { Left = new(4), Top = new(4), Width = new(0, .5f), Height = new(0, .75f) } };
+        panel.Filler = new DesignatedMemberFiller(
+            (
+            obj,
+            [
+                nameof(PropertyPanelShowcaseConfig.SomeVector3),
+                nameof(PropertyPanelShowcaseConfig.SomeVector4),
+                 nameof(PropertyPanelShowcaseConfig.SomeAnchor),
+                nameof(PropertyPanelShowcaseConfig.SomeRectangle),
+                nameof(PropertyPanelShowcaseConfig.SomeDimension),
+                nameof(PropertyPanelShowcaseConfig.SomeMargin)
+
+            ]));
+
+        panel.Join(Instance);
+
 #endif
         // new PropertyPanelShowcaseConfig()
     }
+
 
     public static void Close()
     {

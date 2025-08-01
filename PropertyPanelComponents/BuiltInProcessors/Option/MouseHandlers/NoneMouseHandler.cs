@@ -8,6 +8,8 @@ public class NoneMouseHandler : IPropertyMouseHandler
 {
     public static NoneMouseHandler Instance { get; } = new NoneMouseHandler();
 
+    public IPropertyMouseHandler Clone() => Instance;
+
     void IPropertyMouseHandler.LeftMouseClick(UIMouseEvent evt, PropertyOption option)
     {
     }

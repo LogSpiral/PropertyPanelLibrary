@@ -8,10 +8,12 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.Core;
 public partial class PropertyOption
 {
 
-    protected interface IMetaDataHandler
+    public interface IMetaDataHandler
     {
         // 从元数据处理器中获取值
         object GetValue();
+
+        void SetValue(object value);
 
         // 从元数据处理器中获取目标类型
         Type VariableType { get; }
@@ -30,7 +32,7 @@ public partial class PropertyOption
     /// <summary>
     /// 对象-信息式处理器
     /// </summary>
-    protected class VariableInfoHandler : IMetaDataHandler
+    public class VariableInfoHandler : IMetaDataHandler
     {
         /// <summary>
         /// 控制的值所属的目标
@@ -48,13 +50,18 @@ public partial class PropertyOption
 
         public object GetValue() => VariableInfo.GetValue(Item);
 
+        public void SetValue(object value)
+        {
+            VariableInfo.SetValue(Item, value);
+        }
+
         public string Label => ConfigManager.GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(VariableInfo, "Label") ?? VariableInfo.Name;
     }
 
     /// <summary>
     /// 列表-索引式处理器
     /// </summary>
-    protected class ListValueHandler : IMetaDataHandler
+    public class ListValueHandler : IMetaDataHandler
     {
         /// <summary>
         /// 控制的值所属的列表
@@ -83,12 +90,17 @@ public partial class PropertyOption
 
         public object GetValue() => List[Index];
 
+        public void SetValue(object value)
+        {
+            List[Index] = value;
+        }
+
         public string Label => (Index + 1).ToString();
     }
 
     /// <summary>
     /// 元数据处理器对象
     /// </summary>
-    protected IMetaDataHandler MetaData { get; set; }
+    public IMetaDataHandler MetaData { get; set; }
 
 }

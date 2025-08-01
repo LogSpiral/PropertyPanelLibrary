@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.InteractableHandlers;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.MouseHandlers;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.OptionDecorators;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Writers;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using SilkyUIFramework;
 using Terraria;
@@ -8,13 +11,25 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.Core;
 
 public partial class PropertyOption : UIElementGroup
 {
-    private IPropertyValueWriter Writer { get; set; }
-    private IPropertyMouseHandler MouseHandler { get; set; }
-    private IPropertyOptionInteractableHandler InteractableHandler { get; set; }
-    private IPropertyOptionDecorator Decorator 
+    public IPropertyValueWriter Writer
     {
-        get => field ??= LabelOptionDecorator.NewLabelDecorator();
-        set 
+        protected get => field ??= DefaultWriter.Instance;
+        set;
+    }
+    public IPropertyMouseHandler MouseHandler
+    {
+        protected get => field ??= NoneMouseHandler.Instance;
+        set;
+    }
+    public IPropertyOptionInteractableHandler InteractableHandler
+    {
+        protected get => field ??= NoneInteractableHandler.Instance;
+        set;
+    }
+    public IPropertyOptionDecorator Decorator
+    {
+        protected get => field ??= LabelOptionDecorator.NewLabelDecorator();
+        set
         {
             _pendingDecorateModified = true;
             field = value;
@@ -51,20 +66,23 @@ public partial class PropertyOption : UIElementGroup
     protected override void UpdateStatus(GameTime gameTime)
     {
         base.UpdateStatus(gameTime);
-        if (InteractableHandler != null) 
+        var v = this.Children;
+        if (InteractableHandler != null)
         {
             Interactable = InteractableHandler.CheckInteractable(this, out string message);
             InteractableMessage = message;
         }
-        if (_pendingDecorateModified) 
+        if (_pendingDecorateModified)
         {
-            Decorator?.UnloadDecorate(this);
+            _pendingDecorateModified = false;
+            Decorator.UnloadDecorate(this);
             RemoveAllChildren();
 
             Decorator.PreFillOption(this);
             FillOption();
             Decorator.PostFillOption(this);
         }
+
     }
     public bool Interactable { get; private set; } = true;
     public string InteractableMessage { get; private set; } = "";

@@ -24,4 +24,10 @@ public interface IPropertyOptionDecorator
     /// </summary>
     /// <param name="option"></param>
     void UnloadDecorate(PropertyOption option);
+
+    /// <summary>
+    /// 用于非单例模式的选项处理器
+    /// </summary>
+    /// <returns></returns>
+    IPropertyOptionDecorator Clone();
 }

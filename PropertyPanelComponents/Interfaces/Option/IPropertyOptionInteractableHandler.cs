@@ -8,4 +8,10 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 public interface IPropertyOptionInteractableHandler
 {
     bool CheckInteractable(PropertyOption option, out string reason);
+
+    /// <summary>
+    /// 用于非单例模式的选项处理器
+    /// </summary>
+    /// <returns></returns>
+    IPropertyOptionInteractableHandler Clone();
 }

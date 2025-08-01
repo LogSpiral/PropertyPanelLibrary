@@ -43,9 +43,9 @@ public partial class PropertyOption
 
         CheckAttributes();
 
-        Decorator?.PreFillOption(this);
+        Decorator.PreFillOption(this);
         FillOption();
-        Decorator?.PostFillOption(this);
+        Decorator.PostFillOption(this);
     }
 
     protected virtual void FillOption()

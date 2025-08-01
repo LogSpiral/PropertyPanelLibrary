@@ -1,0 +1,45 @@
+﻿using Microsoft.Xna.Framework;
+using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
+using SilkyUIFramework;
+using SilkyUIFramework.BasicComponents;
+using SilkyUIFramework.Extensions;
+using System;
+namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Collection;
+
+partial class OptionCollection
+{
+    private class RemoveElementDecorator(Action onRemove = null) : IPropertyOptionDecorator
+    {
+        IPropertyOptionDecorator IPropertyOptionDecorator.Clone() => new RemoveElementDecorator(OnRemove);
+
+        Action OnRemove { get; init; } = onRemove;
+
+        SUICross RemoveButton { get; set; }
+
+        void IPropertyOptionDecorator.PostFillOption(PropertyOption option)
+        {
+
+        }
+
+        void IPropertyOptionDecorator.PreFillOption(PropertyOption option)
+        {
+            RemoveButton = new SUICross(SUIColor.Warn * .5f, SUIColor.Warn);
+            RemoveButton.SetSize(25, 25);
+            RemoveButton.Margin = new(4f, 0, 4, 0);
+            RemoveButton.BackgroundColor = Color.Black * .4f;
+            RemoveButton.BorderRadius = new(4f);
+            RemoveButton.Join(option);
+            RemoveButton.LeftMouseClick += delegate
+            {
+                OnRemove?.Invoke();
+            };
+
+        }
+
+        void IPropertyOptionDecorator.UnloadDecorate(PropertyOption option)
+        {
+            RemoveButton?.Remove();
+        }
+    }
+}

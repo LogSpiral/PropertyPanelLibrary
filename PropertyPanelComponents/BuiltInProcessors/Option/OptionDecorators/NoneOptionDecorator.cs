@@ -10,6 +10,8 @@ public class NoneOptionDecorator : IPropertyOptionDecorator
 {
     public static NoneOptionDecorator Instance { get; } = new();
 
+    IPropertyOptionDecorator IPropertyOptionDecorator.Clone() => Instance;
+
     void IPropertyOptionDecorator.PostFillOption(PropertyOption option)
     {
     }

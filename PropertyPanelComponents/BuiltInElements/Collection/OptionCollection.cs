@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.OptionDecorators;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using SilkyUIFramework.Extensions;
 using System;
 using Terraria.Audio;
@@ -10,7 +12,7 @@ using Terraria.ModLoader.Config;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Collection;
 
-public abstract class OptionCollection : OptionObject
+public abstract partial class OptionCollection : OptionObject
 {
     #region Attributes
     protected DefaultListValueAttribute DefaultListValueAttribute { get; set; }
@@ -84,6 +86,13 @@ public abstract class OptionCollection : OptionObject
         Data = GetValue();
         base.FillOption();
         BuildAddButton();
+
+        if (CanItemBeAdded)
+            PropertyPanel.OptionDecorator =
+                new CombinedOptionDecorator(
+                    new RemoveElementDecorator(ClearCollection),
+                    LabelOptionDecorator.NewLabelDecorator()
+                    );
     }
     void BuildAddButton()
     {

@@ -15,4 +15,6 @@ public class DelegateInteractableHandler : IPropertyOptionInteractableHandler
         reason = string.Empty;
         return true;
     }
+
+    public IPropertyOptionInteractableHandler Clone() => this;
 }

@@ -13,4 +13,10 @@ public interface IPropertyMouseHandler
     void RightMouseClick(UIMouseEvent evt, PropertyOption option);
 
     void MiddleMouseClick(UIMouseEvent evt, PropertyOption option);
+
+    /// <summary>
+    /// 用于非单例模式的选项处理器
+    /// </summary>
+    /// <returns></returns>
+    IPropertyMouseHandler Clone();
 }

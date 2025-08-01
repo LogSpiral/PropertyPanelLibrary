@@ -1,6 +1,7 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.OptionDecorators;
 
@@ -10,6 +11,8 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.
 /// <param name="decorators"></param>
 public class CombinedOptionDecorator(params IEnumerable<IPropertyOptionDecorator> decorators) : IPropertyOptionDecorator
 {
+    IPropertyOptionDecorator IPropertyOptionDecorator.Clone() => new CombinedOptionDecorator(from decorator in decorators select decorator.Clone());
+
     void IPropertyOptionDecorator.PostFillOption(PropertyOption option)
     {
         foreach(var decorator in decorators)

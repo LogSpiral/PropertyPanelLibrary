@@ -14,4 +14,11 @@ public interface IPropertyValueWriter
     /// <param name="value">当前写入的值</param>
     /// <param name="broadCast">是否正式写入</param>
     void WriteValue(PropertyOption option, object value, bool broadCast);
+
+
+    /// <summary>
+    /// 用于非单例模式的选项处理器
+    /// </summary>
+    /// <returns></returns>
+    IPropertyValueWriter Clone();
 }

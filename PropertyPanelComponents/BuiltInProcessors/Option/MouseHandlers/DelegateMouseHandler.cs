@@ -11,6 +11,8 @@ public class DelegateMouseHandler : IPropertyMouseHandler
     public MouseEventHandler OnMiddleClick;
     public MouseEventHandler OnRightClick;
 
+    IPropertyMouseHandler IPropertyMouseHandler.Clone() => this;
+
     void IPropertyMouseHandler.LeftMouseClick(UIMouseEvent evt, PropertyOption option) => OnLeftClick?.Invoke(option, evt);
 
     void IPropertyMouseHandler.MiddleMouseClick(UIMouseEvent evt, PropertyOption option) => OnMiddleClick?.Invoke(option, evt);
