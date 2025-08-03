@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework;
 using SilkyUIFramework.Extensions;
 using Terraria.ModLoader;
@@ -20,9 +19,14 @@ public class OptionString : PropertyOption
         textPanel.SetTop(0, 0, 0.5f);
         textPanel.InnerText.Text = (string)GetValue() ?? string.Empty;
         textPanel.Join(this);
-        textPanel.InnerText.ContentChanged += (sender, arg) =>
+        textPanel.OnUpdate += delegate
         {
-            SetValue(arg.Text);
+            if (!textPanel.InnerText.IsFocus)
+                textPanel.InnerText.Text = (string)GetValue() ?? string.Empty;
+        };
+        textPanel.InnerText.EndTakingInput += (sender, arg) =>
+        {
+            SetValue(arg.NewValue);
         };
     }
     protected override void UpdateStatus(GameTime gameTime)

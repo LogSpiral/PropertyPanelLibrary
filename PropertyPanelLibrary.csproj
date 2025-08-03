@@ -8,13 +8,13 @@
 		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
+	  <AdditionalFiles Remove="Graphics2D\ColorPanels.fx" />
+	</ItemGroup>
+	<ItemGroup>
 	  <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.6.1" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\SilkyUIFramework\SilkyUIFramework.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Graphics2D\" />
 	</ItemGroup>
 
 	<!-- References -->

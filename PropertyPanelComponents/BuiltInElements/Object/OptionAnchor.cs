@@ -19,15 +19,18 @@ public class OptionAnchor : OptionObject
     protected override void FillOption()
     {
         base.FillOption();
-        PropertyPanel.Decorator =
-            new CombinedDecorator(
-                FitHeightDecorator.Instance,
-                new AnchorDecorator(
-                    this));
+        //PropertyPanel.Decorator =
+        //    new CombinedDecorator(
+        //        FitHeightDecorator.Instance,
+        //        new AnchorDecorator(
+        //            this));
+        if (owner == null)
+            PropertyPanel.Decorator = new AnchorDecorator(this);
         if (MetaData is ListValueHandler listHandler)
             anchorObj = new((IList<Anchor>)listHandler.List, listHandler.Index);
         else
             anchorObj = new(MetaData.VariableInfo, MetaData.Item);
+        ShowStringValueInLabel = false;
     }
     protected override void Register(Mod mod)
     {
@@ -46,7 +49,7 @@ public class OptionAnchor : OptionObject
 
         private Anchor current;
 
-        [Range(0f,100f)]
+        [Range(0f, 100f)]
         public float Pixels
         {
             get => current.Pixels;

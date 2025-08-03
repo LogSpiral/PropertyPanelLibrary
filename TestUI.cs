@@ -96,6 +96,7 @@ public class PropertyPanelShowcaseConfig
 }
 
 [RegisterUI("Vanilla: Radial Hotbars", $"{nameof(PropertyPanelLibrary)}: {nameof(TestUI)}")]
+// [RegisterGlobalUI("MenuUI", 1)]
 public class TestUI : BasicBody
 {
     public static TestUI Instance { get; private set; }
@@ -218,8 +219,9 @@ public class TestUI : BasicBody
                  nameof(PropertyPanelShowcaseConfig.SomeAnchor),
                 nameof(PropertyPanelShowcaseConfig.SomeRectangle),
                 nameof(PropertyPanelShowcaseConfig.SomeDimension),
-                nameof(PropertyPanelShowcaseConfig.SomeMargin)
-
+                nameof(PropertyPanelShowcaseConfig.SomeMargin),
+                nameof(PropertyPanelShowcaseConfig.SomeColor),
+                nameof(PropertyPanelShowcaseConfig.SomeUIView)
             ]));
 
         panel.Join(Instance);

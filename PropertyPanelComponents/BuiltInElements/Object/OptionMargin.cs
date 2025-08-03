@@ -21,15 +21,13 @@ public class OptionMargin : OptionObject
     protected override void FillOption()
     {
         base.FillOption();
-        PropertyPanel.Decorator =
-            new CombinedDecorator(
-                FitHeightDecorator.Instance,
-                new MarginDecorator(
-                    this));
+        if (owner == null)
+            PropertyPanel.Decorator = new MarginDecorator(this);
         if (MetaData is ListValueHandler listHandler)
             MarginObj = new((IList<Margin>)listHandler.List, listHandler.Index);
         else
             MarginObj = new(MetaData.VariableInfo, MetaData.Item);
+        ShowStringValueInLabel = false;
     }
     protected override void Register(Mod mod)
     {

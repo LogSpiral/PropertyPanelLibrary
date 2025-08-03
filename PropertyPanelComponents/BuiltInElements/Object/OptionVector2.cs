@@ -25,17 +25,15 @@ public class OptionVector2 : OptionObject
     protected override void FillOption()
     {
         base.FillOption();
-        PropertyPanel.Decorator =
-            new CombinedDecorator(
-                FitHeightDecorator.Instance,
-                new Vector2PanelDecorator(
+        PropertyPanel.Decorator = new Vector2PanelDecorator(
                     this,
                     RangeAttribute,
-                    IncrementAttribute));
+                    IncrementAttribute);
         if (MetaData is ListValueHandler listHandler)
             vecObj = new((IList<Vector2>)listHandler.List, listHandler.Index);
         else
             vecObj = new(MetaData.VariableInfo, MetaData.Item);
+        ShowStringValueInLabel = false;
     }
 
     protected override void Register(Mod mod)

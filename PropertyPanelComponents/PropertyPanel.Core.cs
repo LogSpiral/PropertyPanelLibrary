@@ -47,6 +47,7 @@ public partial class PropertyPanel : UIElementGroup
         set
         {
             _pendingUpdate = true;
+            var code = GetHashCode();
             _totalOptions.Clear();
             value.FillingOptionList(_totalOptions);
             foreach (var option in _totalOptions)
@@ -84,6 +85,7 @@ public partial class PropertyPanel : UIElementGroup
         private get => field ??= NoneDecorator.Instance;
         set
         {
+            field?.UnloadDecorate(this);
             _pendingDecorate = true;
             field = value;
         }
@@ -143,6 +145,7 @@ public partial class PropertyPanel : UIElementGroup
 
     protected override void UpdateStatus(GameTime gameTime)
     {
+        var code = GetHashCode();
         bool pendingDecorateCache = _pendingDecorate;
         if (pendingDecorateCache) 
         {

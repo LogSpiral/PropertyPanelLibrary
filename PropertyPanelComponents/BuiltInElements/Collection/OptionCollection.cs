@@ -6,6 +6,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Opti
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using SilkyUIFramework.Extensions;
 using System;
+using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
@@ -73,12 +74,18 @@ public abstract partial class OptionCollection : OptionObject
     protected override void CheckAttributes()
     {
         base.CheckAttributes();
-        var expandAttribute = GetAttribute<ExpandAttribute>();
-        if (expandAttribute != null)
-            expanded = expandAttribute.Expand;
 
-        DefaultListValueAttribute = GetAttribute<DefaultListValueAttribute>();
-        NullAllowedAttribute = GetAttribute<NullAllowedAttribute>();
+        if(GetAttribute<DefaultListValueAttribute>() is { } defaultListValue)
+        DefaultListValueAttribute = defaultListValue;
+    }
+    public override void CheckDesignagedAttributes(HashSet<Attribute> attributes)
+    {
+        base.CheckDesignagedAttributes(attributes);
+        foreach (var attribute in attributes)
+        {
+            if (attribute is DefaultListValueAttribute defaultListValue)
+                DefaultListValueAttribute ??= defaultListValue;
+        }
     }
     protected override void FillOption()
     {

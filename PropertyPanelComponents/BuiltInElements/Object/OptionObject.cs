@@ -57,10 +57,11 @@ public class OptionObject : PropertyOption
     }
     void BuildPropertyPanel()
     {
+        var mcode = GetHashCode();
         PropertyPanel = new PropertyPanel();
         PropertyPanel.SetWidth(0, 1);
         PropertyPanel.Join(this);
-        PropertyPanel.Decorator = FitHeightDecorator.Instance;
+        // PropertyPanel.Decorator = FitHeightDecorator.Instance;
     }
     void BuildInitiateButton()
     {
@@ -119,16 +120,54 @@ public class OptionObject : PropertyOption
     }
     protected override void CheckAttributes()
     {
-        var expandedAttribute = GetAttribute<ExpandAttribute>();
-        if (expandedAttribute != null)
+        if (GetAttribute<ExpandAttribute>() is { } expandedAttribute)
             expanded = expandedAttribute.Expand;
-        JsonDefaultValueAttribute = GetAttribute<JsonDefaultValueAttribute>();
-        NullAllowedAttribute = GetAttribute<NullAllowedAttribute>();
-        SeparatePageAttribute = GetAttribute<SeparatePageAttribute>();
-        RangeAttribute = GetAttribute<RangeAttribute>();
-        IncrementAttribute = GetAttribute<IncrementAttribute>();
+
+        if (GetAttribute<JsonDefaultValueAttribute>() is { } jsonDefaultValue)
+            JsonDefaultValueAttribute = jsonDefaultValue;
+
+        if (GetAttribute<NullAllowedAttribute>() is { } nullAllowed)
+            NullAllowedAttribute = nullAllowed;
+
+        if (GetAttribute<SeparatePageAttribute>() is { } separatePage)
+            SeparatePageAttribute = separatePage;
+
+        if (GetAttribute<RangeAttribute>() is { } range)
+            RangeAttribute = range;
+
+        if (GetAttribute<IncrementAttribute>() is { } increment)
+            IncrementAttribute = increment;
+
         ShowStringValueInLabel = VariableType.GetMethod("ToString", []).DeclaringType != typeof(object);
         base.CheckAttributes();
+    }
+    public override void CheckDesignagedAttributes(HashSet<Attribute> attributes)
+    {
+        foreach (var attribute in attributes)
+        {
+            switch (attribute)
+            {
+                case ExpandAttribute expandAttribute:
+                    expanded = expandAttribute.Expand;
+                    break;
+                case JsonDefaultValueAttribute jsonDefaultValue:
+                    JsonDefaultValueAttribute ??= jsonDefaultValue;
+                    break;
+                case NullAllowedAttribute nullAllowed:
+                    NullAllowedAttribute ??= nullAllowed;
+                    break;
+                case SeparatePageAttribute separatePage:
+                    SeparatePageAttribute ??= separatePage;
+                    break;
+                case RangeAttribute range:
+                    RangeAttribute ??= range;
+                    break;
+                case IncrementAttribute increment:
+                    IncrementAttribute = increment;
+                    break;
+            }
+        }
+        base.CheckDesignagedAttributes(attributes);
     }
     public override string Label => base.Label + (ShowStringValueInLabel ? $":{GetValue()?.ToString() ?? "null"}" : "");
     protected bool expanded;
@@ -161,17 +200,48 @@ public class OptionObject : PropertyOption
 
     protected override void UpdateStatus(GameTime gameTime)
     {
-        var v = this;
         _expandTimer.Update(gameTime);
+        _heightTimer.Update(gameTime);
         UpdateTimerVisuals();
         HandlePendingChanges();
         base.UpdateStatus(gameTime);
     }
+    public override void HandleUpdateStatus(GameTime gameTime)
+    {
+        bool updateHeight = pendingChanges;
+        base.HandleUpdateStatus(gameTime);
+        if (_pendingUpdateHeight)
+        {
+            _pendingUpdateHeight = false;
+            SetTargetHeight(
+    MathF.Min(
+InnerPanelMaxHeight,
+        PropertyPanel.OptionList.Container.OuterBounds.Height
+        ));
+        }
+        _pendingUpdateHeight = updateHeight;
+
+
+    }
     void UpdateTimerVisuals()
     {
         float factor = _expandTimer.Schedule;
-        PropertyPanel.OptionList.Mask.SetMaxHeight(MathF.Min(200, PropertyPanel.OptionList.Container.OuterBounds.Height) * factor);
+        _targetHeight = _heightTimer.Lerp(_lastTargetHeight, _currentTargetHeight);
+        PropertyPanel.SetHeight((_targetHeight + 16) * factor, 0);
         PropertyPanel.SetPadding(8f * factor);
+        // Main.NewText((_lastTargetHeight, _currentTargetHeight,_targetHeight));
+    }
+    protected float InnerPanelMaxHeight { get; set; } = 200;
+    private AnimationTimer _heightTimer = new();
+    private float _targetHeight;
+    private float _currentTargetHeight;
+    private float _lastTargetHeight;
+    private bool _pendingUpdateHeight;
+    protected void SetTargetHeight(float currentTargetHeight)
+    {
+        _heightTimer.StartUpdate(true);
+        _lastTargetHeight = _currentTargetHeight;
+        _currentTargetHeight = currentTargetHeight;
     }
     void HandlePendingChanges()
     {
@@ -184,7 +254,6 @@ public class OptionObject : PropertyOption
             ExpandButton.Remove();
             DeleteButton.Remove();
 
-            var code = PropertyPanel.GetHashCode();
             if (data != null)
             {
 

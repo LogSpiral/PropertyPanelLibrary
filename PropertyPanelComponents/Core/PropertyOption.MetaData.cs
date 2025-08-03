@@ -56,6 +56,11 @@ public partial class PropertyOption
     {
     }
 
+    public virtual void CheckDesignagedAttributes(HashSet<Attribute> attributes) 
+    {
+
+    }
+
     /// <summary>
     /// 该控件所属的父控件
     /// </summary>

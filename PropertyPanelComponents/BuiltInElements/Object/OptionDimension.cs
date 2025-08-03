@@ -19,15 +19,13 @@ public class OptionDimension:OptionObject
     protected override void FillOption()
     {
         base.FillOption();
-        PropertyPanel.Decorator =
-            new CombinedDecorator(
-                FitHeightDecorator.Instance,
-                new DimensionDecorator(
-                    this));
+        if (owner == null)
+        PropertyPanel.Decorator = new DimensionDecorator(this);
         if (MetaData is ListValueHandler listHandler)
             DimensionObj = new((IList<Dimension>)listHandler.List, listHandler.Index);
         else
             DimensionObj = new(MetaData.VariableInfo, MetaData.Item);
+        ShowStringValueInLabel = false;
     }
     protected override void Register(Mod mod)
     {

@@ -4,6 +4,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework;
 using SilkyUIFramework.Extensions;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Terraria;
@@ -88,7 +89,11 @@ public class OptionSlider : PropertyOption
     internal double Max = 1;
     internal double Default = 1;
     internal double? Increment = null;
-
+    private RangeAttribute _rangeAttribute;
+    private DefaultValueAttribute _defaultValueAttribute;
+    private IncrementAttribute _incrementAttribute;
+    private CustomModConfigItemAttribute _customConfigAttribute;
+    private SliderColorAttribute _sliderColorAttribute;
     protected override void CheckAttributes()
     {
         base.CheckAttributes();
@@ -113,24 +118,32 @@ public class OptionSlider : PropertyOption
                 pair = (0.0, 4294967295);
         }*/
         (Min, Max) = pair;
-        var rangeAttribute = GetAttribute<RangeAttribute>();
+        var rangeAttribute = _rangeAttribute;
+        if (GetAttribute<RangeAttribute>() is { } rangeAtt)
+            rangeAttribute = _rangeAttribute = rangeAtt;
         if (rangeAttribute != null)
         {
             Max = Convert.ToDouble(rangeAttribute.Max);
             Min = Convert.ToDouble(rangeAttribute.Min);
         }
 
-        var defaultValueAttribute = GetAttribute<DefaultValueAttribute>();
+        var defaultValueAttribute = _defaultValueAttribute;
+        if (GetAttribute<DefaultValueAttribute>() is { } defaultValue)
+            defaultValueAttribute = _defaultValueAttribute = defaultValue;
         if (defaultValueAttribute != null)
             Default = Convert.ToDouble(defaultValueAttribute.Value);
 
-        var incrementAttribute = GetAttribute<IncrementAttribute>();
+        var incrementAttribute = _incrementAttribute;
+        if (GetAttribute<IncrementAttribute>() is { } increment)
+            incrementAttribute = _incrementAttribute = increment;
         if (incrementAttribute != null)
             Increment = Convert.ToDouble(incrementAttribute.Increment);
         if (Increment == null && IsInt)
             Increment = 1.0;
 
-        var customConfigAttribute = GetAttribute<CustomModConfigItemAttribute>();
+        var customConfigAttribute = _customConfigAttribute;
+        if (GetAttribute<CustomModConfigItemAttribute>() is { } customConfig)
+            customConfigAttribute = _customConfigAttribute = customConfig;
         if (customConfigAttribute != null)
         {
             var elem = Activator.CreateInstance(customConfigAttribute.Type);
@@ -140,11 +153,36 @@ public class OptionSlider : PropertyOption
                     _colorLerpMethod = range.ColorMethod;
             }
         }
-        var sliderColor = GetAttribute<SliderColorAttribute>()?.Color;
-        if (_colorLerpMethod == null && sliderColor != null)
-            _colorLerpMethod = t => Color.Lerp(Color.Black * 0.3f, sliderColor.Value, t * t);//
+        var sliderColorAttribute = _sliderColorAttribute;
+        if (GetAttribute<SliderColorAttribute>() is { } slideColor)
+            sliderColorAttribute = _sliderColorAttribute = slideColor;
+        if (_colorLerpMethod == null && sliderColorAttribute != null)
+            _colorLerpMethod = t => Color.Lerp(Color.Black * 0.3f, sliderColorAttribute.Color, t * t);
     }
-
+    public override void CheckDesignagedAttributes(HashSet<Attribute> attributes)
+    {
+        foreach (var attribute in attributes)
+        {
+            switch (attribute)
+            {
+                case RangeAttribute range:
+                    _rangeAttribute ??= range;
+                    break;
+                case DefaultValueAttribute defaultValue:
+                    _defaultValueAttribute ??= defaultValue;
+                    break;
+                case IncrementAttribute increment:
+                    _incrementAttribute ??= increment;
+                    break;
+                case CustomModConfigItemAttribute customConfig:
+                    _customConfigAttribute ??= customConfig;
+                    break;
+                case SliderColorAttribute sliderColor:
+                    _sliderColorAttribute ??= sliderColor;
+                    break;
+            }
+        }
+    }
     private void AddUpDown(UIElementGroup box)
     {
         _splitButton = new SUISplitButton()

@@ -14,6 +14,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
@@ -23,17 +24,15 @@ internal class OptionVector4 : OptionObject
     protected override void FillOption()
     {
         base.FillOption();
-        PropertyPanel.Decorator =
-            new CombinedDecorator(
-                FitHeightDecorator.Instance,
-                new Vector4PanelDecorator(
+        PropertyPanel.Decorator = new Vector4PanelDecorator(
                     this,
                     RangeAttribute,
-                    IncrementAttribute));
+                    IncrementAttribute);
         if (MetaData is ListValueHandler listHandler)
             vecObj = new((IList<Vector4>)listHandler.List, listHandler.Index);
         else
             vecObj = new(MetaData.VariableInfo, MetaData.Item);
+        ShowStringValueInLabel = false;
     }
 
     protected override void Register(Mod mod)
@@ -42,7 +41,7 @@ internal class OptionVector4 : OptionObject
     }
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
-        return base.GetInternalPanelFiller(vecObj);
+        return base.GetInternalPanelFiller(vecObj) as ObjectMetaDataFiller;
     }
     private class Vector4Object
     {

@@ -60,13 +60,12 @@ public partial class PropertyOption : UIElementGroup
     public void SetValue(object value, bool broadCast = true)
     {
         Writer?.WriteValue(this, value, broadCast);
-        Main.NewText(value == null ? "null" : value.ToString());
+        // Main.NewText(value == null ? "null" : value.ToString());
     }
 
     protected override void UpdateStatus(GameTime gameTime)
     {
         base.UpdateStatus(gameTime);
-        var v = this.Children;
         if (InteractableHandler != null)
         {
             Interactable = InteractableHandler.CheckInteractable(this, out string message);

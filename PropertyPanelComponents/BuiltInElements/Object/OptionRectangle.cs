@@ -23,17 +23,15 @@ public class OptionRectangle : OptionObject
     protected override void FillOption()
     {
         base.FillOption();
-        PropertyPanel.Decorator =
-            new CombinedDecorator(
-                FitHeightDecorator.Instance,
-                new RectanglePanelDecorator(
+        PropertyPanel.Decorator = new RectanglePanelDecorator(
                     this,
                     RangeAttribute,
-                    IncrementAttribute));
+                    IncrementAttribute);
         if (MetaData is ListValueHandler listHandler)
             rectangleObj = new((IList<Rectangle>)listHandler.List, listHandler.Index);
         else
             rectangleObj = new(MetaData.VariableInfo, MetaData.Item);
+        ShowStringValueInLabel = false;
     }
 
     protected override void Register(Mod mod)

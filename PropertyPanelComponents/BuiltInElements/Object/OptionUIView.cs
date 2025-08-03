@@ -8,6 +8,7 @@ using SilkyUIFramework.BasicElements;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using Terraria.ModLoader.Config;
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 public class OptionUIView : OptionObject
@@ -15,10 +16,8 @@ public class OptionUIView : OptionObject
     protected override void FillOption()
     {
         base.FillOption();
-        PropertyPanel.Decorator =
-            new CombinedDecorator(
-                FitHeightDecorator.Instance,
-                new UIViewPanelDecorator(this));
+        PropertyPanel.Decorator = new UIViewPanelDecorator(this);
+        InnerPanelMaxHeight = 600;
     }
 
 
@@ -29,14 +28,15 @@ public class OptionUIView : OptionObject
             new DesignatedMemberFiller
             (
                 (data,
-                [nameof(Left),
-                nameof(Top),
-                nameof(Width),
-                nameof(Height),
-                nameof(Padding),
-                nameof(Margin),
-                nameof(BorderRadius)]
-                ));
+                [(nameof(Left),[]),
+                (nameof(Top),[]),
+                (nameof(Width), []),
+                (nameof(Height),[]),
+                (nameof(Padding),[]),
+                (nameof(Margin),[]),
+                (nameof(BorderRadius),[new RangeAttribute(0,40f)]),
+                (nameof(BackgroundColor),[])]
+                )).SetAsSubOption(this);
     }
     protected override void Register(Mod mod)
     {
@@ -52,7 +52,7 @@ public class OptionUIView : OptionObject
         {
             var list = panel.OptionList;
             OldWidth = list.Width;
-            const float height = 355.5f;
+            const float height = 337.5f;
             list.SetWidth(-height - 8, 1);
 
 

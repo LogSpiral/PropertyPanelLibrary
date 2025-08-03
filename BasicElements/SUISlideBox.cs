@@ -59,11 +59,9 @@ public class SUISlideBox : UIElementGroup
 
     public override void OnLeftMouseUp(UIMouseEvent evt)
     {
+        _dragging = false;
         if (_dragging)
-        {
-            _dragging = false;
             EndDraggingCallback?.Invoke();
-        }
     }
 
     private void UpdateDragging()
@@ -81,7 +79,10 @@ public class SUISlideBox : UIElementGroup
     public static Color SliderRoundHover { get; } = new Color(233, 176, 0);
 
     protected override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-    {        // 基本字段
+    {
+        base.Draw(gameTime, spriteBatch);
+
+        // 基本字段
         var position = Bounds.Position;
         var center = Bounds.Center;
         var size = Bounds.Size;
@@ -132,10 +133,9 @@ public class SUISlideBox : UIElementGroup
         var borderColor = SliderRound;
         if (SDFGraphics.MouseInRound(roundCenter, (int)roundRadius))
             borderColor = SliderRoundHover;
-        
+
         // 绘制
         SDFGraphics.HasBorderRound(roundLeftTop, default, roundDiameter, innerColor, 2f, borderColor, SDFGraphics.GetMatrix(true));
-        base.Draw(gameTime, spriteBatch);
     }
 
     public void OutSideEditEnd() => EndDraggingCallback?.Invoke();

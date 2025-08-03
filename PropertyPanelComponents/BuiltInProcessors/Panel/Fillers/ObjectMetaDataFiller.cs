@@ -18,7 +18,9 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
     PropertyOption? Owner { get; set; }
     object? Item { get; set; }
     PropertyFieldWrapper? VariableInfo { get; set; }
+    HashSet<Attribute>? GlobalAttributes { get; set; }
 #nullable disable
+
 
     private static PropertyOption VariableInfoToOption(object configObject, PropertyFieldWrapper variableInfo)
     {
@@ -50,14 +52,18 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
         return option;
     }
 
-    public ObjectMetaDataFiller SetAsSubOption(PropertyOption owner, object item, PropertyFieldWrapper variableInfo) 
+    public ObjectMetaDataFiller SetAsSubOption(PropertyOption owner, object item, PropertyFieldWrapper variableInfo)
     {
         Owner = owner;
         Item = item;
         VariableInfo = variableInfo;
         return this;
     }
-
+    public ObjectMetaDataFiller SetGlobalAttributes(HashSet<Attribute> globalAttributes)
+    {
+        GlobalAttributes = globalAttributes;
+        return this;
+    }
     void IPropertyOptionFiller.FillingOptionList(List<PropertyOption> list)
     {
         if (configObject is IList objectList)
@@ -67,6 +73,8 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
             {
                 var option = ListIndexToOption(objectList, index++, Item, VariableInfo);
                 option.owner = Owner;
+                if (GlobalAttributes != null)
+                    option.CheckDesignagedAttributes(GlobalAttributes);
                 list.Add(option);
             }
         }
@@ -77,6 +85,8 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
             {
                 var option = VariableInfoToOption(configObject, variableInfo);
                 option.owner = Owner;
+                if (GlobalAttributes != null)
+                    option.CheckDesignagedAttributes(GlobalAttributes);
                 list.Add(option);
             }
         }
