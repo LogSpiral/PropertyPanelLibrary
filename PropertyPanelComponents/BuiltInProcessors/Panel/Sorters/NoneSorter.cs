@@ -1,5 +1,5 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using System.Collections.Generic;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Sorters;

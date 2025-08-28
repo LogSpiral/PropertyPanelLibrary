@@ -1,5 +1,5 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using System.Collections.Generic;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Filters;
@@ -10,6 +10,7 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.F
 public class CombinedFilter(params IEnumerable<IPropertyOptionFilter> filters) : IPropertyOptionFilter
 {
     public CombiningMode CombiningMode { get; set; } = CombiningMode.Xor;
+
     bool IPropertyOptionFilter.CheckPassFilter(PropertyOption option)
     {
         switch (CombiningMode)

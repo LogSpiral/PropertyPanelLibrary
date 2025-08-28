@@ -7,6 +7,7 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.F
 public class NoneFiller : IPropertyOptionFiller
 {
     public static NoneFiller Instance { get; } = new();
+
     void IPropertyOptionFiller.FillingOptionList(List<PropertyOption> list)
     {
     }

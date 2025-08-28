@@ -12,10 +12,10 @@ public class OptionList : OptionCollection
     private Type listType;
 
     protected override bool CanItemBeAdded => true;
+
     protected override void AddItem()
     {
         ((IList)Data).Add(CreateCollectionElementInstance(listType));
-
     }
 
     protected override void ClearCollection()

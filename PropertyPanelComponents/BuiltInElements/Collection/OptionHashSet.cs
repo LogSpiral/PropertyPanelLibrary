@@ -1,19 +1,13 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using SilkyUIFramework.BasicComponents;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
-using tModPorter;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Collection;
 
@@ -23,11 +17,11 @@ public class OptionHashSet : OptionCollection
 
     public List<ISetElementWrapper> DataWrapperList { get; set; }
 
+    private MethodInfo addMethod;
+    private MethodInfo clearMethod;
+    private MethodInfo removeMethod; // TODO 增加删去单独一个元素的装饰器
+    private PropertyFieldWrapper wrappermemberInfo;
 
-    MethodInfo addMethod;
-    MethodInfo clearMethod;
-    MethodInfo removeMethod; // TODO 增加删去单独一个元素的装饰器
-    PropertyFieldWrapper wrappermemberInfo;
     protected override void AddItem()
     {
         addMethod ??= Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Add");
@@ -50,12 +44,12 @@ public class OptionHashSet : OptionCollection
     {
         PropertyOptionSystem.RegistreOptionToTypeComplex(this, type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         var genericType = typeof(SetElementWrapper<>).MakeGenericType(setType);
 
         DataWrapperList = new List<ISetElementWrapper>();
-
 
         var valuesEnumerator = ((IEnumerable)Data).GetEnumerator();
         int i = 0;

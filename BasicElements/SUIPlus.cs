@@ -25,12 +25,12 @@ public class SUIPlus : UIView
         PlusBorderColor = SUIColor.Border;
         PlusBorderHoverColor = SUIColor.Highlight;
 
-
         // MarginRight = 2f;
         BorderRadius = new Vector4(4f);
         Border = 2;
         BorderColor = SUIColor.Border;
     }
+
     protected override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         var borderColor = HoverTimer.Lerp(PlusBorderColor, PlusBorderHoverColor);
@@ -38,14 +38,14 @@ public class SUIPlus : UIView
         Color fork = HoverTimer.Lerp(PlusBeginColor, PlusEndColor);
 
         SDFGraphics.HasBorderPlus(
-            Bounds.Center, 
-            new Vector2(.5f), 
-            PlusSize * .6f, 
+            Bounds.Center,
+            new Vector2(.5f),
+            PlusSize * .6f,
             PlusSize * .3f,
             PlusRounded,
-            fork, 
+            fork,
             PlusBorder,
-            borderColor, 
+            borderColor,
             SDFGraphics.GetMatrix(true));
     }
 }

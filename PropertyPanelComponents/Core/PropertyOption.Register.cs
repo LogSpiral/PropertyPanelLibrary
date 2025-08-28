@@ -1,5 +1,4 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.Core;
 

@@ -1,12 +1,14 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.InteractableHandlers;
 
 public class DelegateInteractableHandler : IPropertyOptionInteractableHandler
 {
     public delegate bool OptionInteractableDelegate(PropertyOption option, out string reason);
+
     public event OptionInteractableDelegate OnCheckInteractable;
+
     bool IPropertyOptionInteractableHandler.CheckInteractable(PropertyOption option, out string reason)
     {
         if (OnCheckInteractable != null)

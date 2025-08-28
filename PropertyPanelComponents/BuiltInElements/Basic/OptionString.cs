@@ -9,7 +9,8 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
 
 public class OptionString : PropertyOption
 {
-    SUIEditTextBox TextPanel { get; set; }
+    private SUIEditTextBox TextPanel { get; set; }
+
     protected override void FillOption()
     {
         var textPanel = TextPanel = new SUIEditTextBox();
@@ -29,10 +30,12 @@ public class OptionString : PropertyOption
             SetValue(arg.NewValue);
         };
     }
+
     protected override void UpdateStatus(GameTime gameTime)
     {
         base.UpdateStatus(gameTime);
         TextPanel.IgnoreMouseInteraction = !Interactable;
     }
+
     protected override void Register(Mod mod) => PropertyOptionSystem.RegisterOptionToType(this, typeof(string));
 }

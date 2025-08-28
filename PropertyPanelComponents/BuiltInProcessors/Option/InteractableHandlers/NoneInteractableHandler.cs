@@ -1,5 +1,5 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.InteractableHandlers;
 

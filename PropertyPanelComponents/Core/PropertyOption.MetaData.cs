@@ -3,24 +3,22 @@ using SilkyUIFramework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.Core;
 
 public partial class PropertyOption
 {
-
     /// <summary>
     /// 将选项元素与对象绑定
     /// </summary>
-    public void Bind(object item,PropertyFieldWrapper variableInfo)
+    public void Bind(object item, PropertyFieldWrapper variableInfo)
     {
         MetaData = new VariableInfoHandler() { Item = item, VariableInfo = variableInfo };
         Internal_Bind();
     }
 
-    public void Bind(IList list, int index, object item = null, PropertyFieldWrapper variableInfo = null) 
+    public void Bind(IList list, int index, object item = null, PropertyFieldWrapper variableInfo = null)
     {
         MetaData = new ListValueHandler()
         {
@@ -31,13 +29,13 @@ public partial class PropertyOption
         Internal_Bind();
     }
 
-    private void Internal_Bind() 
+    private void Internal_Bind()
     {
         OverflowHidden = true;
         SetWidth(0, 1f);
         SetHeight(40, 0);
-        BorderRadius = new(12);
-        SetMargin(4);
+        BorderRadius = new(8);
+        SetPadding(4);
         BackgroundColor = Color.Black * .25f;
         LayoutType = LayoutType.Custom;
 
@@ -56,9 +54,8 @@ public partial class PropertyOption
     {
     }
 
-    public virtual void CheckDesignagedAttributes(HashSet<Attribute> attributes) 
+    public virtual void CheckDesignagedAttributes(HashSet<Attribute> attributes)
     {
-
     }
 
     /// <summary>
@@ -85,5 +82,4 @@ public partial class PropertyOption
     /// </summary>
     /// <returns></returns>
     protected object GetValue() => MetaData.GetValue();
-
 }

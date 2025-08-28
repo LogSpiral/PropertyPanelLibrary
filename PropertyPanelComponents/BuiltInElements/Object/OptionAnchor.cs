@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
@@ -15,7 +14,8 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 public class OptionAnchor : OptionObject
 {
-    AnchorObject anchorObj;
+    private AnchorObject anchorObj;
+
     protected override void FillOption()
     {
         base.FillOption();
@@ -32,14 +32,17 @@ public class OptionAnchor : OptionObject
             anchorObj = new(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
+
     protected override void Register(Mod mod)
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(Anchor));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return base.GetInternalPanelFiller(anchorObj);
     }
+
     private class AnchorObject
     {
         private readonly PropertyFieldWrapper memberInfo;
@@ -92,12 +95,10 @@ public class OptionAnchor : OptionObject
 
         private void Update()
         {
-
             if (array == null)
                 memberInfo.SetValue(item, current);
             else
                 array[index] = current;
-
         }
 
         public AnchorObject(PropertyFieldWrapper memberInfo, object item)
@@ -114,12 +115,13 @@ public class OptionAnchor : OptionObject
             this.index = index;
         }
     }
+
     private class AnchorDecorator(OptionAnchor optionAnchor) : IPropertyPanelDecorator
     {
-        UIElementGroup MaskPanel { get; set; }
-        UIView InnerView { get; set; }
-        OptionAnchor Option { get; set; } = optionAnchor;
-        Dimension OldWidth { get; set; }
+        private UIElementGroup MaskPanel { get; set; }
+        private UIView InnerView { get; set; }
+        private OptionAnchor Option { get; set; } = optionAnchor;
+        private Dimension OldWidth { get; set; }
 
         void IPropertyPanelDecorator.PostFillPanel(PropertyPanel panel)
         {
@@ -128,7 +130,6 @@ public class OptionAnchor : OptionObject
             OldWidth = list.Width;
             const float height = 120f;
             list.SetWidth(-height - 8, 1);
-
 
             MaskPanel = new()
             {
@@ -147,7 +148,6 @@ public class OptionAnchor : OptionObject
                 BackgroundColor = Color.Blue * .5f,
                 Width = new(0, .2f),
                 Height = new(0, 1),
-
             };
             InnerView.OnUpdate += delegate
             {

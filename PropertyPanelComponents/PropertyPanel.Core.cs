@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.InteractableHandlers;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.MouseHandlers;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.OptionDecorators;
@@ -6,17 +7,17 @@ using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Writ
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Filters;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Sorters;
+using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Attributes;
 using SilkyUIFramework.Extensions;
 using System.Collections.Generic;
-using PropertyPanelLibrary.BasicElements;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents;
 
+[XmlElementMapping(nameof(PropertyPanel))]
 public partial class PropertyPanel : UIElementGroup
 {
     public SUIScrollViewAutoHideBar OptionList { get; init; }
@@ -34,7 +35,7 @@ public partial class PropertyPanel : UIElementGroup
 
     public PropertyPanel()
     {
-        SetMargin(8);
+        SetPadding(8);
         OptionList = new();
         OptionList.SetWidth(0, 1);
         OptionList.SetHeight(0, 1);
@@ -42,12 +43,12 @@ public partial class PropertyPanel : UIElementGroup
     }
 
     #region PanelProcessors
+
     public IPropertyOptionFiller Filler
     {
         set
         {
             _pendingUpdate = true;
-            var code = GetHashCode();
             _totalOptions.Clear();
             value.FillingOptionList(_totalOptions);
             foreach (var option in _totalOptions)
@@ -90,9 +91,11 @@ public partial class PropertyPanel : UIElementGroup
             field = value;
         }
     }
-    #endregion
+
+    #endregion PanelProcessors
 
     #region OptionProcessors
+
     public IPropertyMouseHandler MouseHandler
     {
         private get => field ??= NoneMouseHandler.Instance;
@@ -139,21 +142,18 @@ public partial class PropertyPanel : UIElementGroup
                 options.InteractableHandler = value.Clone();
         }
     }
-    #endregion
 
-
+    #endregion OptionProcessors
 
     protected override void UpdateStatus(GameTime gameTime)
     {
-        var code = GetHashCode();
         bool pendingDecorateCache = _pendingDecorate;
-        if (pendingDecorateCache) 
+        if (pendingDecorateCache)
         {
             _pendingDecorate = false;
             OptionList.Remove();
             Decorator.PreFillPanel(this);
         }
-
 
         if (_pendingUpdate)
         {
@@ -163,7 +163,7 @@ public partial class PropertyPanel : UIElementGroup
             Filter.FliteringOptionList(_totalOptions, resultList);
             Sorter.SortingOptionList(resultList);
             foreach (var option in resultList)
-                OptionList.Container.AppendChild(option);
+                OptionList.Container.Add(option);
         }
 
         if (pendingDecorateCache)
@@ -172,7 +172,13 @@ public partial class PropertyPanel : UIElementGroup
             Decorator.PostFillPanel(this);
         }
 
-
         base.UpdateStatus(gameTime);
+    }
+
+    // 强制重加载
+    public void ForceReload() 
+    {
+        _pendingDecorate = true;
+        _pendingUpdate = true;
     }
 }

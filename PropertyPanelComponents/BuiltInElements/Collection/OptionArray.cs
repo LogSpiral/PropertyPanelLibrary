@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Collection;
 
-public class OptionArray:OptionCollection
+public class OptionArray : OptionCollection
 {
     protected override bool CanItemBeAdded => false;
 
@@ -18,15 +18,14 @@ public class OptionArray:OptionCollection
         throw new NotImplementedException();
     }
 
-
     protected override void PrepareTypes()
     {
-
     }
 
     protected override void Register(Mod mod)
     {
         PropertyOptionSystem.RegistreOptionToTypeComplex(this, type => type.IsArray);
     }
+
     protected override bool ShouldAppendDeleteButton() => NullAllowedAttribute != null;
 }

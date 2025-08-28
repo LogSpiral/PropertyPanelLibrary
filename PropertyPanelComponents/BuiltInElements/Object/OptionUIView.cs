@@ -1,14 +1,14 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
-using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using SilkyUIFramework.Extensions;
-using SilkyUIFramework;
-using System.Linq;
+﻿using Microsoft.Xna.Framework;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
-using SilkyUIFramework.BasicElements;
-using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
+using SilkyUIFramework;
+using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Extensions;
+using System.Linq;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 public class OptionUIView : OptionObject
@@ -19,8 +19,6 @@ public class OptionUIView : OptionObject
         PropertyPanel.Decorator = new UIViewPanelDecorator(this);
         InnerPanelMaxHeight = 600;
     }
-
-
 
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
@@ -38,23 +36,25 @@ public class OptionUIView : OptionObject
                 (nameof(BackgroundColor),[])]
                 )).SetAsSubOption(this);
     }
+
     protected override void Register(Mod mod)
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(UIView));
     }
+
     private class UIViewPanelDecorator(OptionUIView optionUIView) : IPropertyPanelDecorator
     {
-        OptionUIView Option { get; init; } = optionUIView;
-        UIView View { get; set; }
-        UIElementGroup MaskPanel { get; set; }
-        Dimension OldWidth { get; set; }
+        private OptionUIView Option { get; init; } = optionUIView;
+        private UIView View { get; set; }
+        private UIElementGroup MaskPanel { get; set; }
+        private Dimension OldWidth { get; set; }
+
         public void PostFillPanel(PropertyPanel panel)
         {
             var list = panel.OptionList;
             OldWidth = list.Width;
             const float height = 337.5f;
             list.SetWidth(-height - 8, 1);
-
 
             MaskPanel = new()
             {
@@ -63,7 +63,7 @@ public class OptionUIView : OptionObject
             };
             MaskPanel.SetSize(height, 0, 0, 1);
             MaskPanel.Join(panel);
-            if (Option.GetValue() is UIView view) 
+            if (Option.GetValue() is UIView view)
             {
                 view.Join(MaskPanel);
                 View = view;

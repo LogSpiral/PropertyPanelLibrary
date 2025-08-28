@@ -1,14 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using SilkyUIFramework.Animation;
+using SilkyUIFramework.Attributes;
 using SilkyUIFramework.BasicElements;
-using SilkyUIFramework.Extensions;
 
 namespace PropertyPanelLibrary.BasicElements;
 
+[XmlElementMapping("ScrollViewAutoHideBar")]
 public class SUIScrollViewAutoHideBar : SUIScrollView
 {
-    AnimationTimer _scrollBarTimer = new();
-    bool _initNeeded = true;
+    private AnimationTimer _scrollBarTimer = new();
+    private bool _initNeeded = true;
+
     protected override void UpdateStatus(GameTime gameTime)
     {
         bool flag =

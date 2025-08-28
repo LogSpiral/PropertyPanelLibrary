@@ -5,21 +5,21 @@ using SilkyUIFramework;
 using SilkyUIFramework.BasicComponents;
 using SilkyUIFramework.Extensions;
 using System;
+
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Collection;
 
-partial class OptionCollection
+public partial class OptionCollection
 {
     private class RemoveElementDecorator(Action onRemove = null) : IPropertyOptionDecorator
     {
         IPropertyOptionDecorator IPropertyOptionDecorator.Clone() => new RemoveElementDecorator(OnRemove);
 
-        Action OnRemove { get; init; } = onRemove;
+        private Action OnRemove { get; init; } = onRemove;
 
-        SUICross RemoveButton { get; set; }
+        private SUICross RemoveButton { get; set; }
 
         void IPropertyOptionDecorator.PostFillOption(PropertyOption option)
         {
-
         }
 
         void IPropertyOptionDecorator.PreFillOption(PropertyOption option)
@@ -34,7 +34,6 @@ partial class OptionCollection
             {
                 OnRemove?.Invoke();
             };
-
         }
 
         void IPropertyOptionDecorator.UnloadDecorate(PropertyOption option)

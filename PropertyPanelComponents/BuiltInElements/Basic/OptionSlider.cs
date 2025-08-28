@@ -78,7 +78,7 @@ public class OptionSlider : PropertyOption
         box.SetHeight(0, 1);
         box.FitWidth = true;
         box.Join(this);
-        box.SetMargin(4);
+        box.SetPadding(4);
         box.CrossAlignment = CrossAlignment.Start;
         AddUpDown(box);
         AddTextBox(box);
@@ -94,6 +94,7 @@ public class OptionSlider : PropertyOption
     private IncrementAttribute _incrementAttribute;
     private CustomModConfigItemAttribute _customConfigAttribute;
     private SliderColorAttribute _sliderColorAttribute;
+
     protected override void CheckAttributes()
     {
         base.CheckAttributes();
@@ -159,6 +160,7 @@ public class OptionSlider : PropertyOption
         if (_colorLerpMethod == null && sliderColorAttribute != null)
             _colorLerpMethod = t => Color.Lerp(Color.Black * 0.3f, sliderColorAttribute.Color, t * t);
     }
+
     public override void CheckDesignagedAttributes(HashSet<Attribute> attributes)
     {
         foreach (var attribute in attributes)
@@ -168,21 +170,26 @@ public class OptionSlider : PropertyOption
                 case RangeAttribute range:
                     _rangeAttribute ??= range;
                     break;
+
                 case DefaultValueAttribute defaultValue:
                     _defaultValueAttribute ??= defaultValue;
                     break;
+
                 case IncrementAttribute increment:
                     _incrementAttribute ??= increment;
                     break;
+
                 case CustomModConfigItemAttribute customConfig:
                     _customConfigAttribute ??= customConfig;
                     break;
+
                 case SliderColorAttribute sliderColor:
                     _sliderColorAttribute ??= sliderColor;
                     break;
             }
         }
     }
+
     private void AddUpDown(UIElementGroup box)
     {
         _splitButton = new SUISplitButton()
@@ -192,7 +199,7 @@ public class OptionSlider : PropertyOption
         };
         _splitButton.SetSize(25, 25);
         _splitButton.SetTop(0, 0, 0.5f);
-        _splitButton.SetMargin(4f);
+        _splitButton.SetPadding(4f);
         _splitButton.Margin = new(4f);
         _splitButton.LeftMouseDown += (sender, evt) =>
         {
@@ -245,7 +252,7 @@ public class OptionSlider : PropertyOption
         _numericTextBox.SetPadding(2);
         _numericTextBox.Margin = new(4f);
         _numericTextBox.SetHeight(0, 1f);
-        _numericTextBox.SetMargin(4f);
+        _numericTextBox.SetPadding(4f);
         _numericTextBox.Join(box);
     }
 
@@ -253,6 +260,7 @@ public class OptionSlider : PropertyOption
     {
         _slideBox = new SUISlideBox();
         _slideBox.ColorMethod = _colorLerpMethod;
+        UpdateValue();
         _slideBox.ValueChangeCallback += () =>
         {
             double value = Min + (Max - Min) * _slideBox.Value;
@@ -273,7 +281,7 @@ public class OptionSlider : PropertyOption
             value = Math.Clamp(value, Min, Max);
             SetConfigValue(value, broadcast: true);
         };
-        _slideBox.SetMargin(4f);
+        _slideBox.SetPadding(4f);
         _slideBox.Margin = new(4f);
         _slideBox.Join(box);
     }
@@ -286,14 +294,17 @@ public class OptionSlider : PropertyOption
         _splitButton.IgnoreMouseInteraction = !Interactable;
         _slideBox.IgnoreMouseInteraction = !Interactable;
         _numericTextBox.IgnoreMouseInteraction = !Interactable;
+        UpdateValue();
 
+    }
+    void UpdateValue() 
+    {
         // 简直是天才的转换
         var value = float.Parse(GetValue()!.ToString()!);
         if (!_numericTextBox.IsFocus)
             _numericTextBox.Value = value;
         _slideBox.Value = Utils.GetLerpValue((float)Min, (float)Max, value);
     }
-
     public float LerpValue
     {
         get => _slideBox.Value;

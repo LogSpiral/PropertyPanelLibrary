@@ -1,9 +1,5 @@
-﻿using Humanizer;
-using Microsoft.Xna.Framework;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
+﻿using Microsoft.Xna.Framework;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using PropertyPanelLibrary.PropertyPanelComponents.Interfaces;
-using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
 using SilkyUIFramework.BasicElements;
@@ -14,14 +10,13 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
-using Terraria.ModLoader.UI;
-using tModPorter;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 public class OptionVector2 : OptionObject
 {
-    Vector2Object vecObj;
+    private Vector2Object vecObj;
+
     protected override void FillOption()
     {
         base.FillOption();
@@ -40,10 +35,12 @@ public class OptionVector2 : OptionObject
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(Vector2));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return base.GetInternalPanelFiller(vecObj);
     }
+
     private class Vector2Object
     {
         private readonly PropertyFieldWrapper memberInfo;
@@ -85,12 +82,10 @@ public class OptionVector2 : OptionObject
 
         private void Update()
         {
-            
             if (array == null)
                 memberInfo.SetValue(item, current);
             else
                 array[index] = current;
-
         }
 
         public Vector2Object(PropertyFieldWrapper memberInfo, object item)
@@ -107,13 +102,15 @@ public class OptionVector2 : OptionObject
             this.index = index;
         }
     }
+
     private class Vector2PanelDecorator(OptionVector2 optionVector2, RangeAttribute range, IncrementAttribute increment) : IPropertyPanelDecorator
     {
-        OptionVector2 Option { get; init; } = optionVector2;
-        RangeAttribute Range { get; init; } = range;
-        IncrementAttribute Increment { get; init; } = increment;
-        Vector2Panel VecPanel { get; set; }
-        Dimension OldWidth { get; set; }
+        private OptionVector2 Option { get; init; } = optionVector2;
+        private RangeAttribute Range { get; init; } = range;
+        private IncrementAttribute Increment { get; init; } = increment;
+        private Vector2Panel VecPanel { get; set; }
+        private Dimension OldWidth { get; set; }
+
         public void PostFillPanel(PropertyPanel panel)
         {
             var list = panel.OptionList;
@@ -142,7 +139,6 @@ public class OptionVector2 : OptionObject
                 VecPanel.YAxis.BackgroundColor = SUIColor.Warn * (.5f * factor);
                 VecPanel.XAxis.BackgroundColor = SUIColor.Warn * (.5f * factor);
                 VecPanel.PointPanel.BackgroundColor = SUIColor.Warn * (.75f * factor);
-
             };
             VecPanel.PointPanel.OnUpdate += delegate
             {
@@ -163,7 +159,6 @@ public class OptionVector2 : OptionObject
             VecPanel?.Remove();
         }
 
-
         private class Vector2Panel : UIElementGroup
         {
             public float PercentX { get; set; }
@@ -172,6 +167,7 @@ public class OptionVector2 : OptionObject
             public UIView XAxis { get; set; }
             public UIView YAxis { get; set; }
             public UIView PointPanel { get; set; }
+
             public Vector2 RealValue
             {
                 get
@@ -217,9 +213,10 @@ public class OptionVector2 : OptionObject
             public float Min { get; init; }
             public float Max { get; init; }
 
-            bool _isDragging;
-            bool _lockX;
-            bool _lockY;
+            private bool _isDragging;
+            private bool _lockX;
+            private bool _lockY;
+
             public Vector2Panel(Vector2 initialValue, float increment, float min, float max)
             {
                 LayoutType = LayoutType.Custom;
@@ -325,7 +322,7 @@ public class OptionVector2 : OptionObject
                     _isDragging = false;
                 };
                 PointPanel.Join(this);
-                LeftMouseDown += (sender,evt)=>
+                LeftMouseDown += (sender, evt) =>
                 {
                     _isDragging = true;
                     var bounds = Bounds;
@@ -342,13 +339,12 @@ public class OptionVector2 : OptionObject
                 {
                     var bounds = Bounds;
                     if (!_lockX)
-                        PercentX = MathHelper.Clamp((Main.MouseScreen.X - bounds.X) / bounds.Width,0,1);
+                        PercentX = MathHelper.Clamp((Main.MouseScreen.X - bounds.X) / bounds.Width, 0, 1);
                     if (!_lockY)
                         PercentY = MathHelper.Clamp((Main.MouseScreen.Y - bounds.Y) / bounds.Height, 0, 1);
                 }
                 base.UpdateStatus(gameTime);
             }
         }
-
     }
 }

@@ -1,24 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using PropertyPanelLibrary.BasicElements;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
+using PropertyPanelLibrary.PropertyPanelComponents.Attributes;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.BasicComponents;
-using SilkyUIFramework.BasicElements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
@@ -30,6 +27,7 @@ public class OptionObject : PropertyOption
     private SUITriangleToggle ExpandButton { get; set; }
     private SUICross DeleteButton { get; set; }
     protected bool pendingChanges;
+
     protected override void FillOption()
     {
         FitHeight = true;
@@ -44,7 +42,8 @@ public class OptionObject : PropertyOption
         BuildDeleteButton();
         InitializePanel();
     }
-    void BuildButtonContainer()
+
+    private void BuildButtonContainer()
     {
         ButtonContainer = new()
         {
@@ -53,17 +52,17 @@ public class OptionObject : PropertyOption
             Margin = new(4f),
         };
         ButtonContainer.Join(this);
-
     }
-    void BuildPropertyPanel()
+
+    private void BuildPropertyPanel()
     {
-        var mcode = GetHashCode();
         PropertyPanel = new PropertyPanel();
         PropertyPanel.SetWidth(0, 1);
         PropertyPanel.Join(this);
         // PropertyPanel.Decorator = FitHeightDecorator.Instance;
     }
-    void BuildInitiateButton()
+
+    private void BuildInitiateButton()
     {
         InitializeButton = new SUITriangleIcon();
         InitializeButton.LeftMouseClick += delegate
@@ -76,7 +75,8 @@ public class OptionObject : PropertyOption
             pendingChanges = true;
         };
     }
-    void BuildExpandButton()
+
+    private void BuildExpandButton()
     {
         ExpandButton = new SUITriangleToggle(expanded);
         ExpandButton.LeftMouseClick += delegate
@@ -86,7 +86,8 @@ public class OptionObject : PropertyOption
             else _expandTimer.StartReverseUpdate();
         };
     }
-    void BuildDeleteButton()
+
+    private void BuildDeleteButton()
     {
         DeleteButton = new SUICross(SUIColor.Warn * .5f, SUIColor.Warn);
         DeleteButton.SetSize(25, 25);
@@ -98,13 +99,16 @@ public class OptionObject : PropertyOption
             DeleteProcess();
         };
     }
+
     protected virtual void DeleteProcess()
     {
         SetValue(null);
         pendingChanges = true;
     }
+
     protected virtual bool ShouldAppendDeleteButton() => NullAllowedAttribute != null;
-    void InitializePanel()
+
+    private void InitializePanel()
     {
         if (expanded)
             _expandTimer.ImmediateCompleted();
@@ -118,6 +122,7 @@ public class OptionObject : PropertyOption
         pendingChanges = true;
         UpdateTimerVisuals();
     }
+
     protected override void CheckAttributes()
     {
         if (GetAttribute<ExpandAttribute>() is { } expandedAttribute)
@@ -138,9 +143,13 @@ public class OptionObject : PropertyOption
         if (GetAttribute<IncrementAttribute>() is { } increment)
             IncrementAttribute = increment;
 
-        ShowStringValueInLabel = VariableType.GetMethod("ToString", []).DeclaringType != typeof(object);
+        if (GetAttribute<LabelPresentValueAttribute>() is { } present)
+            ShowStringValueInLabel = present.IsPresent;
+        else
+            ShowStringValueInLabel = VariableType.GetMethod("ToString", []).DeclaringType != typeof(object);
         base.CheckAttributes();
     }
+
     public override void CheckDesignagedAttributes(HashSet<Attribute> attributes)
     {
         foreach (var attribute in attributes)
@@ -150,18 +159,23 @@ public class OptionObject : PropertyOption
                 case ExpandAttribute expandAttribute:
                     expanded = expandAttribute.Expand;
                     break;
+
                 case JsonDefaultValueAttribute jsonDefaultValue:
                     JsonDefaultValueAttribute ??= jsonDefaultValue;
                     break;
+
                 case NullAllowedAttribute nullAllowed:
                     NullAllowedAttribute ??= nullAllowed;
                     break;
+
                 case SeparatePageAttribute separatePage:
                     SeparatePageAttribute ??= separatePage;
                     break;
+
                 case RangeAttribute range:
                     RangeAttribute ??= range;
                     break;
+
                 case IncrementAttribute increment:
                     IncrementAttribute = increment;
                     break;
@@ -169,19 +183,23 @@ public class OptionObject : PropertyOption
         }
         base.CheckDesignagedAttributes(attributes);
     }
+
     public override string Label => base.Label + (ShowStringValueInLabel ? $":{GetValue()?.ToString() ?? "null"}" : "");
     protected bool expanded;
     protected bool ShowStringValueInLabel;
 
     #region Attributes
+
     protected JsonDefaultValueAttribute JsonDefaultValueAttribute;
     protected NullAllowedAttribute NullAllowedAttribute;
     protected SeparatePageAttribute SeparatePageAttribute;
     protected RangeAttribute RangeAttribute;
     protected IncrementAttribute IncrementAttribute;
-    #endregion
+
+    #endregion Attributes
 
     protected AnimationTimer _expandTimer = new();
+
     protected override void Register(Mod mod)
     {
         PropertyOptionSystem.RegistreOptionToTypeComplex(this, type =>
@@ -206,6 +224,7 @@ public class OptionObject : PropertyOption
         HandlePendingChanges();
         base.UpdateStatus(gameTime);
     }
+
     public override void HandleUpdateStatus(GameTime gameTime)
     {
         bool updateHeight = pendingChanges;
@@ -214,16 +233,15 @@ public class OptionObject : PropertyOption
         {
             _pendingUpdateHeight = false;
             SetTargetHeight(
-    MathF.Min(
-InnerPanelMaxHeight,
-        PropertyPanel.OptionList.Container.OuterBounds.Height
-        ));
+                MathF.Min(
+                    InnerPanelMaxHeight,
+                    PropertyPanel.OptionList.Container.OuterBounds.Height
+                    ));
         }
         _pendingUpdateHeight = updateHeight;
-
-
     }
-    void UpdateTimerVisuals()
+
+    private void UpdateTimerVisuals()
     {
         float factor = _expandTimer.Schedule;
         _targetHeight = _heightTimer.Lerp(_lastTargetHeight, _currentTargetHeight);
@@ -231,19 +249,22 @@ InnerPanelMaxHeight,
         PropertyPanel.SetPadding(8f * factor);
         // Main.NewText((_lastTargetHeight, _currentTargetHeight,_targetHeight));
     }
+
     protected float InnerPanelMaxHeight { get; set; } = 200;
     private AnimationTimer _heightTimer = new();
     private float _targetHeight;
     private float _currentTargetHeight;
     private float _lastTargetHeight;
     private bool _pendingUpdateHeight;
+
     protected void SetTargetHeight(float currentTargetHeight)
     {
         _heightTimer.StartUpdate(true);
         _lastTargetHeight = _currentTargetHeight;
         _currentTargetHeight = currentTargetHeight;
     }
-    void HandlePendingChanges()
+
+    private void HandlePendingChanges()
     {
         if (pendingChanges)
         {
@@ -256,13 +277,11 @@ InnerPanelMaxHeight,
 
             if (data != null)
             {
-
                 ExpandButton.Join(ButtonContainer);
 
                 if (ShouldAppendDeleteButton())
                     DeleteButton.Join(ButtonContainer);
                 PropertyPanel.Filler = GetInternalPanelFiller(data);
-
             }
             else
             {
@@ -271,6 +290,7 @@ InnerPanelMaxHeight,
             }
         }
     }
+
     protected virtual IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return new ObjectMetaDataFiller(data)

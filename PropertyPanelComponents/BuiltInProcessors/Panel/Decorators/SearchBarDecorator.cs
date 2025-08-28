@@ -33,6 +33,4 @@ public class SearchBarDecorator : IPropertyPanelDecorator
         sorter = new();
         return new SearchBarDecorator();
     }
-
-
 }

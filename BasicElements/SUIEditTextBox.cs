@@ -20,7 +20,7 @@ public class SUIEditTextBox : UIElementGroup
         editText.TextAlign = new(0f, .5f);
         editText.SetTop(-4, 0, .5f);
         editText.Join(textPanel);
-        editText.SetMargin(4);
+        editText.SetPadding(4);
         textPanel.FitWidth = true;
         textPanel.SetMinWidth(40, 0);
 

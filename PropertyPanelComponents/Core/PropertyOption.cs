@@ -5,7 +5,6 @@ using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Opti
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Writers;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using SilkyUIFramework;
-using Terraria;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.Core;
 
@@ -16,16 +15,19 @@ public partial class PropertyOption : UIElementGroup
         protected get => field ??= DefaultWriter.Instance;
         set;
     }
+
     public IPropertyMouseHandler MouseHandler
     {
         protected get => field ??= NoneMouseHandler.Instance;
         set;
     }
+
     public IPropertyOptionInteractableHandler InteractableHandler
     {
         protected get => field ??= NoneInteractableHandler.Instance;
         set;
     }
+
     public IPropertyOptionDecorator Decorator
     {
         protected get => field ??= LabelOptionDecorator.NewLabelDecorator();
@@ -35,7 +37,9 @@ public partial class PropertyOption : UIElementGroup
             field = value;
         }
     }
+
     private bool _pendingDecorateModified;
+
     public override void OnLeftMouseClick(UIMouseEvent evt)
     {
         if (evt.Source == this)
@@ -81,9 +85,8 @@ public partial class PropertyOption : UIElementGroup
             FillOption();
             Decorator.PostFillOption(this);
         }
-
     }
+
     public bool Interactable { get; private set; } = true;
     public string InteractableMessage { get; private set; } = "";
-
 }

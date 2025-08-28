@@ -1,5 +1,5 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using Terraria;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Sorters;

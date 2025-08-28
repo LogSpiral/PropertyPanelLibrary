@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.OptionDecorators;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
@@ -16,11 +15,15 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Collectio
 public abstract partial class OptionCollection : OptionObject
 {
     #region Attributes
+
     protected DefaultListValueAttribute DefaultListValueAttribute { get; set; }
     protected JsonDefaultListValueAttribute JsonDefaultListValueAttribute { get; set; }
-    #endregion
+
+    #endregion Attributes
+
     protected object Data { get; set; }
     protected virtual bool CanItemBeAdded => true;
+
     protected object CreateCollectionElementInstance(Type type)
     {
         object toAdd;
@@ -43,6 +46,7 @@ public abstract partial class OptionCollection : OptionObject
 
         return toAdd;
     }
+
     //protected void NetSyncManually()
     //{
     //    if (Main.netMode == NetmodeID.MultiplayerClient)
@@ -60,7 +64,6 @@ public abstract partial class OptionCollection : OptionObject
 
     protected abstract void AddItem();
 
-
     protected virtual void NullCollection()
     {
         Data = null;
@@ -70,14 +73,16 @@ public abstract partial class OptionCollection : OptionObject
 
     protected abstract void ClearCollection();
 
-    SUIPlus AddButton;
+    private SUIPlus AddButton;
+
     protected override void CheckAttributes()
     {
         base.CheckAttributes();
 
-        if(GetAttribute<DefaultListValueAttribute>() is { } defaultListValue)
-        DefaultListValueAttribute = defaultListValue;
+        if (GetAttribute<DefaultListValueAttribute>() is { } defaultListValue)
+            DefaultListValueAttribute = defaultListValue;
     }
+
     public override void CheckDesignagedAttributes(HashSet<Attribute> attributes)
     {
         base.CheckDesignagedAttributes(attributes);
@@ -87,6 +92,7 @@ public abstract partial class OptionCollection : OptionObject
                 DefaultListValueAttribute ??= defaultListValue;
         }
     }
+
     protected override void FillOption()
     {
         PrepareTypes();
@@ -101,7 +107,8 @@ public abstract partial class OptionCollection : OptionObject
                     LabelOptionDecorator.NewLabelDecorator()
                     );
     }
-    void BuildAddButton()
+
+    private void BuildAddButton()
     {
         AddButton = new SUIPlus
         {
@@ -122,6 +129,7 @@ public abstract partial class OptionCollection : OptionObject
         if (CanItemBeAdded)
             AddButton.Join(ButtonContainer);
     }
+
     protected override void DeleteProcess()
     {
         if (NullAllowedAttribute != null)
@@ -129,5 +137,6 @@ public abstract partial class OptionCollection : OptionObject
         else
             ClearCollection();
     }
+
     protected override bool ShouldAppendDeleteButton() => true;
 }

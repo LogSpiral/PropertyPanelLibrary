@@ -5,14 +5,11 @@ using SilkyUIFramework.Animation;
 using SilkyUIFramework.Attributes;
 using SilkyUIFramework.BasicElements;
 using SilkyUIFramework.Extensions;
-using SilkyUIFramework.Graphics2D;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace PropertyPanelLibrary.BasicElements;
 
@@ -99,7 +96,9 @@ public class SUIDropdownListContainer : UIElementGroup
             }
         }
     }
+
     private readonly SUIBlurMaskView _blurMask;
+
     public SUIDropdownListContainer()
     {
         SetSize(0, 0, 1, 1);
@@ -161,7 +160,6 @@ public class SUIDropdownListContainer : UIElementGroup
         DropdownCaller = caller;
         SetCurrentPosition(x, y, width, count);
 
-
         // 添加元素
         foreach (string label in options)
         {
@@ -217,12 +215,9 @@ public class SUIDropdownListContainer : UIElementGroup
         _animationTimer.Update(gameTime);
         DrawCallback?.Invoke();
 
-
-
         base.Draw(gameTime, spriteBatch);
-
-
     }
+
     public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
     {
         var dimensionsRect = _blurMask.Bounds;
@@ -238,11 +233,13 @@ public class SUIDropdownListContainer : UIElementGroup
     Rectangle.Intersect(clippingRectangle, scissorRectangle);
         return adjustedClippingRectangle;
     }
+
     public override bool ContainsPoint(Vector2 point)
     {
         return GetClippingRectangle(Main.spriteBatch).Contains(point.ToPoint());
     }
-    #endregion
+
+    #endregion Animation - 出现动画
 }
 
 [RegisterUI("Vanilla: Mouse Text", $"{nameof(PropertyPanelLibrary)}:{nameof(DropdownListUI)}", 214514)]
@@ -250,6 +247,7 @@ public class DropdownListUI : BasicBody
 {
     public static SUIDropdownListContainer Container { get; private set; }
     public static DropdownListUI Instance { get; private set; }
+
     protected override void OnInitialize()
     {
         Instance = this;
@@ -262,6 +260,7 @@ public class DropdownListUI : BasicBody
 
         base.OnInitialize();
     }
+
     protected override void UpdateStatus(GameTime gameTime)
     {
         //var bounds = Container.Bounds;

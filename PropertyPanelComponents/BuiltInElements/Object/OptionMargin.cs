@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
@@ -17,7 +16,8 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 public class OptionMargin : OptionObject
 {
-    MarginObject MarginObj;
+    private MarginObject MarginObj;
+
     protected override void FillOption()
     {
         base.FillOption();
@@ -29,14 +29,17 @@ public class OptionMargin : OptionObject
             MarginObj = new(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
+
     protected override void Register(Mod mod)
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(Margin));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return base.GetInternalPanelFiller(MarginObj);
     }
+
     private class MarginObject
     {
         private readonly PropertyFieldWrapper memberInfo;
@@ -78,6 +81,7 @@ public class OptionMargin : OptionObject
                 Update();
             }
         }
+
         [Range(0f, 20f)]
         public float Bottom
         {
@@ -88,6 +92,7 @@ public class OptionMargin : OptionObject
                 Update();
             }
         }
+
         internal Margin Margin
         {
             get => current;
@@ -100,12 +105,10 @@ public class OptionMargin : OptionObject
 
         private void Update()
         {
-
             if (array == null)
                 memberInfo.SetValue(item, current);
             else
                 array[index] = current;
-
         }
 
         public MarginObject(PropertyFieldWrapper memberInfo, object item)
@@ -122,15 +125,16 @@ public class OptionMargin : OptionObject
             this.index = index;
         }
     }
+
     private class MarginDecorator(OptionMargin optionMargin) : IPropertyPanelDecorator
     {
-        UIElementGroup MaskPanelMargin { get; set; }
-        UIElementGroup MaskPanelPadding { get; set; }
-        UIElementGroup MaskContainer { get; set; }
-        UIView InnerViewMargin { get; set; }
-        UIView InnerViewPadding { get; set; }
-        OptionMargin Option { get; set; } = optionMargin;
-        Dimension OldWidth { get; set; }
+        private UIElementGroup MaskPanelMargin { get; set; }
+        private UIElementGroup MaskPanelPadding { get; set; }
+        private UIElementGroup MaskContainer { get; set; }
+        private UIView InnerViewMargin { get; set; }
+        private UIView InnerViewPadding { get; set; }
+        private OptionMargin Option { get; set; } = optionMargin;
+        private Dimension OldWidth { get; set; }
 
         void IPropertyPanelDecorator.PostFillPanel(PropertyPanel panel)
         {
@@ -147,6 +151,7 @@ public class OptionMargin : OptionObject
             MaskContainer.Join(panel);
 
             #region Margin
+
             MaskPanelMargin = new()
             {
                 Margin = new(8, 0, 8, 0),
@@ -191,7 +196,6 @@ public class OptionMargin : OptionObject
                 marginBounds.SetHeight(extraHeight);
             };
 
-
             UIView marginBoundsAni = new()
             {
                 BackgroundColor = Color.White * .1f,
@@ -220,10 +224,11 @@ public class OptionMargin : OptionObject
             };
 
             InnerViewMargin.Join(MaskPanelMargin);
-            #endregion
 
+            #endregion Margin
 
             #region Padding
+
             MaskPanelPadding = new()
             {
                 Margin = new(8, 0, 8, 0),
@@ -266,9 +271,7 @@ public class OptionMargin : OptionObject
 
                 paddingBounds.SetLeft((padding.Left - padding.Right) * .5f);
                 paddingBounds.SetTop((padding.Top - padding.Bottom) * .5f);
-
             };
-
 
             UIView paddingBoundsAni = new()
             {
@@ -294,11 +297,11 @@ public class OptionMargin : OptionObject
                 paddingBoundsAni.SetHeight(-extraHeight);
                 paddingBoundsAni.SetLeft((padding.Left - padding.Right) * factor * .5f, 0f);
                 paddingBoundsAni.SetTop((padding.Top - padding.Bottom) * factor * .5f, 0f);
-
             };
 
             InnerViewPadding.Join(MaskPanelPadding);
-            #endregion
+
+            #endregion Padding
         }
 
         void IPropertyPanelDecorator.PreFillPanel(PropertyPanel panel)

@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
 using SilkyUIFramework;
 using SilkyUIFramework.Animation;
@@ -15,14 +13,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 namespace PropertyPanelLibrary;
+
 public class PropertyPanelShowcaseConfig
 {
     #region Basic
@@ -45,13 +42,14 @@ public class PropertyPanelShowcaseConfig
 
     public BindingFlags SomeEnum { get; set; } = BindingFlags.Instance;
 
-
     public ItemDefinition SomeItem { get; set; } = new();
 
     public NPCDefinition SomeNPC { get; set; } = new(NPCID.SkeletronHead);
-    #endregion
+
+    #endregion Basic
 
     #region Object
+
     public Vector2 SomeVector2 { get; set; } = new(223, 514);
 
     public Vector3 SomeVector3 { get; set; } = new(223, 214, 514);
@@ -66,9 +64,11 @@ public class PropertyPanelShowcaseConfig
     public Rectangle SomeRectangle { get; set; } = new(0, 1, 2, 3);
 
     public UIView SomeUIView { get; set; } = new();
-    #endregion
+
+    #endregion Object
 
     #region Collection
+
     public bool[] SomeArray { get; set; } = [false, true, false];
     public List<int> SomeList { get; set; } = [5, 1, 4];
 
@@ -86,17 +86,17 @@ public class PropertyPanelShowcaseConfig
         "Yabusame",
         "Tsubakura"
         ];
-    #endregion
+
+    #endregion Collection
 
     #region SubConfig
+
     public PropertyPanelShowcaseConfig subConfig { get; set; }
 
-    #endregion
-
+    #endregion SubConfig
 }
 
 [RegisterUI("Vanilla: Radial Hotbars", $"{nameof(PropertyPanelLibrary)}: {nameof(TestUI)}")]
-// [RegisterGlobalUI("MenuUI", 1)]
 public class TestUI : BasicBody
 {
     public static TestUI Instance { get; private set; }
@@ -167,7 +167,6 @@ public class TestUI : BasicBody
         Active = true;
         SoundEngine.PlaySound(SoundID.MenuOpen);
 
-
         //var list = new SUIScrollView();
         //list.SetSize(500, 400);
         //list.FitHeight = true;
@@ -184,8 +183,6 @@ public class TestUI : BasicBody
         //}
         //list.Join(Instance);
 
-
-
 #if false
         Instance.FitHeight = true;
         object[] array = [1, "2", BindingFlags.Static, false, new NPCDefinition(NPCID.MoonLordCore),new int[] {1,2,3 }];
@@ -198,12 +195,12 @@ public class TestUI : BasicBody
 
         //panel.Filler = NoneFiller.Instance;
         //panel.Filler = new DesignatedMemberFiller(
-        //    ( 
-        //    Main.LocalPlayer, 
+        //    (
+        //    Main.LocalPlayer,
         //    [
         //        nameof(Player.statLife),
-        //        nameof(Player.statLifeMax2), 
-        //        nameof(Player.statMana), 
+        //        nameof(Player.statLifeMax2),
+        //        nameof(Player.statMana),
         //        nameof(Player.stoned)
         //    ]));
 
@@ -221,7 +218,8 @@ public class TestUI : BasicBody
                 nameof(PropertyPanelShowcaseConfig.SomeDimension),
                 nameof(PropertyPanelShowcaseConfig.SomeMargin),
                 nameof(PropertyPanelShowcaseConfig.SomeColor),
-                nameof(PropertyPanelShowcaseConfig.SomeUIView)
+                nameof(PropertyPanelShowcaseConfig.SomeUIView),
+                nameof(PropertyPanelShowcaseConfig.SomeItem)
             ]));
 
         panel.Join(Instance);
@@ -229,7 +227,6 @@ public class TestUI : BasicBody
 #endif
         // new PropertyPanelShowcaseConfig()
     }
-
 
     public static void Close()
     {

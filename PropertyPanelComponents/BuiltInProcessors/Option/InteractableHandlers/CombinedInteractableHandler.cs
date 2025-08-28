@@ -49,16 +49,14 @@ public class CombinedInteractableHandler(params IEnumerable<IPropertyOptionInter
                     reason = ""; // TODO 本地化
                     return true;
                 }
-                else 
+                else
                 {
                     reason = "Not Pass Xor Check"; // TODO 本地化
                     return false;
                 }
 
-            default: 
+            default:
                 goto case CombiningMode.And;
-
         }
-
     }
 }

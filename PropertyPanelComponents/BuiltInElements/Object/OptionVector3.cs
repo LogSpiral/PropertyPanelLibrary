@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PropertyPanelLibrary.Graphics2D;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
@@ -19,7 +18,8 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 public class OptionVector3 : OptionObject
 {
-    Vector3Object vecObj;
+    private Vector3Object vecObj;
+
     protected override void FillOption()
     {
         base.FillOption();
@@ -38,10 +38,12 @@ public class OptionVector3 : OptionObject
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(Vector3));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return base.GetInternalPanelFiller(vecObj);
     }
+
     private class Vector3Object
     {
         private readonly PropertyFieldWrapper memberInfo;
@@ -93,12 +95,10 @@ public class OptionVector3 : OptionObject
 
         private void Update()
         {
-
             if (array == null)
                 memberInfo.SetValue(item, current);
             else
                 array[index] = current;
-
         }
 
         public Vector3Object(PropertyFieldWrapper memberInfo, object item)
@@ -115,13 +115,15 @@ public class OptionVector3 : OptionObject
             this.index = index;
         }
     }
+
     private class Vector3PanelDecorator(OptionVector3 optionVector3, RangeAttribute range, IncrementAttribute increment) : IPropertyPanelDecorator
     {
-        OptionVector3 Option { get; init; } = optionVector3;
-        RangeAttribute Range { get; init; } = range;
-        IncrementAttribute Increment { get; init; } = increment;
-        Vector3Panel VecPanel { get; set; }
-        Dimension OldWidth { get; set; }
+        private OptionVector3 Option { get; init; } = optionVector3;
+        private RangeAttribute Range { get; init; } = range;
+        private IncrementAttribute Increment { get; init; } = increment;
+        private Vector3Panel VecPanel { get; set; }
+        private Dimension OldWidth { get; set; }
+
         public void PostFillPanel(PropertyPanel panel)
         {
             var list = panel.OptionList;
@@ -166,13 +168,13 @@ public class OptionVector3 : OptionObject
             VecPanel?.Remove();
         }
 
-
         private class Vector3Panel : UIElementGroup
         {
             public float PercentX { get; set; }
             public float PercentY { get; set; }
             public float PercentZ { get; set; }
             public UIView PointPanel { get; set; }
+
             public Vector3 RealValue
             {
                 get
@@ -232,15 +234,15 @@ public class OptionVector3 : OptionObject
 
             public float Alpha { private get; set; } = 1.0f;
 
-            bool _isDragging;
+            private bool _isDragging;
 
-            bool _draggingZ;
+            private bool _draggingZ;
 
-            bool _draggingRotation;
+            private bool _draggingRotation;
 
-            float _rotationAssistant;
+            private float _rotationAssistant;
 
-            float RotationZ
+            private float RotationZ
             {
                 get;
                 set
@@ -254,9 +256,11 @@ public class OptionVector3 : OptionObject
                     _baseJ = -s * Vector2.UnitX + Root2Over4 * c * new Vector2(1, -1);
                 }
             } = 1;
-            Vector2 _baseI;
-            Vector2 _baseJ;
-            readonly float _step;
+
+            private Vector2 _baseI;
+            private Vector2 _baseJ;
+            private readonly float _step;
+
             public Vector3Panel(Vector3 initialValue, float increment, float min, float max)
             {
                 LayoutType = LayoutType.Custom;
@@ -288,35 +292,39 @@ public class OptionVector3 : OptionObject
                 PointPanel = new();
                 PointPanel.Join(this);
             }
+
             public override void OnRightMouseDown(UIMouseEvent evt)
             {
                 base.OnRightMouseDown(evt);
                 _draggingRotation = true;
                 var bounds = Bounds;
                 _rotationAssistant = MathHelper.Clamp((Main.MouseScreen.X - bounds.X) / bounds.Width, 0, 1) * MathHelper.TwoPi - RotationZ;
-
             }
+
             public override void OnRightMouseUp(UIMouseEvent evt)
             {
                 base.OnRightMouseUp(evt);
                 _draggingRotation = false;
-
             }
+
             public override void OnMiddleMouseClick(UIMouseEvent evt)
             {
                 base.OnMiddleMouseClick(evt);
                 _draggingZ = !_draggingZ;
             }
+
             public override void OnLeftMouseDown(UIMouseEvent evt)
             {
                 base.OnLeftMouseDown(evt);
                 _isDragging = true;
             }
+
             public override void OnLeftMouseUp(UIMouseEvent evt)
             {
                 base.OnLeftMouseUp(evt);
                 _isDragging = false;
             }
+
             protected override void UpdateStatus(GameTime gameTime)
             {
                 if (_isDragging)
@@ -336,8 +344,6 @@ public class OptionVector3 : OptionObject
                         float det = _baseI.X * _baseJ.Y - _baseI.Y * _baseJ.X;
                         PercentX = Utils.GetLerpValue(-1, 1, (_baseJ.Y * coord.X - _baseJ.X * coord.Y) / det, true);
                         PercentY = Utils.GetLerpValue(-1, 1, (-_baseI.Y * coord.X + _baseI.X * coord.Y) / det, true);
-
-
                     }
                 }
                 if (_draggingRotation)
@@ -347,6 +353,7 @@ public class OptionVector3 : OptionObject
                 }
                 base.UpdateStatus(gameTime);
             }
+
             protected override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
             {
                 base.Draw(gameTime, spriteBatch);
@@ -370,7 +377,6 @@ public class OptionVector3 : OptionObject
                 SDFGraphics.NoBorderLine(center - i + j - k, center - i + j + k, 1, Color.Black * (.1f * alpha), matrix);
                 SDFGraphics.NoBorderLine(center - i - j - k, center - i - j + k, 1, Color.Black * (.1f * alpha), matrix);
 
-
                 SDFGraphics.NoBorderTriangle(center + i + j, center - i - j, center - i + j, Color.Black * (.4f * alpha), matrix);
                 SDFGraphics.NoBorderTriangle(center + i + j, center - i - j, center + i - j, Color.Black * (.4f * alpha), matrix);
 
@@ -387,7 +393,7 @@ public class OptionVector3 : OptionObject
                 //}
                 SDFGraphics.NoBorderLine(center - i, center + i, 2, Color.Red * (.5f * alpha), matrix);
                 SDFGraphics.NoBorderLine(center + i * .85f + j * .15f, center + i, 2, Color.Red * (.5f * alpha), matrix);
-                SDFGraphics.NoBorderLine(center + i * .85f - j * .15f, center + i, 2, Color.Red *   (.5f * alpha), matrix);
+                SDFGraphics.NoBorderLine(center + i * .85f - j * .15f, center + i, 2, Color.Red * (.5f * alpha), matrix);
                 // SDFGraphics.NoBorderLine(center - i, center + i, 2, Color.Red * .5f, matrix);
 
                 SDFGraphics.NoBorderLine(center - j, center + j, 2, Color.Green * (.5f * alpha), matrix);
@@ -404,7 +410,6 @@ public class OptionVector3 : OptionObject
                     Vector2 zEnd = pointCoord - k + kCoord.Z * k;
                     SDFGraphics.NoBorderLine(zEnd + size * new Vector2(0.05f), zEnd, 0.5f, Color.MediumPurple * alpha, matrix);
                     SDFGraphics.NoBorderLine(zEnd + size * new Vector2(-0.05f, 0.05f), zEnd, 0.5f, Color.MediumPurple * alpha, matrix);
-
                 }
                 else
                 {
@@ -421,12 +426,9 @@ public class OptionVector3 : OptionObject
 
                 SDFGraphics.NoBorderRound(pointCoord - new Vector2(4f), default, 8, Color.Yellow * alpha, matrix);
 
-
                 SDFGraphics.NoBorderTriangle(center + i + j - k, center - i - j - k, center - i + j - k, Color.Black * (.2f * alpha), matrix);
                 SDFGraphics.NoBorderTriangle(center + i + j - k, center - i - j - k, center + i - j - k, Color.Black * (.2f * alpha), matrix);
             }
         }
-
     }
 }
-

@@ -1,7 +1,4 @@
-﻿using Humanizer;
-using Microsoft.CodeAnalysis;
-using Microsoft.Xna.Framework;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
+﻿using Microsoft.Xna.Framework;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
@@ -19,7 +16,8 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 public class OptionRectangle : OptionObject
 {
-    RectangleObject rectangleObj;
+    private RectangleObject rectangleObj;
+
     protected override void FillOption()
     {
         base.FillOption();
@@ -38,10 +36,12 @@ public class OptionRectangle : OptionObject
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(Rectangle));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return base.GetInternalPanelFiller(rectangleObj);
     }
+
     private class RectangleObject
     {
         private readonly PropertyFieldWrapper memberInfo;
@@ -103,12 +103,10 @@ public class OptionRectangle : OptionObject
 
         private void Update()
         {
-
             if (array == null)
                 memberInfo.SetValue(item, current);
             else
                 array[index] = current;
-
         }
 
         public RectangleObject(PropertyFieldWrapper memberInfo, object item)
@@ -125,13 +123,15 @@ public class OptionRectangle : OptionObject
             this.index = index;
         }
     }
+
     private class RectanglePanelDecorator(OptionRectangle optionRectangle, RangeAttribute range, IncrementAttribute increment) : IPropertyPanelDecorator
     {
-        OptionRectangle Option { get; init; } = optionRectangle;
-        RangeAttribute Range { get; init; } = range;
-        IncrementAttribute Increment { get; init; } = increment;
-        RectanglePanel RectPanel { get; set; }
-        Dimension OldWidth { get; set; }
+        private OptionRectangle Option { get; init; } = optionRectangle;
+        private RangeAttribute Range { get; init; } = range;
+        private IncrementAttribute Increment { get; init; } = increment;
+        private RectanglePanel RectPanel { get; set; }
+        private Dimension OldWidth { get; set; }
+
         public void PostFillPanel(PropertyPanel panel)
         {
             var list = panel.OptionList;
@@ -161,9 +161,8 @@ public class OptionRectangle : OptionObject
                 RectPanel.LeftAxis.BackgroundColor = SUIColor.Warn * (.5f * factor);
                 RectPanel.StartPanel.BackgroundColor = SUIColor.Warn * (.75f * factor);
                 RectPanel.BottomAxis.BackgroundColor = SUIColor.Highlight * (.5f * factor);
-                RectPanel.RightAxis.BackgroundColor = SUIColor.Highlight* (.5f * factor);
+                RectPanel.RightAxis.BackgroundColor = SUIColor.Highlight * (.5f * factor);
                 RectPanel.EndPanel.BackgroundColor = SUIColor.Highlight * (.75f * factor);
-
             };
             RectPanel.EndPanel.OnUpdate += delegate
             {
@@ -183,7 +182,6 @@ public class OptionRectangle : OptionObject
             panel.OptionList.Width = OldWidth;
             RectPanel?.Remove();
         }
-
 
         private class RectanglePanel : UIElementGroup
         {
@@ -245,7 +243,8 @@ public class OptionRectangle : OptionObject
                     SyncValue(value, min, max, increment);
                 }
             }
-            void SyncValue(Rectangle value, float min, float max, float increment)
+
+            private void SyncValue(Rectangle value, float min, float max, float increment)
             {
                 bool shouldRound = increment != 0;
                 float coordValue = value.X;
@@ -268,14 +267,16 @@ public class OptionRectangle : OptionObject
                     coordValue = MathF.Round(coordValue / increment) * increment;
                 PercentBottom = Utils.GetLerpValue(min, max, coordValue, true) + PercentTop;
             }
+
             public float Increment { get; init; }
             public float Min { get; init; }
             public float Max { get; init; }
 
-            bool _isDraggingStartPoint;
-            bool _isDraggingEndPoint;
-            bool _lockX;
-            bool _lockY;
+            private bool _isDraggingStartPoint;
+            private bool _isDraggingEndPoint;
+            private bool _lockX;
+            private bool _lockY;
+
             public RectanglePanel(Rectangle initialValue, float increment, float min, float max)
             {
                 LayoutType = LayoutType.Custom;
@@ -309,7 +310,9 @@ public class OptionRectangle : OptionObject
                     };
                     YGrid.Join(this);
                 }
+
                 #region LeftAxis
+
                 LeftAxis = new UIView()
                 {
                     Width = new(4, 0),
@@ -331,9 +334,11 @@ public class OptionRectangle : OptionObject
                     _isDraggingStartPoint = false;
                 };
                 LeftAxis.Join(this);
-                #endregion
+
+                #endregion LeftAxis
 
                 #region RightAxis
+
                 RightAxis = new UIView()
                 {
                     Width = new(4, 0),
@@ -355,9 +360,11 @@ public class OptionRectangle : OptionObject
                     _isDraggingEndPoint = false;
                 };
                 RightAxis.Join(this);
-                #endregion
+
+                #endregion RightAxis
 
                 #region TopAxis
+
                 TopAxis = new UIView()
                 {
                     Height = new(4, 0),
@@ -379,9 +386,11 @@ public class OptionRectangle : OptionObject
                     _isDraggingStartPoint = false;
                 };
                 TopAxis.Join(this);
-                #endregion
+
+                #endregion TopAxis
 
                 #region BottomAxis
+
                 BottomAxis = new UIView()
                 {
                     Height = new(4, 0),
@@ -403,9 +412,11 @@ public class OptionRectangle : OptionObject
                     _isDraggingEndPoint = false;
                 };
                 BottomAxis.Join(this);
-                #endregion
+
+                #endregion BottomAxis
 
                 #region StartPanel
+
                 StartPanel = new UIView()
                 {
                     Height = new(8, 0),
@@ -427,9 +438,11 @@ public class OptionRectangle : OptionObject
                     _isDraggingStartPoint = false;
                 };
                 StartPanel.Join(this);
-                #endregion
+
+                #endregion StartPanel
 
                 #region EndPanel
+
                 EndPanel = new UIView()
                 {
                     Height = new(8, 0),
@@ -451,7 +464,9 @@ public class OptionRectangle : OptionObject
                     _isDraggingEndPoint = false;
                 };
                 EndPanel.Join(this);
-                #endregion
+
+                #endregion EndPanel
+
                 //LeftMouseDown += (sender, evt) =>
                 //{
                 //    _isDragging = true;
@@ -496,6 +511,5 @@ public class OptionRectangle : OptionObject
                 base.UpdateStatus(gameTime);
             }
         }
-
     }
 }

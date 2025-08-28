@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework.BasicElements;
 using SilkyUIFramework.Extensions;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.
 
 public class LabelOptionDecorator : IPropertyOptionDecorator
 {
-    UITextView LabelText { get; set; }
+    private UITextView LabelText { get; set; }
 
     public static LabelOptionDecorator NewLabelDecorator() => new();
 
@@ -27,7 +26,6 @@ public class LabelOptionDecorator : IPropertyOptionDecorator
 
     void IPropertyOptionDecorator.PostFillOption(PropertyOption option)
     {
-
     }
 
     void IPropertyOptionDecorator.UnloadDecorate(PropertyOption option)

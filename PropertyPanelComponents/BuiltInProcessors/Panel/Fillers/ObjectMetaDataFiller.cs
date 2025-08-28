@@ -4,8 +4,6 @@ using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using Terraria;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
 
@@ -13,16 +11,14 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.F
 
 public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
 {
-
 #nullable enable
-    PropertyOption? Owner { get; set; }
-    object? Item { get; set; }
-    PropertyFieldWrapper? VariableInfo { get; set; }
-    HashSet<Attribute>? GlobalAttributes { get; set; }
+    private PropertyOption? Owner { get; set; }
+    private object? Item { get; set; }
+    private PropertyFieldWrapper? VariableInfo { get; set; }
+    private HashSet<Attribute>? GlobalAttributes { get; set; }
 #nullable disable
 
-
-    private static PropertyOption VariableInfoToOption(object configObject, PropertyFieldWrapper variableInfo)
+    public static PropertyOption VariableInfoToOption(object configObject, PropertyFieldWrapper variableInfo)
     {
         var option = PropertyOptionSystem.GenerateOptionElement(configObject, variableInfo);
         try
@@ -59,11 +55,13 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
         VariableInfo = variableInfo;
         return this;
     }
+
     public ObjectMetaDataFiller SetGlobalAttributes(HashSet<Attribute> globalAttributes)
     {
         GlobalAttributes = globalAttributes;
         return this;
     }
+
     void IPropertyOptionFiller.FillingOptionList(List<PropertyOption> list)
     {
         if (configObject is IList objectList)
@@ -90,6 +88,5 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
                 list.Add(option);
             }
         }
-
     }
 }

@@ -1,19 +1,13 @@
 ﻿using Newtonsoft.Json;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using SilkyUIFramework.BasicComponents;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
-using tModPorter;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Collection;
 
@@ -25,9 +19,11 @@ public class OptionDictionary : OptionCollection
 
     // These 2 hold the default value of the dictionary value, hence ValueValue
     protected DefaultDictionaryKeyValueAttribute defaultDictionaryKeyValueAttribute;
+
     protected JsonDefaultDictionaryKeyValueAttribute jsonDefaultDictionaryKeyValueAttribute;
     protected override bool CanItemBeAdded => true;
-    PropertyFieldWrapper wrappermemberInfo;
+    private PropertyFieldWrapper wrappermemberInfo;
+
     protected override void AddItem()
     {
         object keyValue;
@@ -57,7 +53,6 @@ public class OptionDictionary : OptionCollection
         ((IDictionary)Data).Clear();
     }
 
-
     protected override void PrepareTypes()
     {
         var variableInfo = MetaData.VariableInfo;
@@ -72,6 +67,7 @@ public class OptionDictionary : OptionCollection
     {
         PropertyOptionSystem.RegistreOptionToTypeComplex(this, type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         dataWrapperList = [];
@@ -89,7 +85,6 @@ public class OptionDictionary : OptionCollection
             var proxy = (IDictionaryElementWrapper)Activator.CreateInstance(genericType, [keysEnumerator.Current, valuesEnumerator.Current, (IDictionary)Data]);
             dataWrapperList.Add(proxy);
             wrappermemberInfo ??= ConfigManager.GetFieldsAndProperties(this).ToList()[0];
-
 
             i++;
         }

@@ -1,11 +1,11 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using SilkyUIFramework.Extensions;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 
 public class FitHeightDecorator : IPropertyPanelDecorator
 {
     public static FitHeightDecorator Instance { get; } = new();
+
     void IPropertyPanelDecorator.PostFillPanel(PropertyPanel panel)
     {
     }

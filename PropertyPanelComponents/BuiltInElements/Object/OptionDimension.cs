@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
@@ -13,28 +12,32 @@ using Terraria.ModLoader.Config.UI;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
-public class OptionDimension:OptionObject
+public class OptionDimension : OptionObject
 {
-    DimensionObject DimensionObj;
+    private DimensionObject DimensionObj;
+
     protected override void FillOption()
     {
         base.FillOption();
         if (owner == null)
-        PropertyPanel.Decorator = new DimensionDecorator(this);
+            PropertyPanel.Decorator = new DimensionDecorator(this);
         if (MetaData is ListValueHandler listHandler)
             DimensionObj = new((IList<Dimension>)listHandler.List, listHandler.Index);
         else
             DimensionObj = new(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
+
     protected override void Register(Mod mod)
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(Dimension));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return base.GetInternalPanelFiller(DimensionObj);
     }
+
     private class DimensionObject
     {
         private readonly PropertyFieldWrapper memberInfo;
@@ -44,7 +47,7 @@ public class OptionDimension:OptionObject
 
         private Dimension current;
 
-        [Range(0f,100f)]
+        [Range(0f, 100f)]
         public float Pixels
         {
             get => current.Pixels;
@@ -65,7 +68,6 @@ public class OptionDimension:OptionObject
             }
         }
 
-
         internal Dimension Dimension
         {
             get => current;
@@ -78,12 +80,10 @@ public class OptionDimension:OptionObject
 
         private void Update()
         {
-
             if (array == null)
                 memberInfo.SetValue(item, current);
             else
                 array[index] = current;
-
         }
 
         public DimensionObject(PropertyFieldWrapper memberInfo, object item)
@@ -100,12 +100,13 @@ public class OptionDimension:OptionObject
             this.index = index;
         }
     }
+
     private class DimensionDecorator(OptionDimension optionDimension) : IPropertyPanelDecorator
     {
-        UIElementGroup MaskPanel { get; set; }
-        UIView InnerView { get; set; }
-        OptionDimension Option { get; set; } = optionDimension;
-        Dimension OldWidth { get; set; }
+        private UIElementGroup MaskPanel { get; set; }
+        private UIView InnerView { get; set; }
+        private OptionDimension Option { get; set; } = optionDimension;
+        private Dimension OldWidth { get; set; }
 
         void IPropertyPanelDecorator.PostFillPanel(PropertyPanel panel)
         {
@@ -114,7 +115,6 @@ public class OptionDimension:OptionObject
             OldWidth = list.Width;
             const float height = 120f;
             list.SetWidth(-height - 8, 1);
-
 
             MaskPanel = new()
             {
@@ -133,7 +133,6 @@ public class OptionDimension:OptionObject
                 BackgroundColor = Color.Blue * .5f,
                 Width = new(0, .2f),
                 Height = new(0, 1),
-
             };
             InnerView.OnUpdate += delegate
             {

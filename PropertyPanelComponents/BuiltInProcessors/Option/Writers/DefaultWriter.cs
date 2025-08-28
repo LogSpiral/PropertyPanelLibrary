@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
-using System;
-using System.Collections.Generic;
-using Terraria;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Writers;
 
@@ -26,6 +22,4 @@ public class DefaultWriter : IPropertyValueWriter
             option.owner?.SetValue(item, broadCast);
         }
     }
-
-    
 }

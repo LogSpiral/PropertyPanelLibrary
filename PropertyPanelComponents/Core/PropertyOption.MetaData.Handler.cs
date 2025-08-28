@@ -7,7 +7,6 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.Core;
 
 public partial class PropertyOption
 {
-
     public interface IMetaDataHandler
     {
         // 从元数据处理器中获取值
@@ -74,6 +73,7 @@ public partial class PropertyOption
         public int Index { get; init; }
 
 #nullable enable
+
         /// <summary>
         /// 该List在所属对象中的元数据信息
         /// 如果不属于任何对象就是null
@@ -102,5 +102,4 @@ public partial class PropertyOption
     /// 元数据处理器对象
     /// </summary>
     public IMetaDataHandler MetaData { get; set; }
-
 }

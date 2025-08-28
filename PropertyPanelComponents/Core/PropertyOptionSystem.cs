@@ -32,27 +32,28 @@ public class PropertyOptionSystem : ModSystem
 
     #endregion Register
 
-
     public static PropertyOption GenerateOptionElement(object configObject, PropertyFieldWrapper variableInfo)
     {
         return Internal_GenerateOptionElement(
-            variableInfo.Type, 
+            variableInfo.Type,
             ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomOptionElementAttribute>(
-                variableInfo, 
-                configObject, 
+                variableInfo,
+                configObject,
                 null));
     }
-    public static PropertyOption GenerateOptionElement(IList list, int index, object? item = null, PropertyFieldWrapper? variableInfo = null) 
+
+    public static PropertyOption GenerateOptionElement(IList list, int index, object? item = null, PropertyFieldWrapper? variableInfo = null)
     {
         return Internal_GenerateOptionElement(
-            list[index].GetType(), 
-            item == null ? null 
+            list[index].GetType(),
+            item == null ? null
             : ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomOptionElementAttribute>(
-                variableInfo, 
-                item, 
+                variableInfo,
+                item,
                 list));
     }
-    static PropertyOption Internal_GenerateOptionElement(Type variableType, CustomOptionElementAttribute customOptionAttribute = null)
+
+    private static PropertyOption Internal_GenerateOptionElement(Type variableType, CustomOptionElementAttribute customOptionAttribute = null)
     {
         Type optionType = typeof(OptionNotSupportText);
         if (customOptionAttribute != null)

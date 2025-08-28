@@ -8,7 +8,7 @@ using Terraria.ID;
 
 namespace PropertyPanelLibrary.BasicElements;
 
-public class SUITriangleIcon:UIView
+public class SUITriangleIcon : UIView
 {
     public float TriangleBorder;
     public Color TriangleBorderColor, TriangleBorderHoverColor, TriangleBeginColor, TriangleEndColor;
@@ -35,6 +35,7 @@ public class SUITriangleIcon:UIView
         base.OnMouseEnter(evt);
         SoundEngine.PlaySound(SoundID.MenuTick);
     }
+
     protected override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         var borderColor = HoverTimer.Lerp(TriangleBorderColor, TriangleBorderHoverColor);
@@ -45,11 +46,11 @@ public class SUITriangleIcon:UIView
 
         SDFGraphics.HasBorderTriangle(
             pos + size * trianglePercentCoord[0],
-            pos + size * trianglePercentCoord[1], 
+            pos + size * trianglePercentCoord[1],
             pos + size * trianglePercentCoord[2],
             fork,
-            TriangleBorder, 
-            borderColor, 
+            TriangleBorder,
+            borderColor,
             SDFGraphics.GetMatrix(true));
     }
 }

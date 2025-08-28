@@ -1,5 +1,5 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +15,7 @@ public class CombinedOptionDecorator(params IEnumerable<IPropertyOptionDecorator
 
     void IPropertyOptionDecorator.PostFillOption(PropertyOption option)
     {
-        foreach(var decorator in decorators)
+        foreach (var decorator in decorators)
             decorator.PostFillOption(option);
     }
 

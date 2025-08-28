@@ -13,37 +13,37 @@ namespace PropertyPanelLibrary.PropertyPanelComponents.Interfaces;
 
 public static class PropertyPanelProcessorExtensions
 {
-    public static CombinedFiller Add(this IPropertyOptionFiller self, IPropertyOptionFiller filler) 
+    public static CombinedFiller Add(this IPropertyOptionFiller self, IPropertyOptionFiller filler)
     {
         return new CombinedFiller(self, filler);
     }
 
-    public static CombinedFilter Add(this IPropertyOptionFilter self, IPropertyOptionFilter filter) 
+    public static CombinedFilter Add(this IPropertyOptionFilter self, IPropertyOptionFilter filter)
     {
         return new CombinedFilter(self, filter);
     }
 
-    public static CombinedSorter Add(this IPropertyOptionSorter self, IPropertyOptionSorter sorter) 
+    public static CombinedSorter Add(this IPropertyOptionSorter self, IPropertyOptionSorter sorter)
     {
         return new CombinedSorter(self, sorter);
     }
 
-    public static CombinedDecorator Add(this IPropertyPanelDecorator self, IPropertyPanelDecorator decorator) 
+    public static CombinedDecorator Add(this IPropertyPanelDecorator self, IPropertyPanelDecorator decorator)
     {
         return new CombinedDecorator(self, decorator);
     }
 
-    public static CombinedWriter Add(this IPropertyValueWriter self, IPropertyValueWriter writer) 
+    public static CombinedWriter Add(this IPropertyValueWriter self, IPropertyValueWriter writer)
     {
         return new CombinedWriter(self, writer);
     }
 
-    public static CombinedMouseHandler Add(this IPropertyMouseHandler self, IPropertyMouseHandler mouseHandler) 
+    public static CombinedMouseHandler Add(this IPropertyMouseHandler self, IPropertyMouseHandler mouseHandler)
     {
         return new CombinedMouseHandler(self, mouseHandler);
     }
 
-    public static CombinedInteractableHandler Add(this IPropertyOptionInteractableHandler self, IPropertyOptionInteractableHandler interactableHandler) 
+    public static CombinedInteractableHandler Add(this IPropertyOptionInteractableHandler self, IPropertyOptionInteractableHandler interactableHandler)
     {
         return new CombinedInteractableHandler(self, interactableHandler);
     }

@@ -1,10 +1,8 @@
-﻿using Microsoft.CodeAnalysis.Options;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PropertyPanelLibrary.Graphics2D;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.OptionDecorators;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
@@ -15,7 +13,6 @@ using SilkyUIFramework;
 using SilkyUIFramework.BasicComponents;
 using SilkyUIFramework.BasicElements;
 using SilkyUIFramework.Extensions;
-using SixLabors.ImageSharp.ColorSpaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,30 +20,30 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
-using Terraria.ModLoader.UI;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 public class OptionColor : OptionObject
 {
-    static Asset<Effect> ColorPanelEffect { get; } = ModAsset.ColorPanels;
-    struct ColorPanelVertex(Vector2 pos, Vector2 coord) : IVertexType
+    private static Asset<Effect> ColorPanelEffect { get; } = ModAsset.ColorPanels;
+
+    private struct ColorPanelVertex(Vector2 pos, Vector2 coord) : IVertexType
     {
         private static readonly VertexDeclaration _vertexDeclaration = new(
         [
             new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
             new VertexElement(8, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0)
         ]);
+
         public Vector2 Pos = pos;
         public Vector2 Coord = coord;
         public readonly VertexDeclaration VertexDeclaration => _vertexDeclaration;
     }
-    class ColorHandler
+
+    private class ColorHandler
     {
         private readonly PropertyFieldWrapper memberInfo;
         private readonly object item;
@@ -56,6 +53,7 @@ public class OptionColor : OptionObject
         internal Color current;
         internal Vector3 hsl;
         internal List<OptionSlider> sliders = [];
+
         [LabelKey("$Config.Color.Red.Label")]
         public byte Red
         {
@@ -216,13 +214,15 @@ public class OptionColor : OptionObject
             this.array = array;
             this.index = index;
         }
+
         public ColorHandler(Color color) //仅用于设置单项默认值
         {
             current = color;
             hsl = Main.rgbToHsl(color);
         }
     }
-    static void DrawRGBPanel(Vector2 pos, Vector2 size, Color current)
+
+    private static void DrawRGBPanel(Vector2 pos, Vector2 size, Color current)
     {
         ColorPanelVertex[] vertexs = new ColorPanelVertex[4];
         for (int n = 0; n < 4; n++)
@@ -237,7 +237,8 @@ public class OptionColor : OptionObject
         Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, [vertexs[0], vertexs[1], vertexs[2], vertexs[1], vertexs[2], vertexs[3]], 0, 2);
         Main.spriteBatch.spriteEffectPass.Apply();
     }
-    static void DrawHSLRing(Vector2 pos, Vector2 size, Vector3 hsl)
+
+    private static void DrawHSLRing(Vector2 pos, Vector2 size, Vector3 hsl)
     {
         ColorPanelVertex[] vertexs = new ColorPanelVertex[4];
         for (int n = 0; n < 4; n++)
@@ -254,7 +255,7 @@ public class OptionColor : OptionObject
         Main.spriteBatch.spriteEffectPass.Apply();
     }
 
-    class SlidePreviewButton : UIView
+    private class SlidePreviewButton : UIView
     {
         protected override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -279,13 +280,15 @@ public class OptionColor : OptionObject
                 Main.UIScaleMatrix);
         }
     }
-    class RGBPanel : UIElementGroup
+
+    private class RGBPanel : UIElementGroup
     {
-        OptionColor Option { get; set; }
-        UIView RedSlider { get; set; }
-        UIView GreenBlueRound { get; set; }
-        bool _dragging;
-        bool _draggingRed;
+        private OptionColor Option { get; set; }
+        private UIView RedSlider { get; set; }
+        private UIView GreenBlueRound { get; set; }
+        private bool _dragging;
+        private bool _draggingRed;
+
         public RGBPanel(OptionColor optionColor)
         {
             Option = optionColor;
@@ -322,8 +325,8 @@ public class OptionColor : OptionObject
                 GreenBlueRound.BorderColor = GreenBlueRound.HoverTimer.Lerp(Color.Black, SUIColor.Highlight);
             };
             GreenBlueRound.Join(this);
-
         }
+
         public override void OnLeftMouseDown(UIMouseEvent evt)
         {
             // if (evt.Source != this) return;
@@ -345,11 +348,13 @@ public class OptionColor : OptionObject
             }
             base.OnLeftMouseDown(evt);
         }
+
         public override void OnLeftMouseUp(UIMouseEvent evt)
         {
             _dragging = false;
             base.OnLeftMouseUp(evt);
         }
+
         protected override void UpdateStatus(GameTime gameTime)
         {
             base.UpdateStatus(gameTime);
@@ -365,19 +370,22 @@ public class OptionColor : OptionObject
                 Option._colorHandler.Blue = (byte)(255 * MathHelper.Clamp((v.Y - .1f) / .6f, 0, 1));
             }
         }
+
         protected override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
             DrawRGBPanel(Bounds.Position, Bounds.Size, Option.currentColor);
         }
     }
-    class HSLRing : UIElementGroup
+
+    private class HSLRing : UIElementGroup
     {
-        OptionColor Option { get; set; }
-        UIView HueSlder { get; set; }
-        UIView SaturationLightnessRound { get; set; }
-        bool _dragging;
-        bool _draggingHue;
+        private OptionColor Option { get; set; }
+        private UIView HueSlder { get; set; }
+        private UIView SaturationLightnessRound { get; set; }
+        private bool _dragging;
+        private bool _draggingHue;
+
         public HSLRing(OptionColor optionColor)
         {
             Option = optionColor;
@@ -421,8 +429,8 @@ public class OptionColor : OptionObject
                 SaturationLightnessRound.BorderColor = SaturationLightnessRound.HoverTimer.Lerp(Color.Black, SUIColor.Highlight);
             };
             SaturationLightnessRound.Join(this);
-
         }
+
         public override void OnLeftMouseDown(UIMouseEvent evt)
         {
             // if (evt.Source != this) return;
@@ -444,11 +452,13 @@ public class OptionColor : OptionObject
             }
             base.OnLeftMouseDown(evt);
         }
+
         public override void OnLeftMouseUp(UIMouseEvent evt)
         {
             _dragging = false;
             base.OnLeftMouseUp(evt);
         }
+
         protected override void UpdateStatus(GameTime gameTime)
         {
             base.UpdateStatus(gameTime);
@@ -466,21 +476,23 @@ public class OptionColor : OptionObject
                 Option._colorHandler.Saturation = MathHelper.Clamp(v.X / .6f + .5f, 0.01f, 1);
                 Option._colorHandler.Lightness = MathHelper.Clamp(v.Y / (.3f - MathF.Abs(v.X)) * .5f + .5f, 0.01f, 0.99f);//0或1会出现*坍缩*
             }
-
         }
+
         protected override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
             DrawHSLRing(Bounds.Position, Bounds.Size, Option.currentHSL);
         }
     }
-    ColorHandler _colorHandler;
-    Color currentColor;
-    Vector3 currentHSL;
-    SUIImage ModeButton { get; set; }
-    SlidePreviewButton PreviewButton { get; set; }
-    bool _previewMode;
-    int _currentMode { get; set; }
+
+    private ColorHandler _colorHandler;
+    private Color currentColor;
+    private Vector3 currentHSL;
+    private SUIImage ModeButton { get; set; }
+    private SlidePreviewButton PreviewButton { get; set; }
+    private bool _previewMode;
+    private int _currentMode { get; set; }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return _currentMode switch
@@ -504,6 +516,7 @@ public class OptionColor : OptionObject
             2 or _ => new ObjectMetaDataFiller(_colorHandler).SetAsSubOption(this, MetaData.Item, MetaData.VariableInfo)
         };
     }
+
     protected override void FillOption()
     {
         base.FillOption();
@@ -514,7 +527,6 @@ public class OptionColor : OptionObject
                 new ColorPreviewDecorator(this)
                 );
         PropertyPanel.Decorator = new RGBPanelDecorator(this);
-
 
         UIElementGroup colorPVPanel = new();
         colorPVPanel.SetSize(90, 25);
@@ -553,7 +565,6 @@ public class OptionColor : OptionObject
                 popupText.TextColor = Color.White;
             }
         };
-
 
         PreviewButton = new();
         PreviewButton.SetSize(25, 25);
@@ -618,10 +629,9 @@ public class OptionColor : OptionObject
         ModeButton.OnUpdate += delegate
         {
             float factor = _expandTimer.Schedule;
-            ModeButton.SetMargin(4 * factor, 0);
+            ModeButton.SetPadding(4 * factor, 0);
             ModeButton.SetWidth(25 * factor, 0);
             ModeButton.ImageScale = new Vector2(factor, 1) * .67f;
-
         };
         if (MetaData is ListValueHandler listHandler)
             _colorHandler = new((IList<Color>)listHandler.List, listHandler.Index);
@@ -629,15 +639,16 @@ public class OptionColor : OptionObject
             _colorHandler = new(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
+
     protected override void Register(Mod mod)
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(Color));
     }
 
-
     private class ColorPreviewDecorator(OptionColor option) : IPropertyOptionDecorator
     {
-        OptionColor Option { get; set; } = option;
+        private OptionColor Option { get; set; } = option;
+
         IPropertyOptionDecorator IPropertyOptionDecorator.Clone() => this;
 
         void IPropertyOptionDecorator.PostFillOption(PropertyOption option)
@@ -670,9 +681,10 @@ public class OptionColor : OptionObject
 
     private class RGBPanelDecorator(OptionColor option) : IPropertyPanelDecorator
     {
-        OptionColor Option { get; init; } = option;
-        RGBPanel RGBPanel { get; set; }
-        Dimension OldWidth { get; set; }
+        private OptionColor Option { get; init; } = option;
+        private RGBPanel RGBPanel { get; set; }
+        private Dimension OldWidth { get; set; }
+
         public void PostFillPanel(PropertyPanel panel)
         {
             var list = panel.OptionList;
@@ -701,9 +713,10 @@ public class OptionColor : OptionObject
 
     private class HSLRingDecorator(OptionColor option) : IPropertyPanelDecorator
     {
-        OptionColor Option { get; init; } = option;
-        HSLRing HSLRing { get; set; }
-        Dimension OldWidth { get; set; }
+        private OptionColor Option { get; init; } = option;
+        private HSLRing HSLRing { get; set; }
+        private Dimension OldWidth { get; set; }
+
         public void PostFillPanel(PropertyPanel panel)
         {
             var list = panel.OptionList;
@@ -732,11 +745,12 @@ public class OptionColor : OptionObject
 
     private class BothPanelDecorator(OptionColor option) : IPropertyPanelDecorator
     {
-        OptionColor Option { get; init; } = option;
-        RGBPanel RGBPanel { get; set; }
-        HSLRing HSLRing { get; set; }
-        UIElementGroup PanelMask { get; set; }
-        Dimension OldWidth { get; set; }
+        private OptionColor Option { get; init; } = option;
+        private RGBPanel RGBPanel { get; set; }
+        private HSLRing HSLRing { get; set; }
+        private UIElementGroup PanelMask { get; set; }
+        private Dimension OldWidth { get; set; }
+
         public void PostFillPanel(PropertyPanel panel)
         {
             var list = panel.OptionList;
@@ -764,8 +778,6 @@ public class OptionColor : OptionObject
             HSLRing.BorderRadius = new(8f);
             HSLRing.BackgroundColor = Color.Black * .4f;
             HSLRing.Join(PanelMask);
-
-
         }
 
         public void PreFillPanel(PropertyPanel panel)

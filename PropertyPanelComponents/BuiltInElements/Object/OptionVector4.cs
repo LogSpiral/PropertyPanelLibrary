@@ -1,26 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Decorators;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
-using SilkyUIFramework.Extensions;
 using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
-using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
 internal class OptionVector4 : OptionObject
 {
-    Vector4Object vecObj;
+    private Vector4Object vecObj;
+
     protected override void FillOption()
     {
         base.FillOption();
@@ -39,10 +37,12 @@ internal class OptionVector4 : OptionObject
     {
         PropertyOptionSystem.RegisterOptionToType(this, typeof(Vector4));
     }
+
     protected override IPropertyOptionFiller GetInternalPanelFiller(object data)
     {
         return base.GetInternalPanelFiller(vecObj) as ObjectMetaDataFiller;
     }
+
     private class Vector4Object
     {
         private readonly PropertyFieldWrapper memberInfo;
@@ -124,12 +124,10 @@ internal class OptionVector4 : OptionObject
 
         private void Update()
         {
-
             if (array == null)
                 memberInfo.SetValue(item, current);
             else
                 array[index] = current;
-
         }
 
         public Vector4Object(PropertyFieldWrapper memberInfo, object item)
@@ -146,22 +144,24 @@ internal class OptionVector4 : OptionObject
             this.index = index;
         }
     }
+
     private class Vector4PanelDecorator(OptionVector4 optionVector4, RangeAttribute range, IncrementAttribute increment) : IPropertyPanelDecorator
     {
-        OptionVector4 Option { get; init; } = optionVector4;
-        RangeAttribute Range { get; init; } = range;
-        IncrementAttribute Increment { get; init; } = increment;
-        Vector4Panel VecPanelXY { get; set; }
-        Vector4Panel VecPanelZW { get; set; }
+        private OptionVector4 Option { get; init; } = optionVector4;
+        private RangeAttribute Range { get; init; } = range;
+        private IncrementAttribute Increment { get; init; } = increment;
+        private Vector4Panel VecPanelXY { get; set; }
+        private Vector4Panel VecPanelZW { get; set; }
 
-        UIElementGroup PanelMask { get; set; }
-        Dimension OldWidth { get; set; }
+        private UIElementGroup PanelMask { get; set; }
+        private Dimension OldWidth { get; set; }
+
         public void PostFillPanel(PropertyPanel panel)
         {
             var list = panel.OptionList;
             OldWidth = list.Width;
             const float height = 88;
-            list.SetWidth(-height -8, 1);
+            list.SetWidth(-height - 8, 1);
 
             float increment = 0;
             if (Increment != null)
@@ -191,7 +191,6 @@ internal class OptionVector4 : OptionObject
                 VecPanelXY.YAxis.BackgroundColor = SUIColor.Warn * (.5f * factor);
                 VecPanelXY.XAxis.BackgroundColor = SUIColor.Warn * (.5f * factor);
                 VecPanelXY.PointPanel.BackgroundColor = SUIColor.Warn * (.75f * factor);
-
             };
             VecPanelXY.PointPanel.OnUpdate += delegate
             {
@@ -200,8 +199,6 @@ internal class OptionVector4 : OptionObject
             VecPanelXY.Margin = new(8, 0, 8, 0);
             VecPanelXY.SetSize(height, -4, 0, .5f);
             VecPanelXY.Join(PanelMask);
-
-
 
             VecPanelZW = new Vector4Panel(((Vector4)Option.GetValue()).ZW(), increment, min, max);
             VecPanelZW.OnUpdate += delegate
@@ -213,7 +210,6 @@ internal class OptionVector4 : OptionObject
                 VecPanelZW.YAxis.BackgroundColor = SUIColor.Warn * (.5f * factor);
                 VecPanelZW.XAxis.BackgroundColor = SUIColor.Warn * (.5f * factor);
                 VecPanelZW.PointPanel.BackgroundColor = SUIColor.Warn * (.75f * factor);
-
             };
             VecPanelZW.PointPanel.OnUpdate += delegate
             {
@@ -234,7 +230,6 @@ internal class OptionVector4 : OptionObject
             PanelMask?.Remove();
         }
 
-
         private class Vector4Panel : UIElementGroup
         {
             public float PercentX { get; set; }
@@ -243,6 +238,7 @@ internal class OptionVector4 : OptionObject
             public UIView XAxis { get; set; }
             public UIView YAxis { get; set; }
             public UIView PointPanel { get; set; }
+
             public Vector2 RealValue
             {
                 get
@@ -288,9 +284,10 @@ internal class OptionVector4 : OptionObject
             public float Min { get; init; }
             public float Max { get; init; }
 
-            bool _isDragging;
-            bool _lockX;
-            bool _lockY;
+            private bool _isDragging;
+            private bool _lockX;
+            private bool _lockY;
+
             public Vector4Panel(Vector2 initialValue, float increment, float min, float max)
             {
                 LayoutType = LayoutType.Custom;
@@ -420,6 +417,5 @@ internal class OptionVector4 : OptionObject
                 base.UpdateStatus(gameTime);
             }
         }
-
     }
 }

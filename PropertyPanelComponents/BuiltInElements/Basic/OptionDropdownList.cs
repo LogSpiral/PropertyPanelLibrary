@@ -1,20 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PropertyPanelLibrary.BasicElements;
+using PropertyPanelLibrary.Graphics2D;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework;
 using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Extensions;
 using System;
 using System.Linq;
-using Terraria.GameContent;
-using Terraria.ModLoader.Config;
-using Terraria.ModLoader.Config.UI;
-using SilkyUIFramework.Extensions;
-using Terraria.UI.Chat;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using PropertyPanelLibrary.BasicElements;
-using PropertyPanelLibrary.Graphics2D;
+using Terraria.ModLoader.Config;
+using Terraria.ModLoader.Config.UI;
+using Terraria.UI.Chat;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
 
@@ -25,9 +25,10 @@ public class OptionDropdownList : PropertyOption
     private UITextView _textElement;
     private string[] _valueStrings;
     private string[] _valueTooltips;
-    bool IsStringOption;
+    private bool IsStringOption;
     private float _maxTextWidth;
     private static SUIDropdownListContainer DropdownList => DropdownListUI.Container;
+
     protected override void FillOption()
     {
         OverflowHidden = true;
@@ -62,7 +63,6 @@ public class OptionDropdownList : PropertyOption
             dropdownList.BuildDropdownList(x, y, width, _valueStrings, GetString(), this);
             dropdownList.OptionSelectedCallback = s =>
             {
-
                 if (IsStringOption)
                 {
                     SetValue(s);
@@ -99,6 +99,7 @@ public class OptionDropdownList : PropertyOption
         _textElement.SetLeft(8);
         _textElement.Join(_textBox);
     }
+
     private void GetOptions()
     {
         if (!IsStringOption)
@@ -141,6 +142,7 @@ public class OptionDropdownList : PropertyOption
         SetValue(value);
         //ConfigHelper.SetConfigValue(Config, VariableInfo, value, Item, broadcast, path: path);
     }
+
     protected override void UpdateStatus(GameTime gameTime)
     {
         base.UpdateStatus(gameTime);
@@ -168,11 +170,13 @@ public class OptionDropdownList : PropertyOption
         SDFGraphics.NoBorderTriangleIsosceles(
             bounds.Position + new Vector2(bounds.Width - 20, bounds.Height * .5f),
             new(.5f),
-            new(24, DropdownListPersists ? -12 : 12), 
-            Color.White, 
+            new(24, DropdownListPersists ? -12 : 12),
+            Color.White,
             SDFGraphics.GetMatrix(true));
     }
+
     private int GetIndex() => IsStringOption ? Array.IndexOf(_valueStrings, GetValue()) : Array.IndexOf(Enum.GetValues(VariableType), GetValue());
+
     private string GetString() => IsStringOption ? GetValue().ToString() : _valueStrings[GetIndex()];
 
     protected override void Register(Mod mod)
