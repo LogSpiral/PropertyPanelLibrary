@@ -175,7 +175,9 @@ public partial class PropertyPanel : UIElementGroup
         base.UpdateStatus(gameTime);
     }
 
-    // 强制重加载
+    /// <summary>
+    /// 强制重加载
+    /// </summary>
     public void ForceReload() 
     {
         _pendingDecorate = true;
