@@ -1,4 +1,5 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Attributes;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using System;
@@ -81,6 +82,7 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
             var variableInfos = ConfigManager.GetFieldsAndProperties(configObject);
             foreach (var variableInfo in variableInfos)
             {
+                if (Attribute.IsDefined(variableInfo.MemberInfo, typeof(PropertyPanelIgnoreAttribute))) continue;
                 var option = VariableInfoToOption(configObject, variableInfo);
                 option.owner = Owner;
                 if (GlobalAttributes != null)

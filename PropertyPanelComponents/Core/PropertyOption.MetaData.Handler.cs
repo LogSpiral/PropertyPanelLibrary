@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Interfaces;
+using System;
 using System.Collections;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
@@ -54,7 +55,10 @@ public partial class PropertyOption
             VariableInfo.SetValue(Item, value);
         }
 
-        public string Label => ConfigManager.GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(VariableInfo, "Label") ?? VariableInfo.Name;
+        public string Label =>
+                    IMemberLocalized.GetLocalizedText(VariableInfo.MemberInfo, "Label")?.Value
+                    ?? ConfigManager.GetLocalizedText<TooltipKeyAttribute, TooltipArgsAttribute>(VariableInfo, "Tooltip")
+                    ?? VariableInfo.Name;
     }
 
     /// <summary>
