@@ -178,7 +178,7 @@ public partial class PropertyPanel : UIElementGroup
     /// <summary>
     /// 强制重加载
     /// </summary>
-    public void ForceReload() 
+    public void ForceReload()
     {
         _pendingDecorate = true;
         _pendingUpdate = true;
