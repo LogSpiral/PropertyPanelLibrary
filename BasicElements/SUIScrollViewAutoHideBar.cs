@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.Attributes;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 
 namespace PropertyPanelLibrary.BasicElements;
 

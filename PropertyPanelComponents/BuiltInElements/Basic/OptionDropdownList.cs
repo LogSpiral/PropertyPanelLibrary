@@ -4,7 +4,7 @@ using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.Graphics2D;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Linq;

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using SilkyUIFramework;
 using SilkyUIFramework.Animation;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Graphics2D;
 using System;
 using Terraria.Audio;

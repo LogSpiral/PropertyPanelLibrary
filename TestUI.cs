@@ -6,7 +6,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fille
 using SilkyUIFramework;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.Attributes;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using SilkyUIFramework.Graphics2D;
 using System.Collections.Generic;
@@ -97,7 +97,7 @@ public class PropertyPanelShowcaseConfig
 }
 
 [RegisterUI("Vanilla: Radial Hotbars", $"{nameof(PropertyPanelLibrary)}: {nameof(TestUI)}")]
-public class TestUI : BasicBody
+public class TestUI : BaseBody
 {
     public static TestUI Instance { get; private set; }
 

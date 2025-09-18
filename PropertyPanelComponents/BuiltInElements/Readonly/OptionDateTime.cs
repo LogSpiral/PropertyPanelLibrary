@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;

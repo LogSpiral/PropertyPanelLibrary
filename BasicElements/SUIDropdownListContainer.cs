@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SilkyUIFramework;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.Attributes;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Linq;
@@ -221,7 +221,7 @@ public class SUIDropdownListContainer : UIElementGroup
     public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
     {
         var dimensionsRect = _blurMask.Bounds;
-        float top = dimensionsRect.Top * Main.UIScale;
+        float top = dimensionsRect.Y * Main.UIScale;
         float bottom = dimensionsRect.Bottom * Main.UIScale;
         float maxOffset = Math.Max(Math.Abs(top - _mouseYClicked), Math.Abs(bottom - _mouseYClicked));
         float offset = _animationTimer.Lerp(0, maxOffset);
@@ -243,7 +243,7 @@ public class SUIDropdownListContainer : UIElementGroup
 }
 
 [RegisterUI("Vanilla: Mouse Text", $"{nameof(PropertyPanelLibrary)}:{nameof(DropdownListUI)}", 214514)]
-public class DropdownListUI : BasicBody
+public class DropdownListUI : BaseBody
 {
     public static SUIDropdownListContainer Container { get; private set; }
     public static DropdownListUI Instance { get; private set; }

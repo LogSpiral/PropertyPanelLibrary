@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using PropertyPanelLibrary.Graphics2D;
 using SilkyUIFramework;
+using SilkyUIFramework.Elements;
 using System;
 using Terraria;
 

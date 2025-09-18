@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SilkyUIFramework;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System.Linq;
 

@@ -5,6 +5,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Opti
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Writers;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using SilkyUIFramework;
+using SilkyUIFramework.Elements;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.Core;
 

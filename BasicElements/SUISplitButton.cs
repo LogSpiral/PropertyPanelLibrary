@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using PropertyPanelLibrary.Graphics2D;
 using SilkyUIFramework;
 using SilkyUIFramework.Animation;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using Terraria;
 
 namespace PropertyPanelLibrary.BasicElements;

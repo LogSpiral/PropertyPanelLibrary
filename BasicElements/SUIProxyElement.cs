@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SilkyUIFramework;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using Terraria;
 using Terraria.UI;
 
@@ -53,7 +53,7 @@ public class SUIProxyElement : UIView
 
 internal static class MyUtils
 {
-    public static CalculatedStyle ToDimension(this Bounds bounds) => new(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+    public static CalculatedStyle ToDimension(this Bounds bounds) => new(bounds.X, bounds.Y, bounds.Width, bounds.Height);
 
     // public static VanillaMouseEvent ToVanillaMouseEvent(this SilkyMouseEvent evt, UIElement source) => new(source, evt.MousePosition);
 }

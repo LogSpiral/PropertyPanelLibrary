@@ -1,5 +1,5 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using Terraria.ModLoader;

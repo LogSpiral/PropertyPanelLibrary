@@ -1,4 +1,4 @@
-﻿using SilkyUIFramework.BasicElements;
+﻿using SilkyUIFramework.Elements;
 using System;
 using System.Collections.Generic;
 using Terraria.ModLoader.Config;

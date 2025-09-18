@@ -1,7 +1,7 @@
-﻿using SilkyUIFramework.BasicComponents;
-using SilkyUIFramework.Extensions;
+﻿using SilkyUIFramework.Extensions;
 using Microsoft.Xna.Framework;
 using EDefinition = Terraria.ModLoader.Config.EntityDefinition;
+using SilkyUIFramework.Elements;
 namespace PropertyPanelLibrary.EntityDefinition;
 
 public class SUIDefinitionIconOption : SUIEntityDefinitionOption

@@ -1,4 +1,5 @@
 ﻿using SilkyUIFramework;
+using SilkyUIFramework.Elements;
 using System;
 using Terraria;
 using Terraria.ID;

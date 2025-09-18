@@ -2,6 +2,7 @@
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;

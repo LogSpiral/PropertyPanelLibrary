@@ -1,7 +1,7 @@
 ﻿using SilkyUIFramework.Extensions;
 using Microsoft.Xna.Framework;
 using EDefinition = Terraria.ModLoader.Config.EntityDefinition;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 namespace PropertyPanelLibrary.EntityDefinition;
 
 public class SUIDEfinitionTextOption : SUIEntityDefinitionOption

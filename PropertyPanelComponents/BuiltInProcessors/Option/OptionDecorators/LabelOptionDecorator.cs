@@ -1,6 +1,6 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System.Linq;
 

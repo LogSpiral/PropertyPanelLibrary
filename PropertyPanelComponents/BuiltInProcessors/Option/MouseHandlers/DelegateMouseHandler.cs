@@ -1,7 +1,7 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using SilkyUIFramework;
-using SilkyUIFramework.BasicElements;
+using SilkyUIFramework.Elements;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.MouseHandlers;
 
