@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using SilkyUIFramework;
 using SilkyUIFramework.Extensions;
 using Terraria.ModLoader;
 
@@ -15,9 +14,7 @@ public class OptionString : PropertyOption
     {
         var textPanel = TextPanel = new SUIEditTextBox();
         textPanel.SetMinWidth(40, 0);
-        textPanel.SetLeft(-10, 0, 1);
         textPanel.SetHeight(0, .75f);
-        textPanel.SetTop(0, 0, 0.5f);
         textPanel.InnerText.Text = (string)GetValue() ?? string.Empty;
         textPanel.Join(this);
         textPanel.OnUpdate += delegate

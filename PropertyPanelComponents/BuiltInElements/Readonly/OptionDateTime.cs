@@ -1,14 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using SilkyUIFramework;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using SilkyUIFramework;
 using Terraria.ModLoader;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Readonly;
@@ -20,21 +15,21 @@ public class OptionDateTime : PropertyOption
     private UIElementGroup Mask { get; set; }
     protected override void FillOption()
     {
-        Mask = new()
+        Mask = new UIElementGroup
         {
             FlexGrow = 1,
             FlexShrink = 1,
             FitHeight = true,
             FitWidth = true,
-            Padding = new(0,-4,8,4),
-            Left = new(0,0,1)
+            Padding = new Margin(0,-4,8,4),
+            Left = new Anchor(0,0,1)
         };
         Mask.Join(this);
-        DateText = new()
+        DateText = new UITextView
         {
-            Top = new(0, 0, .5f),
-            Left = new(0, 0, 1),
-            TextAlign = new(1, .5f),
+            Top = new Anchor(0, 0, .5f),
+            Left = new Anchor(0, 0, 1),
+            TextAlign = new Vector2(1, .5f),
             Text = ((DateTime)GetValue()).ToString("yyyy-MM-dd HH:mm:ss")
         };
         DateText.Join(Mask);

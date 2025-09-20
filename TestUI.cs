@@ -9,7 +9,6 @@ using SilkyUIFramework.Attributes;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using SilkyUIFramework.Graphics2D;
-using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;
@@ -68,7 +67,7 @@ public class PropertyPanelShowcaseConfig
     #endregion Object
 
     #region Collection
-
+#if false
     public bool[] SomeArray { get; set; } = [false, true, false];
     public List<int> SomeList { get; set; } = [5, 1, 4];
 
@@ -86,12 +85,12 @@ public class PropertyPanelShowcaseConfig
         "Yabusame",
         "Tsubakura"
         ];
-
+#endif
     #endregion Collection
 
     #region SubConfig
 
-    public PropertyPanelShowcaseConfig subConfig { get; set; }
+    public PropertyPanelShowcaseConfig SubConfig { get; set; }
 
     #endregion SubConfig
 }
@@ -110,7 +109,7 @@ public class TestUI : BaseBody
         SetPadding(0);
         BackgroundColor = SUIColor.Background * .25f;
         BorderColor = SUIColor.Border;
-        BorderRadius = new(8f);
+        BorderRadius = new Vector4(8f);
         Instance = this;
         base.OnInitialize();
     }
@@ -206,21 +205,22 @@ public class TestUI : BaseBody
 
         var panel = new PropertyPanel();
         panel.SetSize(0, 0, 1, 1);
-        var obj = new PropertyPanelShowcaseConfig() { SomeUIView = new() { Left = new(4), Top = new(4), Width = new(0, .5f), Height = new(0, .75f) } };
-        panel.Filler = new DesignatedMemberFiller(
-            (
-            obj,
-            [
-                nameof(PropertyPanelShowcaseConfig.SomeVector3),
-                nameof(PropertyPanelShowcaseConfig.SomeVector4),
-                 nameof(PropertyPanelShowcaseConfig.SomeAnchor),
-                nameof(PropertyPanelShowcaseConfig.SomeRectangle),
-                nameof(PropertyPanelShowcaseConfig.SomeDimension),
-                nameof(PropertyPanelShowcaseConfig.SomeMargin),
-                nameof(PropertyPanelShowcaseConfig.SomeColor),
-                nameof(PropertyPanelShowcaseConfig.SomeUIView),
-                nameof(PropertyPanelShowcaseConfig.SomeItem)
-            ]));
+        var obj = new PropertyPanelShowcaseConfig() { SomeUIView = new UIView { Left = new Anchor(4), Top = new Anchor(4), Width = new Dimension(0, .5f), Height = new Dimension(0, .75f) } };
+        panel.Filler = new ObjectMetaDataFiller(obj);
+        //panel.Filler = new DesignatedMemberFiller(
+        //    (
+        //    obj,
+        //    [
+        //        nameof(PropertyPanelShowcaseConfig.SomeVector3),
+        //        nameof(PropertyPanelShowcaseConfig.SomeVector4),
+        //         nameof(PropertyPanelShowcaseConfig.SomeAnchor),
+        //        nameof(PropertyPanelShowcaseConfig.SomeRectangle),
+        //        nameof(PropertyPanelShowcaseConfig.SomeDimension),
+        //        nameof(PropertyPanelShowcaseConfig.SomeMargin),
+        //        nameof(PropertyPanelShowcaseConfig.SomeColor),
+        //        nameof(PropertyPanelShowcaseConfig.SomeUIView),
+        //        nameof(PropertyPanelShowcaseConfig.SomeItem)
+        //    ]));
 
         panel.Join(Instance);
 

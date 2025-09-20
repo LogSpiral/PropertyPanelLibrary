@@ -1,5 +1,4 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
-using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using System;
 using System.Collections.Generic;
@@ -55,10 +54,10 @@ public class DesignatedMemberFiller(params IEnumerable<(object configItem, HashS
                     if (propertyInfo == null)
                         continue;
                     else
-                        variableInfo = new(propertyInfo);
+                        variableInfo = new PropertyFieldWrapper(propertyInfo);
                 }
                 else
-                    variableInfo = new(fieldInfo);
+                    variableInfo = new PropertyFieldWrapper(fieldInfo);
 
                 var option = ObjectMetaDataFiller.VariableInfoToOption(configItem, variableInfo);
                 option.owner = Owner;

@@ -25,9 +25,9 @@ public class OptionVector2 : OptionObject
                     RangeAttribute,
                     IncrementAttribute);
         if (MetaData is ListValueHandler listHandler)
-            vecObj = new((IList<Vector2>)listHandler.List, listHandler.Index);
+            vecObj = new Vector2Object((IList<Vector2>)listHandler.List, listHandler.Index);
         else
-            vecObj = new(MetaData.VariableInfo, MetaData.Item);
+            vecObj = new Vector2Object(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
 
@@ -144,8 +144,8 @@ public class OptionVector2 : OptionObject
             {
                 Option.vecObj.Vec2 = VecPanel.RealValue;
             };
-            VecPanel.Margin = new(8, 0, 8, 0);
-            VecPanel.SetSize(height, 0, 0, 1);
+            VecPanel.Margin = new Margin(8, 0, 8, 0);
+            VecPanel.SetSize(height, 0,0,1);
             VecPanel.Join(panel);
         }
 
@@ -161,8 +161,8 @@ public class OptionVector2 : OptionObject
 
         private class Vector2Panel : UIElementGroup
         {
-            public float PercentX { get; set; }
-            public float PercentY { get; set; }
+            private float PercentX { get; set; }
+            private float PercentY { get; set; }
 
             public UIView XAxis { get; set; }
             public UIView YAxis { get; set; }
@@ -173,20 +173,17 @@ public class OptionVector2 : OptionObject
                 get
                 {
                     Vector2 result = default;
-                    float min = Min;
-                    float max = Max;
-                    float increment = Increment;
 
-                    float value = min + (max - min) * PercentX;
-                    if (increment != 0)
-                        value = MathF.Round(value / increment) * increment;
-                    value = Math.Clamp(value, min, max);
+                    var value = Min + (Max - Min) * PercentX;
+                    if (Increment != 0)
+                        value = MathF.Round(value / Increment) * Increment;
+                    value = Math.Clamp(value, Min, Max);
                     result.X = value;
 
-                    value = min + (max - min) * PercentY;
-                    if (increment != 0)
-                        value = MathF.Round(value / increment) * increment;
-                    value = Math.Clamp(value, min, max);
+                    value = Min + (Max - Min) * PercentY;
+                    if (Increment != 0)
+                        value = MathF.Round(value / Increment) * Increment;
+                    value = Math.Clamp(value, Min, Max);
                     result.Y = value;
                     field = result;
                     return result;
@@ -194,24 +191,21 @@ public class OptionVector2 : OptionObject
                 set
                 {
                     if (field == value) return;
-                    float min = Min;
-                    float max = Max;
-                    float increment = Increment;
                     var coordValue = value.X;
-                    if (increment != 0)
-                        coordValue = MathF.Round(coordValue / increment) * increment;
-                    PercentX = Utils.GetLerpValue(min, max, coordValue, true);
+                    if (Increment != 0)
+                        coordValue = MathF.Round(coordValue / Increment) * Increment;
+                    PercentX = Utils.GetLerpValue(Min, Max, coordValue, true);
 
                     coordValue = value.Y;
-                    if (increment != 0)
-                        coordValue = MathF.Round(coordValue / increment) * increment;
-                    PercentY = Utils.GetLerpValue(min, max, coordValue, true);
+                    if (Increment != 0)
+                        coordValue = MathF.Round(coordValue / Increment) * Increment;
+                    PercentY = Utils.GetLerpValue(Min, Max, coordValue, true);
                 }
             }
 
-            public float Increment { get; init; }
-            public float Min { get; init; }
-            public float Max { get; init; }
+            private float Increment { get; init; }
+            private float Min { get; init; }
+            private float Max { get; init; }
 
             private bool _isDragging;
             private bool _lockX;
@@ -219,7 +213,6 @@ public class OptionVector2 : OptionObject
 
             public Vector2Panel(Vector2 initialValue, float increment, float min, float max)
             {
-                LayoutType = LayoutType.Custom;
                 var coordValue = initialValue.X;
                 if (increment != 0)
                     coordValue = MathF.Round(coordValue / increment) * increment;
@@ -235,39 +228,47 @@ public class OptionVector2 : OptionObject
                 Max = max;
 
                 BackgroundColor = Color.Black * .3f;
-                BorderRadius = new(4);
+                BorderRadius = new Vector4(4);
 
-                float step = increment == 0 ? 0.2f : increment / (max - min);
+                var step = increment == 0 ? 0.2f : increment / (max - min);
 
                 for (float k = 0; k <= 1; k += step)
                 {
-                    var XGrid = new UIView()
+                    var xGrid = new UIView()
                     {
-                        Width = new(2, 0),
-                        Height = new(0, 1),
+                        Width = new Dimension(2, 0),
+                        Height = new Dimension(0, 0),
                         BackgroundColor = Color.Black * .2f,
-                        Left = new(0, k - .5f, .5f)
+                        Left = new Anchor(0, k - .5f, .5f),
+                        Positioning = Positioning.Absolute
                     };
-                    XGrid.Join(this);
-                    var YGrid = new UIView()
+                    xGrid.OnUpdate += delegate
                     {
-                        Height = new(2, 0),
-                        Width = new(0, 1),
-                        BackgroundColor = Color.Black * .2f,
-                        Top = new(0, k - .5f, .5f)
+                        xGrid.SetHeight(Bounds.Height);
                     };
-                    YGrid.Join(this);
+                    xGrid.Join(this);
+                    var yGrid = new UIView()
+                    {
+                        Height = new Dimension(2, 0),
+                        Width = new Dimension(0, 1),
+                        BackgroundColor = Color.Black * .2f,
+                        Top = new Anchor(0, k - .5f, .5f),
+                        Positioning = Positioning.Absolute
+                    };
+                    yGrid.Join(this);
                 }
 
                 XAxis = new UIView()
                 {
-                    Width = new(4, 0),
-                    Height = new(0, 1),
-                    BackgroundColor = SUIColor.Warn * .5f
+                    Width = new Dimension(4, 0),
+                    Height = new Dimension(0, 0),
+                    BackgroundColor = SUIColor.Warn * .5f,
+                    Positioning = Positioning.Absolute
                 };
                 XAxis.OnUpdate += delegate
                 {
                     XAxis.SetLeft(0, PercentX - .5f, .5f);
+                    XAxis.SetHeight(Bounds.Height);
                 };
                 XAxis.LeftMouseDown += delegate
                 {
@@ -282,9 +283,10 @@ public class OptionVector2 : OptionObject
                 XAxis.Join(this);
                 YAxis = new UIView()
                 {
-                    Height = new(4, 0),
-                    Width = new(0, 1),
-                    BackgroundColor = SUIColor.Warn * .5f
+                    Height = new Dimension(4, 0),
+                    Width = new Dimension(0, 1),
+                    BackgroundColor = SUIColor.Warn * .5f,
+                    Positioning = Positioning.Absolute
                 };
                 YAxis.OnUpdate += delegate
                 {
@@ -303,10 +305,11 @@ public class OptionVector2 : OptionObject
                 YAxis.Join(this);
                 PointPanel = new UIView()
                 {
-                    Height = new(8, 0),
-                    Width = new(8, 0),
+                    Height = new Dimension(8, 0),
+                    Width = new Dimension(8, 0),
                     BackgroundColor = SUIColor.Warn * .75f,
-                    BorderRadius = new(4f)
+                    BorderRadius = new Vector4(4f),
+                    Positioning = Positioning.Absolute
                 };
                 PointPanel.OnUpdate += delegate
                 {

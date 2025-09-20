@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using SilkyUIFramework;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
-using System.Linq;
 
 namespace PropertyPanelLibrary.BasicElements;
 
@@ -15,9 +13,11 @@ public class SUIEditTextBox : UIElementGroup
     {
         var textPanel = this;
         textPanel.BackgroundColor = Color.Black * .4f;
-        textPanel.BorderRadius = new(8f);
-        var editText = new SUIEditText();
-        editText.TextAlign = new(0f, .5f);
+        textPanel.BorderRadius = new Vector4(8f);
+        var editText = new SUIEditText
+        {
+            TextAlign = new Vector2(0f, .5f)
+        };
         editText.SetTop(-4, 0, .5f);
         editText.Join(textPanel);
         editText.SetPadding(4);

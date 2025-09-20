@@ -6,7 +6,6 @@ using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -26,9 +25,9 @@ public class OptionRectangle : OptionObject
                     RangeAttribute,
                     IncrementAttribute);
         if (MetaData is ListValueHandler listHandler)
-            rectangleObj = new((IList<Rectangle>)listHandler.List, listHandler.Index);
+            rectangleObj = new RectangleObject((IList<Rectangle>)listHandler.List, listHandler.Index);
         else
-            rectangleObj = new(MetaData.VariableInfo, MetaData.Item);
+            rectangleObj = new RectangleObject(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
 
@@ -168,7 +167,7 @@ public class OptionRectangle : OptionObject
             {
                 Option.rectangleObj.Rect = RectPanel.RealValue;
             };
-            RectPanel.Margin = new(8, 0, 8, 0);
+            RectPanel.Margin = new Margin(8, 0, 8, 0);
             RectPanel.SetSize(height, 0, 0, 1);
             RectPanel.Join(panel);
         }
@@ -279,7 +278,6 @@ public class OptionRectangle : OptionObject
 
             public RectanglePanel(Rectangle initialValue, float increment, float min, float max)
             {
-                LayoutType = LayoutType.Custom;
                 SyncValue(initialValue, min, max, increment);
 
                 Increment = increment;
@@ -287,7 +285,7 @@ public class OptionRectangle : OptionObject
                 Max = max;
 
                 BackgroundColor = Color.Black * .3f;
-                BorderRadius = new(4);
+                BorderRadius = new Vector4(4);
 
                 float step = increment == 0 ? 0.2f : increment / (max - min);
 
@@ -295,18 +293,24 @@ public class OptionRectangle : OptionObject
                 {
                     var XGrid = new UIView()
                     {
-                        Width = new(2, 0),
-                        Height = new(0, 1),
+                        Width = new Dimension(2, 0),
+                        Height = new Dimension(0, 0),
                         BackgroundColor = Color.Black * .2f,
-                        Left = new(0, k - .5f, .5f)
+                        Left = new Anchor(0, k - .5f, .5f),
+                        Positioning = Positioning.Absolute
+                    };
+                    XGrid.OnUpdate += delegate
+                    {
+                        XGrid.SetHeight(Bounds.Height);
                     };
                     XGrid.Join(this);
                     var YGrid = new UIView()
                     {
-                        Height = new(2, 0),
-                        Width = new(0, 1),
+                        Height = new Dimension(2, 0),
+                        Width = new Dimension(0, 1),
                         BackgroundColor = Color.Black * .2f,
-                        Top = new(0, k - .5f, .5f)
+                        Top = new Anchor(0, k - .5f, .5f),
+                        Positioning = Positioning.Absolute
                     };
                     YGrid.Join(this);
                 }
@@ -315,13 +319,15 @@ public class OptionRectangle : OptionObject
 
                 LeftAxis = new UIView()
                 {
-                    Width = new(4, 0),
-                    Height = new(0, 1),
-                    BackgroundColor = SUIColor.Warn * .5f
+                    Width = new Dimension(4, 0),
+                    Height = new Dimension(0, 0),
+                    BackgroundColor = SUIColor.Warn * .5f,
+                    Positioning = Positioning.Absolute
                 };
                 LeftAxis.OnUpdate += delegate
                 {
                     LeftAxis.SetLeft(0, PercentLeft - .5f, .5f);
+                    LeftAxis.SetHeight(Bounds.Height);
                 };
                 LeftAxis.LeftMouseDown += delegate
                 {
@@ -341,13 +347,15 @@ public class OptionRectangle : OptionObject
 
                 RightAxis = new UIView()
                 {
-                    Width = new(4, 0),
-                    Height = new(0, 1),
-                    BackgroundColor = SUIColor.Highlight * .5f
+                    Width = new Dimension(4, 0),
+                    Height = new Dimension(0, 1),
+                    BackgroundColor = SUIColor.Highlight * .5f,
+                    Positioning = Positioning.Absolute
                 };
                 RightAxis.OnUpdate += delegate
                 {
                     RightAxis.SetLeft(0, PercentRight - .5f, .5f);
+                    RightAxis.SetHeight(Bounds.Height);
                 };
                 RightAxis.RightMouseDown += delegate
                 {
@@ -367,9 +375,10 @@ public class OptionRectangle : OptionObject
 
                 TopAxis = new UIView()
                 {
-                    Height = new(4, 0),
-                    Width = new(0, 1),
-                    BackgroundColor = SUIColor.Warn * .5f
+                    Height = new Dimension(4, 0),
+                    Width = new Dimension(0, 1),
+                    BackgroundColor = SUIColor.Warn * .5f,
+                    Positioning = Positioning.Absolute
                 };
                 TopAxis.OnUpdate += delegate
                 {
@@ -393,9 +402,10 @@ public class OptionRectangle : OptionObject
 
                 BottomAxis = new UIView()
                 {
-                    Height = new(4, 0),
-                    Width = new(0, 1),
-                    BackgroundColor = SUIColor.Warn * .5f
+                    Height = new Dimension(4, 0),
+                    Width = new Dimension(0, 1),
+                    BackgroundColor = SUIColor.Warn * .5f,
+                    Positioning = Positioning.Absolute
                 };
                 BottomAxis.OnUpdate += delegate
                 {
@@ -419,10 +429,11 @@ public class OptionRectangle : OptionObject
 
                 StartPanel = new UIView()
                 {
-                    Height = new(8, 0),
-                    Width = new(8, 0),
+                    Height = new Dimension(8, 0),
+                    Width = new Dimension(8, 0),
                     BackgroundColor = SUIColor.Warn * .75f,
-                    BorderRadius = new(4f)
+                    BorderRadius = new Vector4(4f),
+                    Positioning = Positioning.Absolute
                 };
                 StartPanel.OnUpdate += delegate
                 {
@@ -445,10 +456,11 @@ public class OptionRectangle : OptionObject
 
                 EndPanel = new UIView()
                 {
-                    Height = new(8, 0),
-                    Width = new(8, 0),
+                    Height = new Dimension(8, 0),
+                    Width = new Dimension(8, 0),
                     BackgroundColor = SUIColor.Warn * .75f,
-                    BorderRadius = new(4f)
+                    BorderRadius = new Vector4(4f),
+                    Positioning = Positioning.Absolute
                 };
                 EndPanel.OnUpdate += delegate
                 {
@@ -477,8 +489,11 @@ public class OptionRectangle : OptionObject
                 //        PercentTop = MathHelper.Clamp((Main.MouseScreen.Y - bounds.Y) / bounds.Height, 0, 1);
                 //};
 
-                UIView viewPanel = new();
-                viewPanel.BackgroundColor = Color.Cyan * .25f;
+                UIView viewPanel = new()
+                {
+                    BackgroundColor = Color.Cyan * .25f,
+                    Positioning = Positioning.Absolute
+                };
                 viewPanel.OnUpdate += delegate
                 {
                     viewPanel.SetLeft(0, PercentLeft);

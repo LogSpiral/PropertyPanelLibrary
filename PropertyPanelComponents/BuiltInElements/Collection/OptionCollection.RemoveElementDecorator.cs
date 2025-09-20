@@ -26,9 +26,9 @@ public partial class OptionCollection
         {
             RemoveButton = new SUICross(SUIColor.Warn * .5f, SUIColor.Warn);
             RemoveButton.SetSize(25, 25);
-            RemoveButton.Margin = new(4f, 0, 4, 0);
+            RemoveButton.Margin = new Margin(4f, 0, 4, 0);
             RemoveButton.BackgroundColor = Color.Black * .4f;
-            RemoveButton.BorderRadius = new(4f);
+            RemoveButton.BorderRadius = new Vector4(4f);
             RemoveButton.Join(option);
             RemoveButton.LeftMouseClick += delegate
             {

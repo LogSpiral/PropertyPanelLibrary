@@ -5,7 +5,6 @@ using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
-using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -56,19 +55,17 @@ public class OptionUIView : OptionObject
             const float height = 337.5f;
             list.SetWidth(-height - 8, 1);
 
-            MaskPanel = new()
+            MaskPanel = new UIElementGroup
             {
-                Margin = new(8, 0, 8, 0),
+                Margin = new Margin(8, 0, 8, 0),
                 BackgroundColor = Color.Black * .4f
             };
             MaskPanel.SetSize(height, 0, 0, 1);
             MaskPanel.Join(panel);
-            if (Option.GetValue() is UIView view)
-            {
-                view.Join(MaskPanel);
-                View = view;
-                View.BackgroundColor = Color.Blue * .5f;
-            }
+            if (Option.GetValue() is not UIView view) return;
+            view.Join(MaskPanel);
+            View = view;
+            View.BackgroundColor = Color.Blue * .5f;
         }
 
         public void PreFillPanel(PropertyPanel panel)

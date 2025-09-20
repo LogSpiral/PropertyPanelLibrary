@@ -102,7 +102,7 @@ public class SUIToggle : UIView
         get;
         set
         {
-            OnContentsChanged?.Invoke(this, new(field, value));
+            OnContentsChanged?.Invoke(this, new ValueChangedEventArgs<bool>(field, value));
             field = value;
         }
     }

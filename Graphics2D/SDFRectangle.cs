@@ -136,8 +136,8 @@ public static class SDFRectangle
         var vertexData = RectangleVertexData;
 
         vertexData.SetPosition(position, size, 0);
-        vertexData.SetPosition(new(position.X + size.X, position.Y), size, 4);
-        vertexData.SetPosition(new(position.X, position.Y + size.Y), size, 8);
+        vertexData.SetPosition(new Vector2(position.X + size.X, position.Y), size, 4);
+        vertexData.SetPosition(new Vector2(position.X, position.Y + size.Y), size, 8);
         vertexData.SetPosition(position + size, size, 12);
 
         vertexData.SetDistanceFromEdge(size, borderRadius.X + innerShrinkage, 0, 1, 2, 3, 0);
@@ -169,13 +169,13 @@ public static class SDFRectangle
         var vertexData = RectangleVertexData;
 
         vertexData.SetPosition(position, size, 0);
-        vertexData.SetPosition(new(position.X + size.X, position.Y), size, 4);
-        vertexData.SetPosition(new(position.X, position.Y + size.Y), size, 8);
+        vertexData.SetPosition(new Vector2(position.X + size.X, position.Y), size, 4);
+        vertexData.SetPosition(new Vector2(position.X, position.Y + size.Y), size, 8);
         vertexData.SetPosition(position + size, size, 12);
 
         vertexData.SetTextureCoordinates(textureCoordinatesPosition, textureCoordinatesSize, 0);
-        vertexData.SetTextureCoordinates(new(textureCoordinatesPosition.X + textureCoordinatesSize.X, textureCoordinatesPosition.Y), textureCoordinatesSize, 4);
-        vertexData.SetTextureCoordinates(new(textureCoordinatesPosition.X, textureCoordinatesPosition.Y + textureCoordinatesSize.Y), textureCoordinatesSize, 8);
+        vertexData.SetTextureCoordinates(new Vector2(textureCoordinatesPosition.X + textureCoordinatesSize.X, textureCoordinatesPosition.Y), textureCoordinatesSize, 4);
+        vertexData.SetTextureCoordinates(new Vector2(textureCoordinatesPosition.X, textureCoordinatesPosition.Y + textureCoordinatesSize.Y), textureCoordinatesSize, 8);
         vertexData.SetTextureCoordinates(textureCoordinatesPosition + textureCoordinatesSize, textureCoordinatesSize, 12);
 
         vertexData.SetDistanceFromEdge(size, borderRadius.X + innerShrinkage, 0, 1, 2, 3, 0);

@@ -17,7 +17,7 @@ public class SUITriangleIcon : UIView
     public SUITriangleIcon()
     {
         SetSize(25f, 25f);
-        trianglePercentCoord = [new(0.3f, 0.0f), new(0.8f, 0.5f), new(0.3f, 1.0f)];
+        trianglePercentCoord = [new Vector2(0.3f, 0.0f), new Vector2(0.8f, 0.5f), new Vector2(0.3f, 1.0f)];
         TriangleBeginColor = SUIColor.Warn * 0.5f;
         TriangleEndColor = SUIColor.Warn;
         TriangleBorder = 2f;

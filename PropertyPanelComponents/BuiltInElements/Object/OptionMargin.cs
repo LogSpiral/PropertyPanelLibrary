@@ -4,9 +4,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -24,9 +22,9 @@ public class OptionMargin : OptionObject
         if (owner == null)
             PropertyPanel.Decorator = new MarginDecorator(this);
         if (MetaData is ListValueHandler listHandler)
-            MarginObj = new((IList<Margin>)listHandler.List, listHandler.Index);
+            MarginObj = new MarginObject((IList<Margin>)listHandler.List, listHandler.Index);
         else
-            MarginObj = new(MetaData.VariableInfo, MetaData.Item);
+            MarginObj = new MarginObject(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
 
@@ -55,7 +53,7 @@ public class OptionMargin : OptionObject
             get => current.Left;
             set
             {
-                current = new(value, current.Top, current.Right, current.Bottom);
+                current = new Margin(value, current.Top, current.Right, current.Bottom);
                 Update();
             }
         }
@@ -66,7 +64,7 @@ public class OptionMargin : OptionObject
             get => current.Top;
             set
             {
-                current = new(current.Left, value, current.Right, current.Bottom);
+                current = new Margin(current.Left, value, current.Right, current.Bottom);
                 Update();
             }
         }
@@ -77,7 +75,7 @@ public class OptionMargin : OptionObject
             get => current.Right;
             set
             {
-                current = new(current.Left, current.Top, value, current.Bottom);
+                current = new Margin(current.Left, current.Top, value, current.Bottom);
                 Update();
             }
         }
@@ -88,7 +86,7 @@ public class OptionMargin : OptionObject
             get => current.Bottom;
             set
             {
-                current = new(current.Left, current.Top, current.Right, value);
+                current = new Margin(current.Left, current.Top, current.Right, value);
                 Update();
             }
         }
@@ -143,7 +141,7 @@ public class OptionMargin : OptionObject
             const float height = 120f;
             list.SetWidth(-height - 8, 1);
 
-            MaskContainer = new();
+            MaskContainer = new UIElementGroup();
             MaskContainer.SetSize(height, 0, 0, 1);
             MaskContainer.FlexWrap = true;
             MaskContainer.FlexDirection = FlexDirection.Column;
@@ -152,9 +150,9 @@ public class OptionMargin : OptionObject
 
             #region Margin
 
-            MaskPanelMargin = new()
+            MaskPanelMargin = new UIElementGroup
             {
-                Margin = new(8, 0, 8, 0),
+                Margin = new Margin(8, 0, 8, 0),
                 BackgroundColor = Color.Black * .4f
             };
             MaskPanelMargin.SetSize(height, 88, 0, 0);
@@ -163,15 +161,14 @@ public class OptionMargin : OptionObject
             {
                 MaskPanelMargin.SetHeight(Option._expandTimer.Schedule * 88, 0);
             };
-            MaskPanelMargin.LayoutType = LayoutType.Custom;
 
-            InnerViewMargin = new()
+            InnerViewMargin = new UIView
             {
                 BackgroundColor = Color.Blue * .5f,
-                Width = new(0, .2f),
-                Height = new(0, 0.4f),
-                Left = new(0, 0, 0.5f),
-                Top = new(0, 0, 0.5f)
+                Width = new Dimension(0, .2f),
+                Height = new Dimension(0, 0.4f),
+                Left = new Anchor(0, 0, 0.5f),
+                Top = new Anchor(0, 0, 0.5f)
             };
             InnerViewMargin.OnUpdate += delegate
             {
@@ -181,10 +178,11 @@ public class OptionMargin : OptionObject
             UIView marginBounds = new()
             {
                 BackgroundColor = Color.White * .1f,
-                Width = new(0, .2f),
-                Height = new(0, 0.4f),
-                Left = new(0, 0, 0.5f),
-                Top = new(0, 0, 0.5f)
+                Width = new Dimension(0, .2f),
+                Height = new Dimension(0, 0.4f),
+                Left = new Anchor(0, 0, 0.5f),
+                Top = new Anchor(0, 0, 0.5f),
+                Positioning = Positioning.Absolute
             };
             marginBounds.Join(MaskPanelMargin);
             marginBounds.OnUpdate += delegate
@@ -199,10 +197,11 @@ public class OptionMargin : OptionObject
             UIView marginBoundsAni = new()
             {
                 BackgroundColor = Color.White * .1f,
-                Width = new(0, .2f),
-                Height = new(0, 0.4f),
-                Left = new(0, 0, 0.5f),
-                Top = new(0, 0, 0.5f)
+                Width = new Dimension(0, .2f),
+                Height = new Dimension(0, 0.4f),
+                Left = new Anchor(0, 0, 0.5f),
+                Top = new Anchor(0, 0, 0.5f),
+                Positioning = Positioning.Absolute
             };
             marginBoundsAni.Join(MaskPanelMargin);
             marginBoundsAni.OnUpdate += delegate
@@ -229,9 +228,9 @@ public class OptionMargin : OptionObject
 
             #region Padding
 
-            MaskPanelPadding = new()
+            MaskPanelPadding = new UIElementGroup
             {
-                Margin = new(8, 0, 8, 0),
+                Margin = new Margin(8, 0, 8, 0),
                 BackgroundColor = Color.Black * .7f
             };
             MaskPanelPadding.SetSize(height, 88, 0, 0);
@@ -239,26 +238,25 @@ public class OptionMargin : OptionObject
             MaskPanelPadding.OnUpdate += delegate
             {
                 MaskPanelPadding.SetHeight(Option._expandTimer.Schedule * 88, 0);
-                // MaskPanelPadding.Padding = (Margin)Option.GetValue();
             };
-            MaskPanelPadding.LayoutType = LayoutType.Custom;
 
-            InnerViewPadding = new()
+            InnerViewPadding = new UIView
             {
                 BackgroundColor = Color.Blue * .5f,
-                Width = new(0, .2f),
-                Height = new(0, 0.4f),
-                Left = new(0, 0, 0.5f),
-                Top = new(0, 0, 0.5f)
+                Width = new Dimension(0, .2f),
+                Height = new Dimension(0, 0.4f),
+                Left = new Anchor(0, 0, 0.5f),
+                Top = new Anchor(0, 0, 0.5f)
             };
 
             UIView paddingBounds = new()
             {
                 BackgroundColor = Color.White * .1f,
-                Width = new(0, 1),
-                Height = new(0, 1),
-                Left = new(0, 0, 0.5f),
-                Top = new(0, 0, 0.5f)
+                Width = new Dimension(0, 1),
+                Height = new Dimension(0, 1),
+                Left = new Anchor(0, 0, 0.5f),
+                Top = new Anchor(0, 0, 0.5f),
+                Positioning = Positioning.Absolute
             };
             paddingBounds.Join(MaskPanelPadding);
             paddingBounds.OnUpdate += delegate
@@ -276,10 +274,11 @@ public class OptionMargin : OptionObject
             UIView paddingBoundsAni = new()
             {
                 BackgroundColor = Color.White * .1f,
-                Width = new(0, 1),
-                Height = new(0, 1),
-                Left = new(0, 0, 0.5f),
-                Top = new(0, 0, 0.5f)
+                Width = new Dimension(0, 1),
+                Height = new Dimension(0, 1),
+                Left = new Anchor(0, 0, 0.5f),
+                Top = new Anchor(0, 0, 0.5f),
+                Positioning = Positioning.Absolute
             };
             paddingBoundsAni.Join(MaskPanelPadding);
             paddingBoundsAni.OnUpdate += delegate

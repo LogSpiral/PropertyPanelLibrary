@@ -7,7 +7,6 @@ using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -27,9 +26,9 @@ internal class OptionVector4 : OptionObject
                     RangeAttribute,
                     IncrementAttribute);
         if (MetaData is ListValueHandler listHandler)
-            vecObj = new((IList<Vector4>)listHandler.List, listHandler.Index);
+            vecObj = new Vector4Object((IList<Vector4>)listHandler.List, listHandler.Index);
         else
-            vecObj = new(MetaData.VariableInfo, MetaData.Item);
+            vecObj = new Vector4Object(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
 
@@ -174,7 +173,7 @@ internal class OptionVector4 : OptionObject
                 min = (float)Range.Min;
                 max = (float)Range.Max;
             }
-            PanelMask = new();
+            PanelMask = new UIElementGroup();
             PanelMask.SetSize(height, 0, 0, 1);
             PanelMask.FlexWrap = true;
             PanelMask.FlexDirection = FlexDirection.Column;
@@ -196,7 +195,7 @@ internal class OptionVector4 : OptionObject
             {
                 Option.vecObj.XY = VecPanelXY.RealValue;
             };
-            VecPanelXY.Margin = new(8, 0, 8, 0);
+            VecPanelXY.Margin = new Margin(8, 0, 8, 0);
             VecPanelXY.SetSize(height, -4, 0, .5f);
             VecPanelXY.Join(PanelMask);
 
@@ -215,7 +214,7 @@ internal class OptionVector4 : OptionObject
             {
                 Option.vecObj.ZW = VecPanelZW.RealValue;
             };
-            VecPanelZW.Margin = new(8, 0, 8, 0);
+            VecPanelZW.Margin = new Margin(8, 0, 8, 0);
             VecPanelZW.SetSize(height, -4, 0, .5f);
             VecPanelZW.Join(PanelMask);
         }
@@ -290,7 +289,6 @@ internal class OptionVector4 : OptionObject
 
             public Vector4Panel(Vector2 initialValue, float increment, float min, float max)
             {
-                LayoutType = LayoutType.Custom;
                 var coordValue = initialValue.X;
                 if (increment != 0)
                     coordValue = MathF.Round(coordValue / increment) * increment;
@@ -306,39 +304,47 @@ internal class OptionVector4 : OptionObject
                 Max = max;
 
                 BackgroundColor = Color.Black * .3f;
-                BorderRadius = new(4);
+                BorderRadius = new Vector4(4);
 
                 float step = increment == 0 ? 0.2f : increment / (max - min);
 
                 for (float k = 0; k <= 1; k += step)
                 {
-                    var XGrid = new UIView()
+                    var xGrid = new UIView()
                     {
-                        Width = new(2, 0),
-                        Height = new(0, 1),
+                        Width = new Dimension(2, 0),
+                        Height = new Dimension(0, 0),
                         BackgroundColor = Color.Black * .2f,
-                        Left = new(0, k - .5f, .5f)
+                        Left = new Anchor(0, k - .5f, .5f),
+                        Positioning = Positioning.Absolute
                     };
-                    XGrid.Join(this);
-                    var YGrid = new UIView()
+                    xGrid.OnUpdate += delegate
                     {
-                        Height = new(2, 0),
-                        Width = new(0, 1),
-                        BackgroundColor = Color.Black * .2f,
-                        Top = new(0, k - .5f, .5f)
+                        xGrid.SetHeight(Bounds.Height);
                     };
-                    YGrid.Join(this);
+                    xGrid.Join(this);
+                    var yGrid = new UIView()
+                    {
+                        Height = new Dimension(2, 0),
+                        Width = new Dimension(0, 1),
+                        BackgroundColor = Color.Black * .2f,
+                        Top = new Anchor(0, k - .5f, .5f),
+                        Positioning = Positioning.Absolute
+                    };
+                    yGrid.Join(this);
                 }
 
                 XAxis = new UIView()
                 {
-                    Width = new(4, 0),
-                    Height = new(0, 1),
-                    BackgroundColor = SUIColor.Warn * .5f
+                    Width = new Dimension(4, 0),
+                    Height = new Dimension(0, 0),
+                    BackgroundColor = SUIColor.Warn * .5f,
+                    Positioning = Positioning.Absolute
                 };
                 XAxis.OnUpdate += delegate
                 {
                     XAxis.SetLeft(0, PercentX - .5f, .5f);
+                    XAxis.SetHeight(Bounds.Height);
                 };
                 XAxis.LeftMouseDown += delegate
                 {
@@ -353,9 +359,10 @@ internal class OptionVector4 : OptionObject
                 XAxis.Join(this);
                 YAxis = new UIView()
                 {
-                    Height = new(4, 0),
-                    Width = new(0, 1),
-                    BackgroundColor = SUIColor.Warn * .5f
+                    Height = new Dimension(4, 0),
+                    Width = new Dimension(0, 1),
+                    BackgroundColor = SUIColor.Warn * .5f,
+                    Positioning = Positioning.Absolute
                 };
                 YAxis.OnUpdate += delegate
                 {
@@ -374,10 +381,11 @@ internal class OptionVector4 : OptionObject
                 YAxis.Join(this);
                 PointPanel = new UIView()
                 {
-                    Height = new(8, 0),
-                    Width = new(8, 0),
+                    Height = new Dimension(8, 0),
+                    Width = new Dimension(8, 0),
                     BackgroundColor = SUIColor.Warn * .75f,
-                    BorderRadius = new(4f)
+                    BorderRadius = new Vector4(4f),
+                    Positioning = Positioning.Absolute
                 };
                 PointPanel.OnUpdate += delegate
                 {

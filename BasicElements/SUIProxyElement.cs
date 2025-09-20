@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using SilkyUIFramework;
 using SilkyUIFramework.Elements;
-using Terraria;
 using Terraria.UI;
 
 // using VanillaMouseEvent = Terraria.UI.UIMouseEvent;
@@ -25,8 +24,8 @@ public class SUIProxyElement : UIView
         SetLeft(innerElement.Left.Pixels, innerElement.Left.Percent, innerElement.HAlign);
         SetTop(innerElement.Top.Pixels, innerElement.Top.Percent, innerElement.VAlign);
         SetSize(innerElement.Width.Pixels, innerElement.Height.Pixels, innerElement.Width.Percent, innerElement.Height.Percent);
-        Margin = new(innerElement.MarginLeft, innerElement.MarginTop, innerElement.MarginRight, innerElement.MarginBottom);
-        Padding = new(innerElement.PaddingLeft, innerElement.PaddingTop, innerElement.PaddingRight, innerElement.PaddingBottom);
+        Margin = new Margin(innerElement.MarginLeft, innerElement.MarginTop, innerElement.MarginRight, innerElement.MarginBottom);
+        Padding = new Margin(innerElement.PaddingLeft, innerElement.PaddingTop, innerElement.PaddingRight, innerElement.PaddingBottom);
         BackgroundColor = Color.Black * .5f;
     }
 

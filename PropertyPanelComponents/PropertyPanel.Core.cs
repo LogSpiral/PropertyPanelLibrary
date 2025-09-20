@@ -10,7 +10,6 @@ using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Sorte
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using SilkyUIFramework;
 using SilkyUIFramework.Attributes;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
@@ -37,7 +36,7 @@ public partial class PropertyPanel : UIElementGroup
     public PropertyPanel()
     {
         SetPadding(8);
-        OptionList = new();
+        OptionList = new SUIScrollViewAutoHideBar();
         OptionList.SetWidth(0, 1);
         OptionList.SetHeight(0, 1);
         OptionList.Join(this);

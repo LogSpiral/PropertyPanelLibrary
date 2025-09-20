@@ -29,8 +29,8 @@ public class SearchBarDecorator : IPropertyPanelDecorator
     public static SearchBarDecorator NewSearchBar(PropertyPanel panel, out SearchingTextFilter filter, out SearchingTextSorter sorter)
     {
         // TODO 完成文本信息绑定
-        filter = new();
-        sorter = new();
+        filter = new SearchingTextFilter();
+        sorter = new SearchingTextSorter();
         return new SearchBarDecorator();
     }
 }

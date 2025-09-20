@@ -1,6 +1,5 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

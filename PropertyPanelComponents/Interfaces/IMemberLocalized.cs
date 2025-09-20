@@ -1,9 +1,7 @@
 ﻿using PropertyPanelLibrary.PropertyPanelComponents.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
-using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;

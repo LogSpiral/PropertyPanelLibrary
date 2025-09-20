@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.Graphics2D;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using SilkyUIFramework;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
@@ -35,10 +34,10 @@ public class OptionDropdownList : PropertyOption
 
         CheckValid();
 
-        var box = new UIElementGroup();
-        box.FitWidth = true;
-        box.SetLeft(0, 0, 1);
-        box.SetTop(0, 0, 0.5f);
+        var box = new UIElementGroup
+        {
+            FitWidth = true
+        };
         box.SetHeight(0, 1);
         box.Join(this);
 
@@ -169,8 +168,8 @@ public class OptionDropdownList : PropertyOption
         var bounds = _textBox.Bounds;
         SDFGraphics.NoBorderTriangleIsosceles(
             bounds.Position + new Vector2(bounds.Width - 20, bounds.Height * .5f),
-            new(.5f),
-            new(24, DropdownListPersists ? -12 : 12),
+            new Vector2(.5f),
+            new Vector2(24, DropdownListPersists ? -12 : 12),
             Color.White,
             SDFGraphics.GetMatrix(true));
     }

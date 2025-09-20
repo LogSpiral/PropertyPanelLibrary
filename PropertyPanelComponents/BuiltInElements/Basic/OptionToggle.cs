@@ -1,6 +1,5 @@
 ﻿using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
-using SilkyUIFramework;
 using SilkyUIFramework.Extensions;
 using Terraria.ModLoader;
 
@@ -12,8 +11,6 @@ public class OptionToggle : PropertyOption
     {
         SUIToggle toggle = new SUIToggle();
         toggle.SetSize(48, 26);
-        toggle.SetLeft(-6, 0, 1);
-        toggle.SetTop(0, 0, 0.5f);
         toggle.Join(this);
         toggle.Enabled = (bool)GetValue();
         toggle.OnContentsChanged += (sender, arg) =>

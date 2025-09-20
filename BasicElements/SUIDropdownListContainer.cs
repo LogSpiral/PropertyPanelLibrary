@@ -6,7 +6,6 @@ using SilkyUIFramework.Attributes;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -24,7 +23,7 @@ public class SUIDropdownListContainer : UIElementGroup
         public DropdownOption(string name, SUIDropdownListContainer father)
         {
             SetSize(0f, ElementHeight, 1, 0);
-            BorderRadius = new(8f);
+            BorderRadius = new Vector4(8f);
             Border = 3;
             _container = father; // 叠！
 

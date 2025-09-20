@@ -1,7 +1,5 @@
 ﻿using SilkyUIFramework.Elements;
-using System;
 using System.Collections.Generic;
-using Terraria.ModLoader.Config;
 using EDefinition = Terraria.ModLoader.Config.EntityDefinition;
 using static PropertyPanelLibrary.PropertyPanelComponents.Core.PropertyOption;
 

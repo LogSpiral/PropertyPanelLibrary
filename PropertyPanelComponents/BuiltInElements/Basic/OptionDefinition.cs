@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Options;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.EntityDefinition;
@@ -8,18 +7,14 @@ using ReLogic.Content;
 using SilkyUIFramework;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.Elements;
-using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
-using Terraria.UI;
 using EDefinition = Terraria.ModLoader.Config.EntityDefinition;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
@@ -28,9 +23,6 @@ public partial class OptionDefinition : PropertyOption
 {
     // 是否处于反射代理模式
     public bool IsReflectProxyMode { get; set; }
-    #region 反射用元数据
-
-    #endregion 反射用元数据
 
     #region 自定义处理器
     private IEntityDefinitionHandler Handler { get; set; }
@@ -74,31 +66,31 @@ public partial class OptionDefinition : PropertyOption
         }
         else
         {
-            Type EntityDefinitionElementType = null;
+            Type entityDefinitionElementType = null;
             if (GetAttribute<CustomModConfigItemAttribute>() is { } customItem)
             {
-                EntityDefinitionElementType = customItem.Type;
+                entityDefinitionElementType = customItem.Type;
                 IsReflectProxyMode = true;
             }
             else
             {
                 // TML内是这样硬编码的，我也没办法
-                Type type = VariableType;
+                var type = VariableType;
                 if (type == typeof(ItemDefinition))
-                    EntityDefinitionElementType = typeof(ItemDefinitionElement);
+                    entityDefinitionElementType = typeof(ItemDefinitionElement);
                 else if (type == typeof(ProjectileDefinition))
-                    EntityDefinitionElementType = typeof(ProjectileDefinitionElement);
+                    entityDefinitionElementType = typeof(ProjectileDefinitionElement);
                 else if (type == typeof(NPCDefinition))
-                    EntityDefinitionElementType = typeof(NPCDefinitionElement);
+                    entityDefinitionElementType = typeof(NPCDefinitionElement);
                 else if (type == typeof(PrefixDefinition))
-                    EntityDefinitionElementType = typeof(PrefixDefinitionElement);
+                    entityDefinitionElementType = typeof(PrefixDefinitionElement);
                 else if (type == typeof(BuffDefinition))
-                    EntityDefinitionElementType = typeof(BuffDefinitionElement);
+                    entityDefinitionElementType = typeof(BuffDefinitionElement);
                 else if (type == typeof(TileDefinition))
-                    EntityDefinitionElementType = typeof(TileDefinitionElement);
+                    entityDefinitionElementType = typeof(TileDefinitionElement);
                 IsReflectProxyMode = true;
             }
-            ProxyManager = new(EntityDefinitionElementType);
+            ProxyManager = new ReflectProxyModeManager(entityDefinitionElementType);
         }
 
 
@@ -136,8 +128,10 @@ public partial class OptionDefinition : PropertyOption
 
 
         #region 选项面板
-        _mainOptionPanel = new UIElementGroup();
-        _mainOptionPanel.BorderRadius = new(8);
+        _mainOptionPanel = new UIElementGroup
+        {
+            BorderRadius = new Vector4(8)
+        };
         _mainOptionPanel.SetPadding(4);
         _mainOptionPanel.SetWidth(0, 1);
         _mainOptionPanel.FitHeight = true;
@@ -155,26 +149,24 @@ public partial class OptionDefinition : PropertyOption
         foreach (var m in ModLoader.Mods)
         {
             var file = m.File;
-            if (file != null && file.HasFile("icon.png"))
+            if (file == null || !file.HasFile("icon.png")) continue;
+            try
             {
-                try
+                using (file.Open())
+                using (var s = file.GetStream("icon.png"))
                 {
-                    using (file.Open())
-                    using (var s = file.GetStream("icon.png"))
-                    {
-                        var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
+                    var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
 
-                        if (iconTexture.Width() == 80 && iconTexture.Height() == 80)
-                        {
-                            modIconTextures.Add(iconTexture);
-                            modNames.Add(m.DisplayNameClean);
-                        }
+                    if (iconTexture.Width() == 80 && iconTexture.Height() == 80)
+                    {
+                        modIconTextures.Add(iconTexture);
+                        modNames.Add(m.DisplayNameClean);
                     }
                 }
-                catch (Exception e)
-                {
-                    Logging.tML.Error("Unknown error", e);
-                }
+            }
+            catch (Exception e)
+            {
+                Logging.tML.Error("Unknown error", e);
             }
         }
         #endregion
@@ -183,9 +175,11 @@ public partial class OptionDefinition : PropertyOption
         var iconContainer = _iconContainer = new UIElementGroup();
         iconContainer.SetWidth(80);
         iconContainer.Join(_mainOptionPanel);
-        _modIcon = new SUIImage(modIconTextures[0]);
-        _modIcon.IgnoreMouseInteraction = true;
-        _modIcon.ImageScale = new(80f / _modIcon.ImageOriginalSize.X);
+        _modIcon = new SUIImage(modIconTextures[0])
+        {
+            IgnoreMouseInteraction = true
+        };
+        _modIcon.ImageScale = new Vector2(80f / _modIcon.ImageOriginalSize.X);
         _modIcon.Join(iconContainer);
         iconContainer.LeftMouseClick += (elem, evt) =>
         {
@@ -197,7 +191,7 @@ public partial class OptionDefinition : PropertyOption
             ProxyManager?.SetModFilter(modNames[currentModIndex]);
             Handler?.SetModFilter(modNames[currentModIndex]);
 
-            _modIcon.ImageScale = new(80f / _modIcon.ImageOriginalSize.X);
+            _modIcon.ImageScale = new Vector2(80f / _modIcon.ImageOriginalSize.X);
             _pendingUpdateRequired = true;
             _switchForward = true;
             _filteringName.InnerText.Text = "";
@@ -213,7 +207,7 @@ public partial class OptionDefinition : PropertyOption
             ProxyManager?.SetModFilter(modNames[currentModIndex]);
             Handler?.SetModFilter(modNames[currentModIndex]);
 
-            _modIcon.ImageScale = new(80f / _modIcon.ImageOriginalSize.X);
+            _modIcon.ImageScale = new Vector2(80f / _modIcon.ImageOriginalSize.X);
             _pendingUpdateRequired = true;
             _switchForward = false;
             _filteringName.InnerText.Text = "";
@@ -221,12 +215,12 @@ public partial class OptionDefinition : PropertyOption
         #endregion
 
         #region 筛选栏
-        _filteringName = new SUIEditTextBox()
+        _filteringName = new SUIEditTextBox
         {
             BackgroundColor = Color.Black * .3f,
-            BorderRadius = new(8)
+            BorderRadius = new Vector4(8),
+            FitWidth = false
         };
-        _filteringName.FitWidth = false;
         _filteringName.SetWidth(-90, 1);
         _filteringName.SetPadding(4);
         _filteringName.InnerText.ContentChanged += (sender, arg) =>
@@ -343,7 +337,7 @@ public partial class OptionDefinition : PropertyOption
             Handler?.SetModFilter(modNames[currentModIndex]);
 
             _modIcon.Texture2D = modIconTextures[currentModIndex];
-            _modIcon.ImageScale = new(80f / _modIcon.ImageOriginalSize.X);
+            _modIcon.ImageScale = new Vector2(80f / _modIcon.ImageOriginalSize.X);
             SetUpList();
         }
         #endregion

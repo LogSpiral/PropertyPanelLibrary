@@ -41,8 +41,6 @@ public class SUISlideBox : UIElementGroup
     {
         BackgroundColor = Color.Black * 0.3f;
         // Border = 6f;
-        SetSize(80f, 0, 0, 1f);
-        SetTop(0, 0, 0.5f);
     }
 
     ~SUISlideBox()
@@ -86,7 +84,7 @@ public class SUISlideBox : UIElementGroup
         var position = Bounds.Position;
         var center = Bounds.Center;
         var size = Bounds.Size;
-        BorderRadius = new(Bounds.Height * .5f);
+        BorderRadius = new Vector4(Bounds.Height * .5f);
         if (ColorMethod != null)
         {
             if (colorBar == null)

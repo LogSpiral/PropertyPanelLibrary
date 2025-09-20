@@ -34,10 +34,12 @@ public partial class PropertyOption
         OverflowHidden = true;
         SetWidth(0, 1f);
         SetHeight(40, 0);
-        BorderRadius = new(8);
-        SetPadding(4);
+        BorderRadius = new Vector4(8);
+        SetPadding(8,0);
         BackgroundColor = Color.Black * .25f;
-        LayoutType = LayoutType.Custom;
+        MainAlignment = MainAlignment.SpaceBetween;
+        CrossAlignment = CrossAlignment.Center;
+
 
         CheckAttributes();
 

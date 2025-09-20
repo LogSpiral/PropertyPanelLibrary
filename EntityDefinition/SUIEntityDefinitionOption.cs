@@ -2,7 +2,6 @@
 using SilkyUIFramework.Elements;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
 using EDefinition = Terraria.ModLoader.Config.EntityDefinition;
 
@@ -15,7 +14,7 @@ public class SUIEntityDefinitionOption : UIElementGroup
         get;
         set
         {
-            SetDefinition?.Invoke(this,new(value, field));
+            SetDefinition?.Invoke(this,new ValueChangedEventArgs<EDefinition>(value, field));
             OnSetDefinition(value,field);
             field = value;
         }

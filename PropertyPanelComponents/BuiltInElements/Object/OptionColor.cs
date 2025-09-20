@@ -11,7 +11,6 @@ using ReLogic.Content;
 using ReLogic.OS;
 using SilkyUIFramework;
 using SilkyUIFramework.Elements;
-using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
@@ -234,7 +233,8 @@ public class OptionColor : OptionObject
         colorPanel.Parameters["uColor"].SetValue(current.ToVector3());
         colorPanel.Parameters["uTransform"].SetValue(SDFGraphics.GetMatrix(true));
         colorPanel.CurrentTechnique.Passes[0].Apply();
-        Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, [vertexs[0], vertexs[1], vertexs[2], vertexs[1], vertexs[2], vertexs[3]], 0, 2);
+        Main.instance.GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, vertexs, 0, 4, [0, 1, 2, 1, 2, 3], 0, 2);
+        // Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, [vertexs[0], vertexs[1], vertexs[2], vertexs[1], vertexs[2], vertexs[3]], 0, 2);
         Main.spriteBatch.spriteEffectPass.Apply();
     }
 
@@ -251,7 +251,8 @@ public class OptionColor : OptionObject
         colorPanel.Parameters["uHueRotation"].SetValue(Matrix.CreateRotationZ(hsl.X * MathHelper.TwoPi));
         colorPanel.Parameters["uTransform"].SetValue(SDFGraphics.GetMatrix(true));
         colorPanel.CurrentTechnique.Passes[1].Apply();
-        Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, [vertexs[0], vertexs[1], vertexs[2], vertexs[1], vertexs[2], vertexs[3]], 0, 2);
+        Main.instance.GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, vertexs, 0, 4, [0, 1, 2, 1, 2, 3], 0, 2);
+        // Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, [vertexs[0], vertexs[1], vertexs[2], vertexs[1], vertexs[2], vertexs[3]], 0, 2);
         Main.spriteBatch.spriteEffectPass.Apply();
     }
 
@@ -292,11 +293,10 @@ public class OptionColor : OptionObject
         public RGBPanel(OptionColor optionColor)
         {
             Option = optionColor;
-            LayoutType = LayoutType.Custom;
             RedSlider = new UIView()
             {
-                Height = new(0, .1f),
-                Width = new(6, 0),
+                Height = new Dimension(0, .1f),
+                Width = new Dimension(6, 0),
                 BackgroundColor = Color.Transparent,
                 Border = 1,
                 BorderColor = Color.Black
@@ -311,12 +311,13 @@ public class OptionColor : OptionObject
             RedSlider.Join(this);
             GreenBlueRound = new UIView()
             {
-                Height = new(8, 0),
-                Width = new(8, 0),
+                Height = new Dimension(8, 0),
+                Width = new Dimension(8, 0),
                 BackgroundColor = Color.Transparent,
                 Border = 1,
                 BorderColor = Color.Black,
-                BorderRadius = new(4)
+                BorderRadius = new Vector4(4),
+                Positioning = Positioning.Absolute
             };
             GreenBlueRound.OnUpdate += delegate
             {
@@ -389,14 +390,14 @@ public class OptionColor : OptionObject
         public HSLRing(OptionColor optionColor)
         {
             Option = optionColor;
-            LayoutType = LayoutType.Custom;
             HueSlder = new UIView()
             {
-                Height = new(0, .1f),
-                Width = new(0, .1f),
+                Height = new Dimension(0, .1f),
+                Width = new Dimension(0, .1f),
                 BackgroundColor = Color.Transparent,
                 Border = 1,
-                BorderColor = Color.Black
+                BorderColor = Color.Black,
+                Positioning = Positioning.Absolute
             };
             HueSlder.OnUpdate += delegate
             {
@@ -406,17 +407,18 @@ public class OptionColor : OptionObject
                 HueSlder.BorderColor = HueSlder.HoverTimer.Lerp(Color.Black, SUIColor.Highlight);
                 Vector2 size = HueSlder.Bounds.Size;
                 size *= .5f;
-                HueSlder.BorderRadius = new(size, size.X, size.Y);
+                HueSlder.BorderRadius = new Vector4(size, size.X, size.Y);
             };
             HueSlder.Join(this);
             SaturationLightnessRound = new UIView()
             {
-                Height = new(8, 0),
-                Width = new(8, 0),
+                Height = new Dimension(8, 0),
+                Width = new Dimension(8, 0),
                 BackgroundColor = Color.Transparent,
                 Border = 1,
                 BorderColor = Color.Black,
-                BorderRadius = new(4)
+                BorderRadius = new Vector4(4),
+                Positioning = Positioning.Absolute
             };
             SaturationLightnessRound.OnUpdate += delegate
             {
@@ -531,11 +533,11 @@ public class OptionColor : OptionObject
         UIElementGroup colorPVPanel = new();
         colorPVPanel.SetSize(90, 25);
         colorPVPanel.SetMargin(4, 0);
-        colorPVPanel.BorderRadius = new(10);
+        colorPVPanel.BorderRadius = new Vector4(10);
         colorPVPanel.Join(ButtonContainer);
         UITextView popupText = new();
         popupText.Join(colorPVPanel);
-        popupText.TextAlign = new(0, .5f);
+        popupText.TextAlign = new Vector2(0, .5f);
         popupText.SetTop(0, 0, .5f);
         popupText.SetLeft(4);
         colorPVPanel.OnUpdate += delegate
@@ -566,10 +568,10 @@ public class OptionColor : OptionObject
             }
         };
 
-        PreviewButton = new();
+        PreviewButton = new SlidePreviewButton();
         PreviewButton.SetSize(25, 25);
         PreviewButton.SetMargin(4, 0);
-        PreviewButton.BorderRadius = new(8f);
+        PreviewButton.BorderRadius = new Vector4(8f);
         PreviewButton.BackgroundColor = Color.Black * .2f;
         PreviewButton.LeftMouseClick += delegate
         {
@@ -589,15 +591,15 @@ public class OptionColor : OptionObject
             PreviewButton.SetWidth(25 * factor, 0);
         };
 
-        ModeButton = new(ModAsset.RGBMode);
+        ModeButton = new SUIImage(ModAsset.RGBMode);
         ModeButton.SetSize(25, 25);
         ModeButton.SetMargin(4, 0);
         ModeButton.BackgroundColor = default;
         ModeButton.FitHeight = false;
         ModeButton.FitWidth = false;
-        ModeButton.BorderRadius = new(8f);
-        ModeButton.ImageScale = new(.67f);
-        ModeButton.ImageAlign = new(.5f);
+        ModeButton.BorderRadius = new Vector4(8f);
+        ModeButton.ImageScale = new Vector2(.67f);
+        ModeButton.ImageAlign = new Vector2(.5f);
         ModeButton.Join(ButtonContainer);
         ModeButton.LeftMouseClick += delegate
         {
@@ -634,9 +636,9 @@ public class OptionColor : OptionObject
             ModeButton.ImageScale = new Vector2(factor, 1) * .67f;
         };
         if (MetaData is ListValueHandler listHandler)
-            _colorHandler = new((IList<Color>)listHandler.List, listHandler.Index);
+            _colorHandler = new ColorHandler((IList<Color>)listHandler.List, listHandler.Index);
         else
-            _colorHandler = new(MetaData.VariableInfo, MetaData.Item);
+            _colorHandler = new ColorHandler(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
 
@@ -692,10 +694,12 @@ public class OptionColor : OptionObject
             const float height = 184;
             list.SetWidth(-height - 8, 1);
 
-            RGBPanel = new(Option);
-            RGBPanel.Margin = new(8, 0, 8, 0);
+            RGBPanel = new RGBPanel(Option)
+            {
+                Margin = new Margin(8, 0, 8, 0)
+            };
             RGBPanel.SetSize(height, 0, 0, 1);
-            RGBPanel.BorderRadius = new(8f);
+            RGBPanel.BorderRadius = new Vector4(8f);
             RGBPanel.BackgroundColor = Color.Black * .4f;
             RGBPanel.Join(panel);
         }
@@ -724,10 +728,12 @@ public class OptionColor : OptionObject
             const float height = 184;
             list.SetWidth(-height - 8, 1);
 
-            HSLRing = new(Option);
-            HSLRing.Margin = new(8, 0, 8, 0);
+            HSLRing = new HSLRing(Option)
+            {
+                Margin = new Margin(8, 0, 8, 0)
+            };
             HSLRing.SetSize(height, 0, 0, 1);
-            HSLRing.BorderRadius = new(8f);
+            HSLRing.BorderRadius = new Vector4(8f);
             HSLRing.BackgroundColor = Color.Black * .4f;
             HSLRing.Join(panel);
         }
@@ -758,24 +764,28 @@ public class OptionColor : OptionObject
             const float height = 100;
             list.SetWidth(-height - 8, 1);
 
-            PanelMask = new();
+            PanelMask = new UIElementGroup();
             PanelMask.SetSize(height, 0, 0, 1);
             PanelMask.FlexWrap = true;
             PanelMask.FlexDirection = FlexDirection.Column;
             PanelMask.MainAlignment = MainAlignment.SpaceBetween;
             PanelMask.Join(panel);
 
-            RGBPanel = new(Option);
-            RGBPanel.Margin = new(8, 0, 8, 0);
+            RGBPanel = new RGBPanel(Option)
+            {
+                Margin = new Margin(8, 0, 8, 0)
+            };
             RGBPanel.SetSize(height, -4, 0, .5f);
-            RGBPanel.BorderRadius = new(8f);
+            RGBPanel.BorderRadius = new Vector4(8f);
             RGBPanel.BackgroundColor = Color.Black * .4f;
             RGBPanel.Join(PanelMask);
 
-            HSLRing = new(Option);
-            HSLRing.Margin = new(8, 0, 8, 0);
+            HSLRing = new HSLRing(Option)
+            {
+                Margin = new Margin(8, 0, 8, 0)
+            };
             HSLRing.SetSize(height, -4, 0, .5f);
-            HSLRing.BorderRadius = new(8f);
+            HSLRing.BorderRadius = new Vector4(8f);
             HSLRing.BackgroundColor = Color.Black * .4f;
             HSLRing.Join(PanelMask);
         }

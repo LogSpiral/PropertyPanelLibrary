@@ -8,7 +8,6 @@ using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -28,9 +27,9 @@ public class OptionVector3 : OptionObject
                     RangeAttribute,
                     IncrementAttribute);
         if (MetaData is ListValueHandler listHandler)
-            vecObj = new((IList<Vector3>)listHandler.List, listHandler.Index);
+            vecObj = new Vector3Object((IList<Vector3>)listHandler.List, listHandler.Index);
         else
-            vecObj = new(MetaData.VariableInfo, MetaData.Item);
+            vecObj = new Vector3Object(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
 
@@ -153,7 +152,7 @@ public class OptionVector3 : OptionObject
             {
                 Option.vecObj.Vec3 = VecPanel.RealValue;
             };
-            VecPanel.Margin = new(8, 0, 8, 0);
+            VecPanel.Margin = new Margin(8, 0, 8, 0);
             VecPanel.SetSize(height, 0, 0, 1);
             VecPanel.Join(panel);
         }
@@ -263,7 +262,6 @@ public class OptionVector3 : OptionObject
 
             public Vector3Panel(Vector3 initialValue, float increment, float min, float max)
             {
-                LayoutType = LayoutType.Custom;
                 var coordValue = initialValue.X;
                 if (increment != 0)
                     coordValue = MathF.Round(coordValue / increment) * increment;
@@ -284,12 +282,12 @@ public class OptionVector3 : OptionObject
                 Max = max;
 
                 BackgroundColor = Color.Black * .3f;
-                BorderRadius = new(4);
+                BorderRadius = new Vector4(4);
 
                 RotationZ = 0f;
                 _step = Increment == 0 ? 0.2f : Increment / (Max - Min);
 
-                PointPanel = new();
+                PointPanel = new UIView();
                 PointPanel.Join(this);
             }
 

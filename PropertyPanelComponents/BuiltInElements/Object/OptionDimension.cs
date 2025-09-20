@@ -5,7 +5,6 @@ using SilkyUIFramework;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
@@ -22,9 +21,9 @@ public class OptionDimension : OptionObject
         if (owner == null)
             PropertyPanel.Decorator = new DimensionDecorator(this);
         if (MetaData is ListValueHandler listHandler)
-            DimensionObj = new((IList<Dimension>)listHandler.List, listHandler.Index);
+            DimensionObj = new DimensionObject((IList<Dimension>)listHandler.List, listHandler.Index);
         else
-            DimensionObj = new(MetaData.VariableInfo, MetaData.Item);
+            DimensionObj = new DimensionObject(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
 
@@ -53,7 +52,7 @@ public class OptionDimension : OptionObject
             get => current.Pixels;
             set
             {
-                current = new(value, current.Percent);
+                current = new Dimension(value, current.Percent);
                 Update();
             }
         }
@@ -63,7 +62,7 @@ public class OptionDimension : OptionObject
             get => current.Percent;
             set
             {
-                current = new(current.Pixels, value);
+                current = new Dimension(current.Pixels, value);
                 Update();
             }
         }
@@ -116,9 +115,9 @@ public class OptionDimension : OptionObject
             const float height = 120f;
             list.SetWidth(-height - 8, 1);
 
-            MaskPanel = new()
+            MaskPanel = new UIElementGroup
             {
-                Margin = new(8, 0, 8, 0),
+                Margin = new Margin(8, 0, 8, 0),
                 BackgroundColor = Color.Black * .4f
             };
             MaskPanel.SetSize(height, 40, 0, 0);
@@ -128,11 +127,11 @@ public class OptionDimension : OptionObject
                 MaskPanel.SetHeight(Option._expandTimer.Schedule * 40, 0);
             };
 
-            InnerView = new()
+            InnerView = new UIView
             {
                 BackgroundColor = Color.Blue * .5f,
-                Width = new(0, .2f),
-                Height = new(0, 1),
+                Width = new Dimension(0, .2f),
+                Height = new Dimension(0, 1),
             };
             InnerView.OnUpdate += delegate
             {

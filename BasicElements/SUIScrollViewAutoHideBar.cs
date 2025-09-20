@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using SilkyUIFramework;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.Attributes;
 using SilkyUIFramework.Elements;
@@ -44,7 +45,7 @@ public class SUIScrollViewAutoHideBar : SUIScrollView
             ScrollBar.SetHeight(4 * factor);
         else
             ScrollBar.SetWidth(4 * factor);
-        Gap = new(8 * factor);
+        Gap = new Size(8 * factor);
         base.UpdateStatus(gameTime);
     }
 }

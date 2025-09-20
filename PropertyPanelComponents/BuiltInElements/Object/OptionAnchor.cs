@@ -5,7 +5,6 @@ using SilkyUIFramework;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
@@ -27,9 +26,9 @@ public class OptionAnchor : OptionObject
         if (owner == null)
             PropertyPanel.Decorator = new AnchorDecorator(this);
         if (MetaData is ListValueHandler listHandler)
-            anchorObj = new((IList<Anchor>)listHandler.List, listHandler.Index);
+            anchorObj = new AnchorObject((IList<Anchor>)listHandler.List, listHandler.Index);
         else
-            anchorObj = new(MetaData.VariableInfo, MetaData.Item);
+            anchorObj = new AnchorObject(MetaData.VariableInfo, MetaData.Item);
         ShowStringValueInLabel = false;
     }
 
@@ -58,7 +57,7 @@ public class OptionAnchor : OptionObject
             get => current.Pixels;
             set
             {
-                current = new(value, current.Percent, current.Alignment);
+                current = new Anchor(value, current.Percent, current.Alignment);
                 Update();
             }
         }
@@ -68,7 +67,7 @@ public class OptionAnchor : OptionObject
             get => current.Percent;
             set
             {
-                current = new(current.Pixels, value, current.Alignment);
+                current = new Anchor(current.Pixels, value, current.Alignment);
                 Update();
             }
         }
@@ -78,7 +77,7 @@ public class OptionAnchor : OptionObject
             get => current.Alignment;
             set
             {
-                current = new(current.Pixels, current.Percent, value);
+                current = new Anchor(current.Pixels, current.Percent, value);
                 Update();
             }
         }
@@ -131,9 +130,9 @@ public class OptionAnchor : OptionObject
             const float height = 120f;
             list.SetWidth(-height - 8, 1);
 
-            MaskPanel = new()
+            MaskPanel = new UIElementGroup
             {
-                Margin = new(8, 0, 8, 0),
+                Margin = new Margin(8, 0, 8, 0),
                 BackgroundColor = Color.Black * .4f
             };
             MaskPanel.SetSize(height, 40, 0, 0);
@@ -143,11 +142,11 @@ public class OptionAnchor : OptionObject
                 MaskPanel.SetHeight(Option._expandTimer.Schedule * 40, 0);
             };
 
-            InnerView = new()
+            InnerView = new UIView
             {
                 BackgroundColor = Color.Blue * .5f,
-                Width = new(0, .2f),
-                Height = new(0, 1),
+                Width = new Dimension(0, .2f),
+                Height = new Dimension(0, 1),
             };
             InnerView.OnUpdate += delegate
             {

@@ -6,6 +6,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Opti
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
+using SilkyUIFramework;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
@@ -114,9 +115,9 @@ public abstract partial class OptionCollection : OptionObject
         {
             BackgroundColor = Color.Black * 0.4f,
             BorderRadius = new Vector4(4f),
-            Width = new(25, 0.0f),
-            Height = new(25, 0.0f),
-            Margin = new(4f, 0, 4, 0)
+            Width = new Dimension(25, 0.0f),
+            Height = new Dimension(25, 0.0f),
+            Margin = new Margin(4f, 0, 4, 0)
         };
         //ExpandButton.trianglePercentCoord[1] = new(0f, .5f);
         AddButton.LeftMouseClick += delegate

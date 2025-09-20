@@ -2,7 +2,6 @@
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
-using System.Linq;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.OptionDecorators;
 

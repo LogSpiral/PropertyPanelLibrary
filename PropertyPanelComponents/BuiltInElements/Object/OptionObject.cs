@@ -11,7 +11,6 @@ using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -45,11 +44,11 @@ public class OptionObject : PropertyOption
 
     private void BuildButtonContainer()
     {
-        ButtonContainer = new()
+        ButtonContainer = new UIElementGroup
         {
             FitWidth = true,
             FitHeight = true,
-            Margin = new(4f),
+            Margin = new Margin(4f),
         };
         ButtonContainer.Join(this);
     }
@@ -91,9 +90,9 @@ public class OptionObject : PropertyOption
     {
         DeleteButton = new SUICross(SUIColor.Warn * .5f, SUIColor.Warn);
         DeleteButton.SetSize(25, 25);
-        DeleteButton.Margin = new(4f, 0, 4, 0);
+        DeleteButton.Margin = new Margin(4f, 0, 4, 0);
         DeleteButton.BackgroundColor = Color.Black * .4f;
-        DeleteButton.BorderRadius = new(4f);
+        DeleteButton.BorderRadius = new Vector4(4f);
         DeleteButton.LeftMouseClick += delegate
         {
             DeleteProcess();

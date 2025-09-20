@@ -74,13 +74,11 @@ public class OptionSlider : PropertyOption
     protected override void FillOption()
     {
         var box = new UIElementGroup();
-        box.SetLeft(0, 0, 1);
-        box.SetTop(0, 0, 0.5f);
         box.SetHeight(0, 1);
         box.FitWidth = true;
         box.Join(this);
-        box.SetPadding(4);
-        box.CrossAlignment = CrossAlignment.Start;
+        box.MainAlignment = MainAlignment.SpaceEvenly;
+        box.CrossAlignment = CrossAlignment.Center;
         AddUpDown(box);
         AddTextBox(box);
         AddSlideBox(box);
@@ -199,9 +197,7 @@ public class OptionSlider : PropertyOption
             buttonColor = Color.Black * 0.4f,
         };
         _splitButton.SetSize(25, 25);
-        _splitButton.SetTop(0, 0, 0.5f);
-        _splitButton.SetPadding(4f);
-        _splitButton.Margin = new(4f);
+        _splitButton.Margin = new Margin(4f);
         _splitButton.LeftMouseDown += (sender, evt) =>
         {
             SoundEngine.PlaySound(SoundID.MenuTick);
@@ -231,10 +227,9 @@ public class OptionSlider : PropertyOption
             },
             MaxLength = isInt ? 12 : 4,
             DefaultValue = Default,
-            Format = isInt ? "0" : "0.00"
+            Format = isInt ? "0" : "0.00",
+            BorderRadius = new Vector4(8f)
         };
-        _numericTextBox.SetTop(0, 0, 0.5f);
-        _numericTextBox.BorderRadius = new(8f);
         _numericTextBox.InnerText.ContentChanged += (sender, arg) =>
         {
             if (!double.TryParse(arg.Text, out var value))
@@ -250,17 +245,17 @@ public class OptionSlider : PropertyOption
             value = Math.Clamp(value, Min, Max);
             SetConfigValue(value, broadcast: true);
         };
-        _numericTextBox.SetPadding(2);
-        _numericTextBox.Margin = new(4f);
-        _numericTextBox.SetHeight(0, 1f);
-        _numericTextBox.SetPadding(4f);
+        _numericTextBox.SetMargin(4f);
+        _numericTextBox.SetHeight(0, .75f);
         _numericTextBox.Join(box);
     }
 
     private void AddSlideBox(UIElementGroup box)
     {
-        _slideBox = new SUISlideBox();
-        _slideBox.ColorMethod = _colorLerpMethod;
+        _slideBox = new SUISlideBox
+        {
+            ColorMethod = _colorLerpMethod
+        };
         UpdateValue();
         _slideBox.ValueChangeCallback += () =>
         {
@@ -282,8 +277,9 @@ public class OptionSlider : PropertyOption
             value = Math.Clamp(value, Min, Max);
             SetConfigValue(value, broadcast: true);
         };
-        _slideBox.SetPadding(4f);
-        _slideBox.Margin = new(4f);
+        _slideBox.SetWidth(80, 0);
+        _slideBox.SetHeight(0, 0.75f);
+        _slideBox.SetMargin(4f);
         _slideBox.Join(box);
     }
 
@@ -298,7 +294,7 @@ public class OptionSlider : PropertyOption
         UpdateValue();
 
     }
-    void UpdateValue() 
+    void UpdateValue()
     {
         // 简直是天才的转换
         var value = float.Parse(GetValue()!.ToString()!);
