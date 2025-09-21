@@ -51,6 +51,7 @@ internal class OptionVector4 : OptionObject
 
         private Vector4 current;
 
+        // ReSharper disable once UnusedMember.Local
         public float X
         {
             get => current.X;
@@ -61,6 +62,7 @@ internal class OptionVector4 : OptionObject
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         public float Y
         {
             get => current.Y;
@@ -71,6 +73,7 @@ internal class OptionVector4 : OptionObject
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         public float Z
         {
             get => current.Z;
@@ -81,6 +84,7 @@ internal class OptionVector4 : OptionObject
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         public float W
         {
             get => current.W;
@@ -91,6 +95,7 @@ internal class OptionVector4 : OptionObject
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         internal Vector4 Vec4
         {
             get => current;
@@ -101,9 +106,9 @@ internal class OptionVector4 : OptionObject
             }
         }
 
+        // ReSharper disable once InconsistentNaming
         internal Vector2 XY
         {
-            get => current.XY();
             set
             {
                 current = current with { X = value.X, Y = value.Y };
@@ -111,9 +116,9 @@ internal class OptionVector4 : OptionObject
             }
         }
 
+        // ReSharper disable once InconsistentNaming
         internal Vector2 ZW
         {
-            get => current.ZW();
             set
             {
                 current = current with { Z = value.X, W = value.Y };
@@ -149,7 +154,11 @@ internal class OptionVector4 : OptionObject
         private OptionVector4 Option { get; init; } = optionVector4;
         private RangeAttribute Range { get; init; } = range;
         private IncrementAttribute Increment { get; init; } = increment;
+        
+        // ReSharper disable once InconsistentNaming
         private Vector4Panel VecPanelXY { get; set; }
+        
+        // ReSharper disable once InconsistentNaming
         private Vector4Panel VecPanelZW { get; set; }
 
         private UIElementGroup PanelMask { get; set; }
@@ -231,32 +240,29 @@ internal class OptionVector4 : OptionObject
 
         private class Vector4Panel : UIElementGroup
         {
-            public float PercentX { get; set; }
-            public float PercentY { get; set; }
+            private float PercentX { get; set; }
+            private float PercentY { get; set; }
 
-            public UIView XAxis { get; set; }
-            public UIView YAxis { get; set; }
-            public UIView PointPanel { get; set; }
+            public UIView XAxis { get; }
+            public UIView YAxis { get; }
+            public UIView PointPanel { get; }
 
             public Vector2 RealValue
             {
                 get
                 {
                     Vector2 result = default;
-                    float min = Min;
-                    float max = Max;
-                    float increment = Increment;
 
-                    float value = min + (max - min) * PercentX;
-                    if (increment != 0)
-                        value = MathF.Round(value / increment) * increment;
-                    value = Math.Clamp(value, min, max);
+                    var value = Min + (Max - Min) * PercentX;
+                    if (Increment != 0)
+                        value = MathF.Round(value / Increment) * Increment;
+                    value = Math.Clamp(value, Min, Max);
                     result.X = value;
 
-                    value = min + (max - min) * PercentY;
-                    if (increment != 0)
-                        value = MathF.Round(value / increment) * increment;
-                    value = Math.Clamp(value, min, max);
+                    value = Min + (Max - Min) * PercentY;
+                    if (Increment != 0)
+                        value = MathF.Round(value / Increment) * Increment;
+                    value = Math.Clamp(value, Min, Max);
                     result.Y = value;
                     field = result;
                     return result;
@@ -264,24 +270,21 @@ internal class OptionVector4 : OptionObject
                 set
                 {
                     if (field == value) return;
-                    float min = Min;
-                    float max = Max;
-                    float increment = Increment;
                     var coordValue = value.X;
-                    if (increment != 0)
-                        coordValue = MathF.Round(coordValue / increment) * increment;
-                    PercentX = Utils.GetLerpValue(min, max, coordValue, true);
+                    if (Increment != 0)
+                        coordValue = MathF.Round(coordValue / Increment) * Increment;
+                    PercentX = Utils.GetLerpValue(Min, Max, coordValue, true);
 
                     coordValue = value.Y;
-                    if (increment != 0)
-                        coordValue = MathF.Round(coordValue / increment) * increment;
-                    PercentY = Utils.GetLerpValue(min, max, coordValue, true);
+                    if (Increment != 0)
+                        coordValue = MathF.Round(coordValue / Increment) * Increment;
+                    PercentY = Utils.GetLerpValue(Min, Max, coordValue, true);
                 }
             }
 
-            public float Increment { get; init; }
-            public float Min { get; init; }
-            public float Max { get; init; }
+            private float Increment { get; }
+            private float Min { get; }
+            private float Max { get; }
 
             private bool _isDragging;
             private bool _lockX;
@@ -312,8 +315,8 @@ internal class OptionVector4 : OptionObject
                 {
                     var xGrid = new UIView()
                     {
-                        Width = new Dimension(2, 0),
-                        Height = new Dimension(0, 0),
+                        Width = new Dimension(2),
+                        Height = new Dimension(0),
                         BackgroundColor = Color.Black * .2f,
                         Left = new Anchor(0, k - .5f, .5f),
                         Positioning = Positioning.Absolute
@@ -325,7 +328,7 @@ internal class OptionVector4 : OptionObject
                     xGrid.Join(this);
                     var yGrid = new UIView()
                     {
-                        Height = new Dimension(2, 0),
+                        Height = new Dimension(2),
                         Width = new Dimension(0, 1),
                         BackgroundColor = Color.Black * .2f,
                         Top = new Anchor(0, k - .5f, .5f),
@@ -336,8 +339,8 @@ internal class OptionVector4 : OptionObject
 
                 XAxis = new UIView()
                 {
-                    Width = new Dimension(4, 0),
-                    Height = new Dimension(0, 0),
+                    Width = new Dimension(4),
+                    Height = new Dimension(0),
                     BackgroundColor = SUIColor.Warn * .5f,
                     Positioning = Positioning.Absolute
                 };
@@ -359,7 +362,7 @@ internal class OptionVector4 : OptionObject
                 XAxis.Join(this);
                 YAxis = new UIView()
                 {
-                    Height = new Dimension(4, 0),
+                    Height = new Dimension(4),
                     Width = new Dimension(0, 1),
                     BackgroundColor = SUIColor.Warn * .5f,
                     Positioning = Positioning.Absolute
@@ -381,8 +384,8 @@ internal class OptionVector4 : OptionObject
                 YAxis.Join(this);
                 PointPanel = new UIView()
                 {
-                    Height = new Dimension(8, 0),
-                    Width = new Dimension(8, 0),
+                    Height = new Dimension(8),
+                    Width = new Dimension(8),
                     BackgroundColor = SUIColor.Warn * .75f,
                     BorderRadius = new Vector4(4f),
                     Positioning = Positioning.Absolute
@@ -401,7 +404,7 @@ internal class OptionVector4 : OptionObject
                     _isDragging = false;
                 };
                 PointPanel.Join(this);
-                LeftMouseDown += (sender, evt) =>
+                LeftMouseDown += delegate
                 {
                     _isDragging = true;
                     var bounds = Bounds;

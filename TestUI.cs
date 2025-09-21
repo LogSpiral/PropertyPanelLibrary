@@ -53,7 +53,7 @@ public class PropertyPanelShowcaseConfig
 
     public Vector3 SomeVector3 { get; set; } = new(223, 214, 514);
     public Vector4 SomeVector4 { get; set; } = new(514, 514, 514, 514);
-    public Anchor SomeAnchor { get; set; } = new(4, 0.1f, 0);
+    public Anchor SomeAnchor { get; set; } = new(4, 0.1f);
 
     public Dimension SomeDimension { get; set; } = new(4, 0.1f);
     public Margin SomeMargin { get; set; } = new(4, 0.1f, 0, 1f);

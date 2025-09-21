@@ -293,8 +293,8 @@ public class OptionRectangle : OptionObject
                 {
                     var XGrid = new UIView()
                     {
-                        Width = new Dimension(2, 0),
-                        Height = new Dimension(0, 0),
+                        Width = new Dimension(2),
+                        Height = new Dimension(0),
                         BackgroundColor = Color.Black * .2f,
                         Left = new Anchor(0, k - .5f, .5f),
                         Positioning = Positioning.Absolute
@@ -306,7 +306,7 @@ public class OptionRectangle : OptionObject
                     XGrid.Join(this);
                     var YGrid = new UIView()
                     {
-                        Height = new Dimension(2, 0),
+                        Height = new Dimension(2),
                         Width = new Dimension(0, 1),
                         BackgroundColor = Color.Black * .2f,
                         Top = new Anchor(0, k - .5f, .5f),
@@ -319,8 +319,8 @@ public class OptionRectangle : OptionObject
 
                 LeftAxis = new UIView()
                 {
-                    Width = new Dimension(4, 0),
-                    Height = new Dimension(0, 0),
+                    Width = new Dimension(4),
+                    Height = new Dimension(0),
                     BackgroundColor = SUIColor.Warn * .5f,
                     Positioning = Positioning.Absolute
                 };
@@ -347,7 +347,7 @@ public class OptionRectangle : OptionObject
 
                 RightAxis = new UIView()
                 {
-                    Width = new Dimension(4, 0),
+                    Width = new Dimension(4),
                     Height = new Dimension(0, 1),
                     BackgroundColor = SUIColor.Highlight * .5f,
                     Positioning = Positioning.Absolute
@@ -375,7 +375,7 @@ public class OptionRectangle : OptionObject
 
                 TopAxis = new UIView()
                 {
-                    Height = new Dimension(4, 0),
+                    Height = new Dimension(4),
                     Width = new Dimension(0, 1),
                     BackgroundColor = SUIColor.Warn * .5f,
                     Positioning = Positioning.Absolute
@@ -402,7 +402,7 @@ public class OptionRectangle : OptionObject
 
                 BottomAxis = new UIView()
                 {
-                    Height = new Dimension(4, 0),
+                    Height = new Dimension(4),
                     Width = new Dimension(0, 1),
                     BackgroundColor = SUIColor.Warn * .5f,
                     Positioning = Positioning.Absolute
@@ -429,8 +429,8 @@ public class OptionRectangle : OptionObject
 
                 StartPanel = new UIView()
                 {
-                    Height = new Dimension(8, 0),
-                    Width = new Dimension(8, 0),
+                    Height = new Dimension(8),
+                    Width = new Dimension(8),
                     BackgroundColor = SUIColor.Warn * .75f,
                     BorderRadius = new Vector4(4f),
                     Positioning = Positioning.Absolute
@@ -456,8 +456,8 @@ public class OptionRectangle : OptionObject
 
                 EndPanel = new UIView()
                 {
-                    Height = new Dimension(8, 0),
-                    Width = new Dimension(8, 0),
+                    Height = new Dimension(8),
+                    Width = new Dimension(8),
                     BackgroundColor = SUIColor.Warn * .75f,
                     BorderRadius = new Vector4(4f),
                     Positioning = Positioning.Absolute

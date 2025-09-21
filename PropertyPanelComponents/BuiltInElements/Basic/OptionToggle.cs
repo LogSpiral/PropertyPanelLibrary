@@ -15,7 +15,7 @@ public class OptionToggle : PropertyOption
         toggle.Enabled = (bool)GetValue();
         toggle.OnContentsChanged += (sender, arg) =>
         {
-            SetValue(arg.NewValue, true);
+            SetValue(arg.NewValue);
         };
         base.FillOption();
     }

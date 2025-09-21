@@ -115,8 +115,8 @@ public abstract partial class OptionCollection : OptionObject
         {
             BackgroundColor = Color.Black * 0.4f,
             BorderRadius = new Vector4(4f),
-            Width = new Dimension(25, 0.0f),
-            Height = new Dimension(25, 0.0f),
+            Width = new Dimension(25),
+            Height = new Dimension(25),
             Margin = new Margin(4f, 0, 4, 0)
         };
         //ExpandButton.trianglePercentCoord[1] = new(0f, .5f);

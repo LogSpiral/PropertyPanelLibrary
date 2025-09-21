@@ -296,7 +296,7 @@ public class OptionColor : OptionObject
             RedSlider = new UIView()
             {
                 Height = new Dimension(0, .1f),
-                Width = new Dimension(6, 0),
+                Width = new Dimension(6),
                 BackgroundColor = Color.Transparent,
                 Border = 1,
                 BorderColor = Color.Black
@@ -311,8 +311,8 @@ public class OptionColor : OptionObject
             RedSlider.Join(this);
             GreenBlueRound = new UIView()
             {
-                Height = new Dimension(8, 0),
-                Width = new Dimension(8, 0),
+                Height = new Dimension(8),
+                Width = new Dimension(8),
                 BackgroundColor = Color.Transparent,
                 Border = 1,
                 BorderColor = Color.Black,
@@ -412,8 +412,8 @@ public class OptionColor : OptionObject
             HueSlder.Join(this);
             SaturationLightnessRound = new UIView()
             {
-                Height = new Dimension(8, 0),
-                Width = new Dimension(8, 0),
+                Height = new Dimension(8),
+                Width = new Dimension(8),
                 BackgroundColor = Color.Transparent,
                 Border = 1,
                 BorderColor = Color.Black,
