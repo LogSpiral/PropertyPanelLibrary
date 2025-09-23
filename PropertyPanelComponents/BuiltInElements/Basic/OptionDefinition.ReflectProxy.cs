@@ -3,6 +3,7 @@ using SilkyUIFramework.Extensions;
 using System;
 using System.Collections;
 using System.Reflection;
+using Terraria;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -167,6 +168,7 @@ public partial class OptionDefinition
             {
                 option._selectionExpanded = !option._selectionExpanded;
                 option._pendingUpdateRequired = true;
+                Main.NewText(proxyOptionChoice.Bounds);
             };
             proxyOptionChoice.SetTop(2);
             proxyOptionChoice.SetLeft(-4, 0, 0);

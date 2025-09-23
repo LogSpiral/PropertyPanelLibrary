@@ -5,6 +5,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
 
@@ -83,6 +84,7 @@ public class ObjectMetaDataFiller(object configObject) : IPropertyOptionFiller
             foreach (var variableInfo in variableInfos)
             {
                 if (Attribute.IsDefined(variableInfo.MemberInfo, typeof(PropertyPanelIgnoreAttribute))) continue;
+                if(Attribute.IsDefined(variableInfo.MemberInfo,typeof(JsonIgnoreAttribute)))continue;
                 var option = VariableInfoToOption(configObject, variableInfo);
                 option.owner = Owner;
                 if (GlobalAttributes != null)

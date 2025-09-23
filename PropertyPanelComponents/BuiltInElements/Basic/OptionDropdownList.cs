@@ -120,11 +120,15 @@ public class OptionDropdownList : PropertyOption
 
         _maxTextWidth = _valueStrings.Max(i => ChatManager.GetStringSize(FontAssets.MouseText.Value, i, Vector2.One).X);
     }
-
+    protected override void CheckAttributes()
+    {
+        OptionLabelsAttribute = GetAttribute<OptionStringsAttribute>();
+        base.CheckAttributes();
+    }
+    protected OptionStringsAttribute OptionLabelsAttribute { get; set; }
     private void CheckValid()
     {
-        var strOptionAttribute = GetAttribute<OptionStringsAttribute>();
-        if (strOptionAttribute != null)
+        if (OptionLabelsAttribute is { } strOptionAttribute)
         {
             _valueStrings = strOptionAttribute.OptionLabels;
             IsStringOption = true;
@@ -176,7 +180,7 @@ public class OptionDropdownList : PropertyOption
 
     private int GetIndex() => IsStringOption ? Array.IndexOf(_valueStrings, GetValue()) : Array.IndexOf(Enum.GetValues(VariableType), GetValue());
 
-    private string GetString() => IsStringOption ? GetValue().ToString() : _valueStrings[GetIndex()];
+    private string GetString() => IsStringOption ? GetValue()?.ToString() ?? "" : _valueStrings[GetIndex()];
 
     protected override void Register(Mod mod)
     {

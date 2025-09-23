@@ -10,10 +10,10 @@ public class SUIDEfinitionTextOption : SUIEntityDefinitionOption
     public SUIDEfinitionTextOption()
     {
         Padding = new Margin(4);
-        BorderRadius = new Vector4(2);
+        BorderRadius = new Vector4(8);
         FitWidth = true;
         FitHeight = true;
-        BackgroundColor = Color.Black * .1f;
+        BackgroundColor = Color.Black * .2f;
         NameText = new UITextView
         {
             TextAlign = new Vector2(.5f),

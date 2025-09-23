@@ -57,7 +57,7 @@ public partial class PropertyOption
 
         public string Label =>
                     IMemberLocalized.GetLocalizedText(VariableInfo.MemberInfo, "Label")?.Value
-                    ?? ConfigManager.GetLocalizedText<TooltipKeyAttribute, TooltipArgsAttribute>(VariableInfo, "Tooltip")
+                    ?? ConfigManager.GetLocalizedText<TooltipKeyAttribute, TooltipArgsAttribute>(VariableInfo, "Label")
                     ?? VariableInfo.Name;
     }
 

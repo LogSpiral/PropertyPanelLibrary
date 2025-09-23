@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using SilkyUIFramework.Attributes;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 
 namespace PropertyPanelLibrary.BasicElements;
 
+[XmlElementMapping("EditTextBox")]
 public class SUIEditTextBox : UIElementGroup
 {
     public int? MaxLength { get; set; }

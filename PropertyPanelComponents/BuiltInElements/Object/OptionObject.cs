@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.Attributes;
+using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Option.Writers;
 using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fillers;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
@@ -58,6 +59,14 @@ public class OptionObject : PropertyOption
         PropertyPanel = new PropertyPanel();
         PropertyPanel.SetWidth(0, 1);
         PropertyPanel.Join(this);
+
+        DelegateWriter writeObserver = new DelegateWriter();
+        writeObserver.OnWriteValue += delegate
+        {
+            SetValue(GetValue());
+        };
+        PropertyPanel.Writer = new CombinedWriter(DefaultWriter.Instance, writeObserver);
+
         // PropertyPanel.Decorator = FitHeightDecorator.Instance;
     }
 
