@@ -19,6 +19,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
@@ -552,7 +553,7 @@ public class OptionColor : OptionObject
             SoundEngine.PlaySound(SoundID.MenuTick);
             string code = currentColor.Hex3();
             Platform.Get<IClipboard>().Value = code;
-            popupText.Text = "复制了喵";//;Language.GetTextValue("PropertyPanel.BuiltInElements.OptionColor.ColorCopiedPopup");
+            popupText.Text = Language.GetTextValue("Mods.PropertyPanelLibrary.OptionColor.Copied");//;Language.GetTextValue("PropertyPanel.BuiltInElements.OptionColor.ColorCopiedPopup");
             popupText.TextColor = Color.White;
         };
         colorPVPanel.RightMouseClick += delegate
@@ -563,7 +564,7 @@ public class OptionColor : OptionObject
             {
                 //currentColor.packedValue = result;
                 _colorHandler.Hex = str;
-                popupText.Text = "粘贴了喵"; //Language.GetTextValue("PropertyPanel.BuiltInElements.OptionColor.ColorPastedPopup");
+                popupText.Text = Language.GetTextValue("Mods.PropertyPanelLibrary.OptionColor.Pasted"); //Language.GetTextValue("PropertyPanel.BuiltInElements.OptionColor.ColorPastedPopup");
                 popupText.TextColor = Color.White;
             }
         };

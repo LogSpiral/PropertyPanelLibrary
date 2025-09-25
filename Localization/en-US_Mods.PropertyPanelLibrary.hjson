@@ -1,0 +1,6 @@
+OptionNotSupportText: NotSupport!!
+
+OptionColor: {
+	Copied: Hex copied!
+	Pasted: Hex pasted!
+}

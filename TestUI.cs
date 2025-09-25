@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿#if false
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PropertyPanelLibrary.PropertyPanelComponents;
@@ -257,3 +258,4 @@ public class TestUIPlayer : ModPlayer
         base.ProcessTriggers(triggersSet);
     }
 }
+#endif

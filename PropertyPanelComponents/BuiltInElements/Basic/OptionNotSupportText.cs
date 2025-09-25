@@ -4,6 +4,7 @@ using SilkyUIFramework.Extensions;
 using System;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
+using Terraria.Localization;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
 
@@ -13,7 +14,7 @@ public class OptionNotSupportText : PropertyOption
     {
         UITextView notSupportText = new()
         {
-            Text = "不支持喵！",
+            Text = Language.GetTextValue("Mods.PropertyPanelLibrary.OptionNotSupportText"),
             TextAlign = new Vector2(1, 0.5f)
         };
         notSupportText.Join(this);
