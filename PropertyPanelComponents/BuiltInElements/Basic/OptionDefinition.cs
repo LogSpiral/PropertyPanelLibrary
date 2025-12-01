@@ -5,6 +5,7 @@ using PropertyPanelLibrary.EntityDefinition;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using ReLogic.Content;
 using SilkyUIFramework;
+using SilkyUIFramework.Layout;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;

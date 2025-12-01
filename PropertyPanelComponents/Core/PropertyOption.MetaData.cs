@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SilkyUIFramework;
+using SilkyUIFramework.Layout;
 using System;
 using System.Collections;
 using System.Collections.Generic;

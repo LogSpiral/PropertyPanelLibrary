@@ -4,3 +4,5 @@ OptionColor: {
 	Copied: Hex copied!
 	Pasted: Hex pasted!
 }
+
+Keybinds.OpenTestUIKeyBind.DisplayName: Open Test U I Key Bind

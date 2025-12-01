@@ -10,6 +10,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using ReLogic.Content;
 using ReLogic.OS;
 using SilkyUIFramework;
+using SilkyUIFramework.Layout;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;

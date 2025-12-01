@@ -2,6 +2,7 @@
 using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework;
+using SilkyUIFramework.Layout;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
 using System;
@@ -221,7 +222,7 @@ public class OptionSlider : PropertyOption
                 TextAlign = new Vector2(0.5f, 0.5f),
                 TextOffset = new Vector2(0f, -2f),
 
-                MaxWordLength = isInt ? 12 : 4,
+                MaximumCharacters = isInt ? 12 : 4,
                 MaxLines = 1,
                 WordWrap  = false
             },

@@ -7,6 +7,7 @@ using PropertyPanelLibrary.PropertyPanelComponents.BuiltInProcessors.Panel.Fille
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Panel;
 using SilkyUIFramework;
+using SilkyUIFramework.Layout;
 using SilkyUIFramework.Animation;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
