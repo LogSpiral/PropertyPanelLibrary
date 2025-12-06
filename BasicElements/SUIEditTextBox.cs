@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using SilkyUIFramework;
 using SilkyUIFramework.Attributes;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
@@ -10,7 +11,6 @@ public class SUIEditTextBox : UIElementGroup
 {
     public int? MaxLength { get; set; }
     public SUIEditText InnerText { get; init; }
-
     public SUIEditTextBox()
     {
         var textPanel = this;
@@ -32,7 +32,7 @@ public class SUIEditTextBox : UIElementGroup
             if (evt.Source != sender) return;
 
             //textPanel.SilkyUI.SetFocus(editText);
-            PropertyPanelLibrary.SetFocusMethod?.Invoke(textPanel.SilkyUI, [editText]);
+            PropertyPanelLibrary.UpdateFocusedElementMethod?.Invoke(textPanel.SilkyUI, [editText]);
         };
         InnerText.ContentChanging += (sender, evt) =>
         {

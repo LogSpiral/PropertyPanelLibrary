@@ -280,9 +280,9 @@ public class OptionObject : PropertyOption
             pendingChanges = false;
             var data = GetValue();
 
-            InitializeButton.Remove();
-            ExpandButton.Remove();
-            DeleteButton.Remove();
+            InitializeButton.RemoveFromParent();
+            ExpandButton.RemoveFromParent();
+            DeleteButton.RemoveFromParent();
 
             if (data != null)
             {

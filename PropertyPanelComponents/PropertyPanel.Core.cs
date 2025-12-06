@@ -151,7 +151,7 @@ public partial class PropertyPanel : UIElementGroup
         if (pendingDecorateCache)
         {
             _pendingDecorate = false;
-            OptionList.Remove();
+            OptionList.RemoveFromParent();
             Decorator.PreFillPanel(this);
         }
 
@@ -163,7 +163,7 @@ public partial class PropertyPanel : UIElementGroup
             Filter.FliteringOptionList(_totalOptions, resultList);
             Sorter.SortingOptionList(resultList);
             foreach (var option in resultList)
-                OptionList.Container.Add(option);
+                OptionList.Container.AddChild(option);
         }
 
         if (pendingDecorateCache)

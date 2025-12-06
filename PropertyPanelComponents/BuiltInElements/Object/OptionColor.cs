@@ -713,7 +713,7 @@ public class OptionColor : OptionObject
         public void UnloadDecorate(PropertyPanel panel)
         {
             panel.OptionList.Width = OldWidth;
-            RGBPanel?.Remove();
+            RGBPanel?.RemoveFromParent();
         }
     }
 
@@ -747,7 +747,7 @@ public class OptionColor : OptionObject
         public void UnloadDecorate(PropertyPanel panel)
         {
             panel.OptionList.Width = OldWidth;
-            HSLRing?.Remove();
+            HSLRing?.RemoveFromParent();
         }
     }
 
@@ -799,7 +799,7 @@ public class OptionColor : OptionObject
         public void UnloadDecorate(PropertyPanel panel)
         {
             panel.OptionList.Width = OldWidth;
-            PanelMask?.Remove();
+            PanelMask?.RemoveFromParent();
         }
     }
 }

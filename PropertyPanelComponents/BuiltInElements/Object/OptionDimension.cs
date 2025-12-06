@@ -149,7 +149,7 @@ public class OptionDimension : OptionObject
         {
             panel.CrossAlignment = CrossAlignment.Stretch;
             panel.OptionList.Width = OldWidth;
-            MaskPanel?.Remove();
+            MaskPanel?.RemoveFromParent();
         }
     }
 }

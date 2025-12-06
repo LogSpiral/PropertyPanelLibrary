@@ -29,7 +29,7 @@ public class LabelOptionDecorator : IPropertyOptionDecorator
 
     void IPropertyOptionDecorator.UnloadDecorate(PropertyOption option)
     {
-        LabelText?.Remove();
+        LabelText?.RemoveFromParent();
     }
 
     IPropertyOptionDecorator IPropertyOptionDecorator.Clone() => NewLabelDecorator();

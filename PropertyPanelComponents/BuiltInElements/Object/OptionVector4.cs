@@ -236,7 +236,7 @@ internal class OptionVector4 : OptionObject
         public void UnloadDecorate(PropertyPanel panel)
         {
             panel.OptionList.Width = OldWidth;
-            PanelMask?.Remove();
+            PanelMask?.RemoveFromParent();
         }
 
         private class Vector4Panel : UIElementGroup

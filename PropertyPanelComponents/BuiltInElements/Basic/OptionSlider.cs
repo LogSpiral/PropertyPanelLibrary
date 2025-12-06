@@ -288,7 +288,7 @@ public class OptionSlider : PropertyOption
     {
         base.UpdateStatus(gameTime);
         if (Increment == null)
-            _splitButton?.Remove();
+            _splitButton?.RemoveFromParent();
         _splitButton.IgnoreMouseInteraction = !Interactable;
         _slideBox.IgnoreMouseInteraction = !Interactable;
         _numericTextBox.IgnoreMouseInteraction = !Interactable;

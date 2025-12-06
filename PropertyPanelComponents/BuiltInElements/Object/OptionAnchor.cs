@@ -164,7 +164,7 @@ public class OptionAnchor : OptionObject
         {
             panel.CrossAlignment = CrossAlignment.Stretch;
             panel.OptionList.Width = OldWidth;
-            MaskPanel?.Remove();
+            MaskPanel?.RemoveFromParent();
         }
     }
 }

@@ -179,7 +179,7 @@ public class OptionRectangle : OptionObject
         public void UnloadDecorate(PropertyPanel panel)
         {
             panel.OptionList.Width = OldWidth;
-            RectPanel?.Remove();
+            RectPanel?.RemoveFromParent();
         }
 
         private class RectanglePanel : UIElementGroup

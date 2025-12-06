@@ -38,7 +38,7 @@ public partial class OptionCollection
 
         void IPropertyOptionDecorator.UnloadDecorate(PropertyOption option)
         {
-            RemoveButton?.Remove();
+            RemoveButton?.RemoveFromParent();
         }
     }
 }

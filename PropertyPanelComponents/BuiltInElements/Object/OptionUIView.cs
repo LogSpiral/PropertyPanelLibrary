@@ -75,8 +75,8 @@ public class OptionUIView : OptionObject
         public void UnloadDecorate(PropertyPanel panel)
         {
             panel.OptionList.Width = OldWidth;
-            MaskPanel?.Remove();
-            View?.Remove();
+            MaskPanel?.RemoveFromParent();
+            View?.RemoveFromParent();
         }
     }
 }

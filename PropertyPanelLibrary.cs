@@ -6,12 +6,16 @@ namespace PropertyPanelLibrary;
 
 public class PropertyPanelLibrary : Mod
 {
-    public static MethodInfo SetFocusMethod { get; private set; }
-    public static PropertyInfo MouseElementProperty { get; private set; }
+    public static MethodInfo UpdateFocusedElementMethod { get; private set; }
+    public static PropertyInfo PressedElementsProperty { get; private set; }
+
+    public static FieldInfo _inputStateField { get; private set; }
     public override void Load()
     {
-        SetFocusMethod = typeof(SilkyUI).GetMethod("SetFocus",BindingFlags.Instance | BindingFlags.NonPublic);
-        MouseElementProperty = typeof(SilkyUI).GetProperty("MouseElement", BindingFlags.Instance | BindingFlags.NonPublic);
+        UpdateFocusedElementMethod = typeof(SilkyUI).GetMethod("UpdateFocusedElement", BindingFlags.Instance | BindingFlags.NonPublic);
+        PressedElementsProperty = typeof(SilkyUIInputState).GetProperty("PressedElements", BindingFlags.Instance | BindingFlags.NonPublic);
+        _inputStateField = typeof(SilkyUIManager).GetField("_inputState", BindingFlags.Instance | BindingFlags.NonPublic);
+
         base.Load();
     }
 }

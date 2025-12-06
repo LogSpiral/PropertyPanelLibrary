@@ -156,7 +156,7 @@ public class OptionVector2 : OptionObject
         public void UnloadDecorate(PropertyPanel panel)
         {
             panel.OptionList.Width = OldWidth;
-            VecPanel?.Remove();
+            VecPanel?.RemoveFromParent();
         }
 
         private class Vector2Panel : UIElementGroup

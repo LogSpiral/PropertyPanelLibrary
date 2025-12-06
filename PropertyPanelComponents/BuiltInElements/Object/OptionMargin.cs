@@ -311,7 +311,7 @@ public class OptionMargin : OptionObject
         void IPropertyPanelDecorator.UnloadDecorate(PropertyPanel panel)
         {
             panel.OptionList.Width = OldWidth;
-            MaskContainer?.Remove();
+            MaskContainer?.RemoveFromParent();
         }
     }
 }
