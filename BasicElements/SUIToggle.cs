@@ -97,13 +97,17 @@ public class SUIToggle : UIView
 
     public event EventHandler<ValueChangedEventArgs<bool>> OnContentsChanged;
 
+    private bool _enabled;
+
     public bool Enabled
     {
-        get;
+        get => _enabled;
         set
         {
-            OnContentsChanged?.Invoke(this, new ValueChangedEventArgs<bool>(field, value));
-            field = value;
+            OnContentsChanged?.Invoke(this, new ValueChangedEventArgs<bool>(_enabled, value));
+            _enabled = value;
         }
     }
+
+    public void SyncState(bool state) => _enabled = state;
 }

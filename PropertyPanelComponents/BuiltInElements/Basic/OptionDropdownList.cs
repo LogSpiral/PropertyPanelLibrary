@@ -55,11 +55,9 @@ public class OptionDropdownList : PropertyOption
 
             SoundEngine.PlaySound(SoundID.MenuTick);
             var dimensions = _textBox.Bounds;
-            float x = dimensions.X;
-            float y = dimensions.Y + 29;
             float width = _textBox.Bounds.Width;
             var dropdownList = DropdownList;
-            dropdownList.BuildDropdownList(x, y, width, _valueStrings, GetString(), this);
+            dropdownList.BuildDropdownList(0, 29, true, width, _valueStrings, GetString(), _textBox);
             dropdownList.OptionSelectedCallback = s =>
             {
                 if (IsStringOption)

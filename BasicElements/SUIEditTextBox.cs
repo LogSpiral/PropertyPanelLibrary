@@ -32,7 +32,7 @@ public class SUIEditTextBox : UIElementGroup
             if (evt.Source != sender) return;
 
             //textPanel.SilkyUI.SetFocus(editText);
-            PropertyPanelLibrary.UpdateFocusedElementMethod?.Invoke(textPanel.SilkyUI, [editText]);
+            PropertyPanelLibrary.UpdateFocusedElementCall(editText);
         };
         InnerText.ContentChanging += (sender, evt) =>
         {

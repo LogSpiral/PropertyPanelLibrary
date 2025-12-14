@@ -61,7 +61,11 @@ public class SUIDropdownListContainer : UIElementGroup
     /// <summary>
     /// 调用下拉框的UI元素
     /// </summary>
-    public UIView DropdownCaller; // TODO 检查调用
+    public UIView DropdownCaller { get; private set; } // TODO 检查调用
+
+    public Vector2? OffsetPosition { get; private set; }
+
+    public BaseBody CallerAncestorBody { get; private set; }
 
     private readonly SUIScrollView _dropdownList;
     private string _currentSelectedLabel;
@@ -91,6 +95,8 @@ public class SUIDropdownListContainer : UIElementGroup
             if (value == false)
             {
                 DropdownCaller = null;
+                CallerAncestorBody = null;
+                OffsetPosition = null;
                 _animationTimer.StartReverseUpdate();
             }
         }
@@ -152,11 +158,54 @@ public class SUIDropdownListContainer : UIElementGroup
         }
     }
 
-    public void BuildDropdownList(float x, float y, float width, string[] options, string currentLabel, UIView caller)
+    public void SetCurrentPosition(Vector2 vector)
+    {
+        float x = vector.X;
+        float y = vector.Y;
+        var bounds = Bounds;
+        // 决定高度
+        float containerBottom = bounds.Bottom - 10;
+        float height = _dropdownList.Height.Pixels;
+
+        // 决定位置，x和y给的是屏幕坐标
+        _mouseYClicked = y * Main.UIScale;
+        // 限制在UI界面内
+        x -= bounds.X;
+        float bottom = y + height;
+        if (bottom > containerBottom)
+        {
+            // 计算屏幕坐标
+            var scrnY = containerBottom - height;
+            // 计算对父元素的相对坐标
+            var relativeY = scrnY - bounds.Y;
+            _blurMask.SetLeft(x);
+            _blurMask.SetTop(relativeY);
+        }
+        else
+        {
+            y -= bounds.Y;
+            _blurMask.SetLeft(x);
+            _blurMask.SetTop(y);
+        }
+    }
+
+    public void BuildDropdownList(float x, float y, bool offsetMode, float width, string[] options, string currentLabel, UIView caller)
     {
         int count = options.Length;
         _dropdownList.Container.RemoveAllChildren();
         DropdownCaller = caller;
+        if (caller.GetAncestor() is not BaseBody baseBody)
+            return;
+
+        if (offsetMode)
+        {
+            var dimension = caller.Bounds;
+            OffsetPosition = new Vector2(x, y);
+            x += caller.Bounds.X;
+            y += caller.Bounds.Y;
+        }
+
+        CallerAncestorBody = baseBody;
         SetCurrentPosition(x, y, width, count);
 
         // 添加元素
@@ -195,8 +244,19 @@ public class SUIDropdownListContainer : UIElementGroup
     {
         base.UpdateStatus(gameTime);
 
+        if (CallerAncestorBody is not { } baseBody || !baseBody.Enabled) 
+        {
+            Enabled = false;
+            return;
+        }
+
+        if (OffsetPosition.HasValue)
+            SetCurrentPosition(OffsetPosition.Value + DropdownCaller.Bounds.TopLeft);
+
         if (!IsMouseHovering)
             return;
+
+
 
         Main.LocalPlayer.mouseInterface = true;
     }

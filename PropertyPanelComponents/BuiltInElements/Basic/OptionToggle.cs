@@ -1,6 +1,7 @@
 ﻿using PropertyPanelLibrary.BasicElements;
 using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using SilkyUIFramework.Extensions;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Basic;
@@ -16,6 +17,10 @@ public class OptionToggle : PropertyOption
         toggle.OnContentsChanged += (sender, arg) =>
         {
             SetValue(arg.NewValue);
+        };
+        toggle.OnUpdateStatus += delegate
+        {
+            toggle.SyncState((bool)GetValue());
         };
         base.FillOption();
     }
