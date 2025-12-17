@@ -1,4 +1,4 @@
-displayName = 属性面板
+displayName = 属性面板PropertyPanel
 author = 错数面板
-version = 0.1
+version = 0.1.0.0
 modReferences = SilkyUIFramework

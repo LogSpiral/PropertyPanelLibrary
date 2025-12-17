@@ -1,1 +1,21 @@
-Modify this file with a description of your mod.
+﻿属性面板是SilkyUIFramework的一个子UI库
+最主要的控件是PropertyPanel
+旨在对于一个对象根据它的元数据生成相应的配置界面
+简化配置界面的制作与排版等
+
+面板本身可以根据需求
+自行实现相应的填充器、筛选器、排序器、装饰器四大部分
+
+而对于面板内的控件可以根据这些控件统一的需求
+自行实现相应的交互判定器、交互器、写入器、选项装饰器四大部分
+
+
+Property Panel is a sub-library of SilkyUIFramework
+The core component is PropertyPanel
+which can generate a config panel for a object via its meta data
+
+You can make the Filler, the Filter, 
+the Sorter and the Decorator of the Panel depending on your need.
+
+You can make the InteractableHandler, the MouseHandler, 
+the Writer and the OptionDecorator of the Panel's options depending on your need as well
