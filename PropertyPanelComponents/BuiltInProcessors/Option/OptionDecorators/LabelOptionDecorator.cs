@@ -1,4 +1,5 @@
-﻿using PropertyPanelLibrary.PropertyPanelComponents.Core;
+﻿using Microsoft.Xna.Framework;
+using PropertyPanelLibrary.PropertyPanelComponents.Core;
 using PropertyPanelLibrary.PropertyPanelComponents.Interfaces.Option;
 using SilkyUIFramework.Elements;
 using SilkyUIFramework.Extensions;
@@ -15,7 +16,6 @@ public class LabelOptionDecorator : IPropertyOptionDecorator
     {
         var labelText = LabelText = new UITextView();
         labelText.Text = option.Label;
-        labelText.SetTop(-4, 0, 0);
         labelText.Join(option);
         labelText.OnUpdate += delegate
         {

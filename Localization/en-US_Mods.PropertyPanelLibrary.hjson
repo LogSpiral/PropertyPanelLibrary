@@ -5,4 +5,46 @@ OptionColor: {
 	Pasted: Hex pasted!
 }
 
+ColorHandler: {
+	Red: {
+		Label: Red
+		Tooltip: ""
+	}
+
+	Green: {
+		Label: Green
+		Tooltip: ""
+	}
+
+	Blue: {
+		Label: Blue
+		Tooltip: ""
+	}
+
+	Hue: {
+		Label: Hue
+		Tooltip: ""
+	}
+
+	Saturation: {
+		Label: Saturation
+		Tooltip: ""
+	}
+
+	Lightness: {
+		Label: Lightness
+		Tooltip: ""
+	}
+
+	Alpha: {
+		Label: Alpha
+		Tooltip: ""
+	}
+
+	Hex: {
+		Label: Hex
+		Tooltip: ""
+	}
+}
+
 Keybinds.OpenTestUIKeyBind.DisplayName: Open Test U I Key Bind

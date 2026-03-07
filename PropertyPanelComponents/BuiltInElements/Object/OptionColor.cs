@@ -24,6 +24,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces;
 
 namespace PropertyPanelLibrary.PropertyPanelComponents.BuiltInElements.Object;
 
@@ -44,7 +45,7 @@ public class OptionColor : OptionObject
         public readonly VertexDeclaration VertexDeclaration => _vertexDeclaration;
     }
 
-    private class ColorHandler
+    private class ColorHandler : IMemberLocalized
     {
         private readonly PropertyFieldWrapper memberInfo;
         private readonly object item;
@@ -221,6 +222,16 @@ public class OptionColor : OptionObject
             current = color;
             hsl = Main.rgbToHsl(color);
         }
+
+        public ColorHandler() // 仅用于反射本地化((((
+        {
+            
+        }
+
+        string IMemberLocalized.LocalizationRootPath => $"Mods.{nameof(PropertyPanelLibrary)}.ColorHandler";
+
+        private static string[] Suffixes { get; } = ["Label", "Tooltip"];
+        IReadOnlyList<string> IMemberLocalized.LocalizationSuffixes => Suffixes;
     }
 
     private static void DrawRGBPanel(Vector2 pos, Vector2 size, Color current)

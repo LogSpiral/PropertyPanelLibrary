@@ -64,6 +64,7 @@ public class OptionObject : PropertyOption
         DelegateWriter writeObserver = new DelegateWriter();
         writeObserver.OnWriteValue += delegate
         {
+            // 用于处理结构体的写值问题
             SetValue(GetValue());
         };
         PropertyPanel.Writer = new CombinedWriter(DefaultWriter.Instance, writeObserver);
@@ -98,7 +99,11 @@ public class OptionObject : PropertyOption
 
     private void BuildDeleteButton()
     {
-        DeleteButton = new SUICross(SUIColor.Warn * .5f, SUIColor.Warn);
+        DeleteButton = new SUICross()
+        {
+            CrossBackgroundColor = SUIColor.Warn * .5f,
+            CrossBorderColor = SUIColor.Warn,
+        };
         DeleteButton.SetSize(25, 25);
         DeleteButton.Margin = new Margin(4f, 0, 4, 0);
         DeleteButton.BackgroundColor = Color.Black * .4f;

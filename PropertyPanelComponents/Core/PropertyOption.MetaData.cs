@@ -41,7 +41,6 @@ public partial class PropertyOption
         MainAlignment = MainAlignment.SpaceBetween;
         CrossAlignment = CrossAlignment.Center;
 
-
         CheckAttributes();
 
         Decorator.PreFillOption(this);

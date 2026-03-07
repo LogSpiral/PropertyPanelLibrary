@@ -24,7 +24,11 @@ public partial class OptionCollection
 
         void IPropertyOptionDecorator.PreFillOption(PropertyOption option)
         {
-            RemoveButton = new SUICross(SUIColor.Warn * .5f, SUIColor.Warn);
+            RemoveButton = new SUICross()
+            {
+                CrossBackgroundColor = SUIColor.Warn * .5f,
+                CrossBorderColor = SUIColor.Warn
+            };
             RemoveButton.SetSize(25, 25);
             RemoveButton.Margin = new Margin(4f, 0, 4, 0);
             RemoveButton.BackgroundColor = Color.Black * .4f;

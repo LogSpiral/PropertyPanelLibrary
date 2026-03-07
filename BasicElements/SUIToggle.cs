@@ -84,7 +84,7 @@ public class SUIToggle : UIView
 
         var boxPosition = position + new Vector2(ToggleAnchorX.CalculatePosition(size.Width, boxSize.X), ToggleAnchorY.CalculatePosition(size.Height, boxSize.Y));
 
-        SDFRectangle.DrawHasBorder(boxPosition, boxSize, new Vector4(MathF.Min(boxSize.X, boxSize.Y) / 2), color, 2, color2, SilkyUI.TransformMatrix);
+        SDFRectangle.DrawWithBorder(boxPosition, boxSize, new Vector4(MathF.Min(boxSize.X, boxSize.Y) / 2), color, 2, color2, SilkyUI.TransformMatrix);
 
         const float scaler = 16f / 26f;
 

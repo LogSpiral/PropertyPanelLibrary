@@ -111,6 +111,7 @@ public partial class OptionDefinition : PropertyOption
         FitWidth = false;
         FlexDirection = FlexDirection.Row;
         FlexWrap = true;
+        Padding = new Margin(0, 4);
         #endregion
 
 

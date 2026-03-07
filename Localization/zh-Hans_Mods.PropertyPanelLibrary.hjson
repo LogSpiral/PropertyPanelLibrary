@@ -5,4 +5,46 @@ OptionColor: {
 	Pasted: Hex粘贴了喵!
 }
 
+ColorHandler: {
+	Red: {
+		Label: 红
+		Tooltip: ""
+	}
+
+	Green: {
+		Label: 绿
+		Tooltip: ""
+	}
+
+	Blue: {
+		Label: 蓝
+		Tooltip: ""
+	}
+
+	Hue: {
+		Label: 色相
+		Tooltip: ""
+	}
+
+	Saturation: {
+		Label: 饱和度
+		Tooltip: ""
+	}
+
+	Lightness: {
+		Label: 亮度
+		Tooltip: ""
+	}
+
+	Alpha: {
+		Label: 透明度
+		Tooltip: ""
+	}
+
+	Hex: {
+		Label: Hex
+		Tooltip: ""
+	}
+}
+
 // Keybinds.OpenTestUIKeyBind.DisplayName: Open Test U I Key Bind

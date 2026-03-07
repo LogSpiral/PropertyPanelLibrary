@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+using PropertyPanelLibrary.PropertyPanelComponents.Interfaces;
 using SilkyUIFramework;
 using SilkyUIFramework.Elements;
 using System.Collections.Generic;
@@ -22,20 +24,17 @@ public class PropertyPanelLibrary : Mod
             PressedElementsProperty
             ?.GetValue(_inputState)
             is Dictionary<MouseButtonType, UIView> _dictionary ? _dictionary : null;
-    public static void UpdateFocusedElementCall(UIView focusedElement) 
+    public static void UpdateFocusedElementCall(UIView focusedElement)
     {
-        if (InputState is not { } inputState) 
+        if (InputState is not { } inputState)
             return;
         UpdateFocusedElementMethod?.Invoke(inputState, [focusedElement]);
     }
-
     public override void Load()
     {
-
-        UpdateFocusedElementMethod = typeof(SilkyUIInputState).GetMethod("UpdateFocusedElement", BindingFlags.Instance | BindingFlags.NonPublic, [typeof(UIView)]);
+        UpdateFocusedElementMethod = typeof(SilkyUIInputState).GetMethod("UpdateFocusElement", BindingFlags.Instance | BindingFlags.NonPublic, [typeof(UIView)]);
         PressedElementsProperty = typeof(SilkyUIInputState).GetProperty("PressedElements", BindingFlags.Instance | BindingFlags.NonPublic);
         _inputStateField = typeof(SilkyUIManager).GetField("_inputState", BindingFlags.Instance | BindingFlags.NonPublic);
-
         base.Load();
     }
 }

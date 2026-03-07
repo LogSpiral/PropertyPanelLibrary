@@ -103,7 +103,7 @@ public partial class SDFGraphics
         if (ui)
         {
             var matrix = Main.UIScaleMatrix;
-            MatrixHelper.Transform2SDFMatrix(ref matrix);
+            matrix = MatrixHelper.Transform2SDFMatrix(matrix);
             return matrix;
             //GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
 

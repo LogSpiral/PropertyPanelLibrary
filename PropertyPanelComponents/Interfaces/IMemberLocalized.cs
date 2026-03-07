@@ -12,10 +12,14 @@ public interface IMemberLocalized : ILoadable
 {
     private static readonly Dictionary<Type, string> _cachedRootPath = [];
     private static readonly Dictionary<Type, IReadOnlyList<string>> _cachedSuffixes = [];
-
-    public static string GetRootPath(Type type) 
+    public static void RegisterMemberLocalization(Type type, string root, IReadOnlyList<string> suffixes)
     {
-        if(_cachedRootPath.TryGetValue(type,out var result))
+        if (_cachedRootPath.TryAdd(type, root))
+            _cachedSuffixes.TryAdd(type, suffixes);
+    }
+    public static string GetRootPath(Type type)
+    {
+        if (_cachedRootPath.TryGetValue(type, out var result))
             return result;
 
         var instance = Activator.CreateInstance(type) as IMemberLocalized;
@@ -23,11 +27,11 @@ public interface IMemberLocalized : ILoadable
         result = instance.LocalizationRootPath;
 
         _cachedRootPath.Add(type, result);
-        
+
         return result;
     }
 
-    public static IReadOnlyList<string> GetSuffixes(Type type) 
+    public static IReadOnlyList<string> GetSuffixes(Type type)
     {
         if (_cachedSuffixes.TryGetValue(type, out var result))
             return result;
@@ -55,7 +59,7 @@ public interface IMemberLocalized : ILoadable
         InitializeCachedData(memberLocalized);
     }
 
-    public static void InitializeCachedData(IMemberLocalized memberLocalized) 
+    public static void InitializeCachedData(IMemberLocalized memberLocalized)
     {
         var type = memberLocalized.GetType();
         _cachedRootPath[type] = memberLocalized.LocalizationRootPath;
