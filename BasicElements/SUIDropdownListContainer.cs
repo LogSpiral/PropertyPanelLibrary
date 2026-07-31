@@ -276,8 +276,7 @@ public class SUIDropdownListContainer : UIElementGroup
 
         base.Draw(gameTime, spriteBatch);
     }
-
-    public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
+    public override Rectangle GetClippingRectangle(GraphicsDevice device)
     {
         var dimensionsRect = _blurMask.Bounds;
         float top = dimensionsRect.Y * Main.UIScale;
@@ -287,7 +286,7 @@ public class SUIDropdownListContainer : UIElementGroup
         int screenWidth = (int)(Main.screenWidth * Main.UIScale);
         var clippingRectangle = new Rectangle(0, (int)(_mouseYClicked - offset), screenWidth, (int)offset * 2);
         // SDFRectangle.DrawNoBorder(new(0, (int)(_mouseYClicked - offset)), new(screenWidth, (int)offset * 2), new(8f), Color.Red * .5f, SilkyUI.TransformMatrix);
-        Rectangle scissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+        Rectangle scissorRectangle = device.ScissorRectangle;
         Rectangle adjustedClippingRectangle =
     Rectangle.Intersect(clippingRectangle, scissorRectangle);
         return adjustedClippingRectangle;
@@ -295,7 +294,7 @@ public class SUIDropdownListContainer : UIElementGroup
 
     public override bool ContainsPoint(Vector2 point)
     {
-        return GetClippingRectangle(Main.spriteBatch).Contains(point.ToPoint());
+        return GetClippingRectangle(Main.graphics.GraphicsDevice).Contains(point.ToPoint());
     }
 
     #endregion Animation - 出现动画
